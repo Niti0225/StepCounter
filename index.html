@@ -10,12 +10,10 @@
 
   <style>
     :root{
-      /* Brand / Neon */
       --brand:#00e5ff;        /* Cyan Neon */
       --accent:#9b4dff;       /* Lila Neon */
       --ok:#22c55e;
 
-      /* Dark surface */
       --bg:#05060b;
       --bg-soft:#090b12;
       --card:#0e121b;
@@ -34,7 +32,6 @@
       margin:0; color:var(--text); background:var(--bg);
       font-family:system-ui,-apple-system,"Segoe UI",Roboto,Inter,Arial,sans-serif;
       line-height:1.65; overflow-x:hidden;
-      /* layered background */
       background:
         radial-gradient(1200px 600px at 85% -10%, color-mix(in oklab, var(--brand) 18%, transparent) 0%, transparent 60%),
         radial-gradient(900px 520px at 10% -20%, color-mix(in oklab, var(--accent) 20%, transparent) 0%, transparent 58%),
@@ -152,10 +149,10 @@
 
         <!-- Quick tabs -->
         <nav class="tabs" aria-label="Quick links">
-          <a class="tab" id="link-privacy"  href="privacy.html">🔒 Privacy / Datenschutz</a>
-          <a class="tab" id="link-terms"    href="terms.html">📜 Terms / Nutzungsbedingungen</a>
-          <a class="tab" id="link-upgrade"  href="upgrade.html">⭐ Upgrade</a>
-          <a class="tab" id="link-imprint"  href="impressum.html">ℹ️ Imprint / Impressum</a>
+          <a class="tab needs-lang" id="link-privacy"  href="privacy.html">🔒 Privacy / Datenschutz</a>
+          <a class="tab needs-lang" id="link-terms"    href="terms.html">📜 Terms / Nutzungsbedingungen</a>
+          <a class="tab needs-lang" id="link-upgrade"  href="upgrade.html">⭐ Upgrade</a>
+          <a class="tab needs-lang" id="link-imprint"  href="impressum.html">ℹ️ Imprint / Impressum</a>
         </nav>
       </div>
     </div>
@@ -170,8 +167,8 @@
           / Dieser Hub bietet dir schnellen Zugriff auf Datenschutz, Nutzungsbedingungen, Upgrade-Infos und das Impressum der App.
         </p>
         <div class="cta-row">
-          <a class="btn" id="cta-privacy" href="privacy.html">🔒 Privacy / Datenschutz</a>
-          <a class="btn outline" id="cta-terms" href="terms.html">📜 Terms / Nutzungsbedingungen</a>
+          <a class="btn needs-lang" id="cta-privacy" href="privacy.html">🔒 Privacy / Datenschutz</a>
+          <a class="btn outline needs-lang" id="cta-terms" href="terms.html">📜 Terms / Nutzungsbedingungen</a>
         </div>
       </section>
 
@@ -189,10 +186,10 @@
 
   <footer>
     <div class="links">
-      <a class="tab" id="f-privacy" href="privacy.html">Privacy / Datenschutz</a>
-      <a class="tab" id="f-terms" href="terms.html">Terms / Nutzungsbedingungen</a>
-      <a class="tab" id="f-upgrade" href="upgrade.html">Upgrade</a>
-      <a class="tab" id="f-imprint" href="impressum.html">Imprint / Impressum</a>
+      <a class="tab needs-lang" id="f-privacy" href="privacy.html">Privacy / Datenschutz</a>
+      <a class="tab needs-lang" id="f-terms" href="terms.html">Terms / Nutzungsbedingungen</a>
+      <a class="tab needs-lang" id="f-upgrade" href="upgrade.html">Upgrade</a>
+      <a class="tab needs-lang" id="f-imprint" href="impressum.html">Imprint / Impressum</a>
     </div>
     <div>© <span id="y"></span> Stay Active</div>
   </footer>
@@ -201,7 +198,7 @@
     // Year
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Simple i18n + make links carry ?lang=
+    // Texts
     const dict = {
       de: {
         sub: "Wähle ein Dokument.",
@@ -217,41 +214,44 @@
       }
     };
 
-    function setLang(l){
-      const d = dict[l] || dict.de;
-      document.documentElement.lang = l;
-      document.getElementById('subtitle').textContent = d.sub + " / " + (l === 'de' ? "Choose a document." : "Wähle ein Dokument.");
+    // Append ?lang to relative links WITHOUT breaking paths (works on GitHub Pages)
+    function setLangOnLinks(lang){
+      document.querySelectorAll('a.needs-lang').forEach(a=>{
+        const base = a.getAttribute('href') || '';
+        const clean = base.split('#')[0].split('?')[0];     // keep just the filename
+        const query = `?lang=${encodeURIComponent(lang)}`;
+        a.setAttribute('href', clean + query);              // e.g. privacy.html?lang=de
+      });
+      // keep in address bar too
+      const url = new URL(location.href);
+      url.searchParams.set('lang', lang);
+      history.replaceState({}, '', url.toString());
+      localStorage.setItem('sa_lang', lang);
+      document.documentElement.lang = lang;
+    }
+
+    function setLang(lang){
+      const d = dict[lang] || dict.de;
+      document.getElementById('subtitle').textContent = `${d.sub} / ${lang === 'de' ? 'Choose a document.' : 'Wähle ein Dokument.'}`;
       document.getElementById('whyTitle').textContent = d.whyTitle;
-      document.getElementById('whyText').textContent  = d.whyText + (l==='de' ? "" : " / Dieser Hub bietet dir schnellen Zugriff auf Datenschutz, Nutzungsbedingungen, Upgrade-Infos und das Impressum der App.");
+      document.getElementById('whyText').textContent  = d.whyText + (lang==='de' ? "" : " / Dieser Hub bietet dir schnellen Zugriff auf Datenschutz, Nutzungsbedingungen, Upgrade-Infos und das Impressum der App.");
       document.getElementById('factsTitle').textContent = d.factsTitle;
 
       // pills state
-      document.getElementById('pill-de').setAttribute('aria-current', l==='de');
-      document.getElementById('pill-en').setAttribute('aria-current', l==='en');
+      document.getElementById('pill-de').setAttribute('aria-current', lang==='de');
+      document.getElementById('pill-en').setAttribute('aria-current', lang==='en');
 
-      // Append ?lang to all main links (keep them RELATIVE so GH Pages works)
-      const linkIds = ['link-privacy','link-terms','link-upgrade','link-imprint','cta-privacy','cta-terms','f-privacy','f-terms','f-upgrade','f-imprint'];
-      linkIds.forEach(id=>{
-        const a = document.getElementById(id);
-        if(!a) return;
-        const href = a.getAttribute('href');          // e.g. "privacy.html"
-        const u = new URL(href, location.href);
-        u.searchParams.set('lang', l);
-        a.setAttribute('href', u.pathname.replace(location.origin,'') + u.search);
-      });
-
-      // keep ?lang in address bar
-      const url = new URL(location.href);
-      url.searchParams.set('lang', l);
-      history.replaceState({}, '', url.toString());
-      localStorage.setItem('sa_lang', l);
+      setLangOnLinks(lang);
     }
 
-    const qsLang = new URLSearchParams(location.search).get('lang');
+    // Init language
+    const qsLang = (new URLSearchParams(location.search).get('lang') || '').toLowerCase();
     const stored = localStorage.getItem('sa_lang');
     const browser = (navigator.language || 'en').toLowerCase().startsWith('de') ? 'de' : 'en';
-    setLang(qsLang || stored || browser);
+    const start = (qsLang==='de'||qsLang==='en') ? qsLang : (stored||browser);
+    setLang(start);
 
+    // Switchers
     document.getElementById('pill-de').addEventListener('click', e => { e.preventDefault(); setLang('de'); });
     document.getElementById('pill-en').addEventListener('click', e => { e.preventDefault(); setLang('en'); });
   </script>
