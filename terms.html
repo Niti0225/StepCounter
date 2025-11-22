@@ -1,254 +1,203 @@
-import React, { useMemo, useState } from 'react';
-import { ScrollView, Text, StyleSheet, View, TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Stay Active · Terms / Nutzungsbedingungen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="description" content="Stay Active – Terms of Service / Nutzungsbedingungen (EN/DE)." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%9C%3C/text%3E%3C/svg%3E">
+  <style>
+    :root{
+      --brand:#00e5ff;     /* cyan neon */
+      --accent:#ff00cc;    /* pink neon */
+      --accent2:#9b4dff;   /* violet neon */
+      --text:#e6e9ef;
+      --muted:#b5bdc8;
+      --bg:#0f0c29; --bg2:#302b63; --bg3:#24243e;
+      --card:rgba(255,255,255,.06); --card-bd:rgba(255,255,255,.14);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; color:var(--text);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+      background:linear-gradient(135deg, var(--bg), var(--bg2), var(--bg3)) fixed;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+    a{color:var(--brand); text-decoration:underline}
+    a:focus-visible,button:focus-visible{outline:2px solid var(--brand); outline-offset:3px; border-radius:12px}
 
-type Lang = 'en' | 'de';
+    .wrap{max-width:980px; margin:0 auto; padding:20px}
 
-const copy = {
-  en: {
-    title: 'Terms of Service',
-    datePrefix: 'Effective Date:',
-    date: 'May 30, 2025',
-    sections: [
-      {
-        h: '1) Purpose of the App',
-        p: `The app helps you track physical activity via step counting and related stats. It is for informational and motivational purposes only and does not constitute medical advice.`,
-      },
-      {
-        h: '2) Eligibility',
-        p: `You must be at least 13 years old to use the app.`,
-      },
-      {
-        h: '3) Subscriptions',
-        bullets: [
-          'Subscriptions remove ads and are managed by your app store account.',
-          'Plans may include monthly or yearly options.',
-          'Auto-renewal unless cancelled at least 24 hours before renewal.',
-          'No refunds for unused periods.',
-        ],
-      },
-      {
-        h: '4) Advertisements',
-        p: `The free version shows ads. We are not responsible for the accuracy, content, or legality of third-party ads.`,
-      },
-      {
-        h: '5) Push Notifications',
-        p: `You may receive reminders, updates, or motivational content. Manage/disable notifications in your device settings.`,
-      },
-      {
-        h: '6) User Data',
-        p: `No account is required. Optional height, weight, and gender inputs can improve accuracy. Personal data is stored locally on your device. We do not transmit or sell personal data.`,
-      },
-      {
-        h: '7) Limitation of Liability',
-        bullets: [
-          'We are not responsible for inaccuracies due to device sensors.',
-          'We are not liable for health issues, injuries, or losses related to app use.',
-          'Use the app at your own risk.',
-        ],
-      },
-      {
-        h: '8) Intellectual Property',
-        p: `All content, graphics, and code are the property of the developer. You may not copy, reverse-engineer, or distribute any part of the app without permission.`,
-      },
-      {
-        h: '9) Termination',
-        p: `We may suspend or terminate access if you violate these Terms or misuse the service.`,
-      },
-      {
-        h: '10) Modifications',
-        p: `We may update these Terms from time to time. Continued use after changes means you accept the updated Terms.`,
-      },
-      {
-        h: '11) Contact',
-        p: `Email: stay_active@outlook.de`,
-      },
-    ],
-    toggleDe: 'Deutsch',
-    toggleEn: 'English',
-  },
-  de: {
-    title: 'Nutzungsbedingungen',
-    datePrefix: 'Gültig ab:',
-    date: '30. Mai 2025',
-    sections: [
-      {
-        h: '1) Zweck der App',
-        p: `Die App dient der Erfassung körperlicher Aktivität (Schritte, Statistiken). Sie ist rein informativ/motivierend und stellt keine medizinische Beratung dar.`,
-      },
-      {
-        h: '2) Berechtigung',
-        p: `Für die Nutzung musst du mindestens 13 Jahre alt sein.`,
-      },
-      {
-        h: '3) Abonnements',
-        bullets: [
-          'Abos entfernen Werbung und werden über dein App-Store-Konto verwaltet.',
-          'Es können monatliche/jährliche Optionen angeboten werden.',
-          'Automatische Verlängerung, sofern nicht mindestens 24 Stunden vorher gekündigt.',
-          'Keine Erstattung für ungenutzte Zeiträume.',
-        ],
-      },
-      {
-        h: '4) Werbung',
-        p: `Die kostenlose Version zeigt Werbung. Für Richtigkeit, Inhalte oder Rechtmäßigkeit von Drittanbieter-Werbung übernehmen wir keine Verantwortung.`,
-      },
-      {
-        h: '5) Push-Benachrichtigungen',
-        p: `Du kannst Erinnerungen, Updates oder motivierende Inhalte erhalten. Verwaltung/Deaktivierung in den Geräteeinstellungen.`,
-      },
-      {
-        h: '6) Benutzerdaten',
-        p: `Kein Konto erforderlich. Optionale Angaben (Größe, Gewicht, Geschlecht) verbessern die Genauigkeit. Persönliche Daten werden lokal auf deinem Gerät gespeichert. Keine Übermittlung/kein Verkauf persönlicher Daten.`,
-      },
-      {
-        h: '7) Haftungsbeschränkung',
-        bullets: [
-          'Keine Haftung für Ungenauigkeiten durch Gerätesensoren.',
-          'Keine Haftung für gesundheitliche Probleme, Verletzungen oder Verluste im Zusammenhang mit der App-Nutzung.',
-          'Nutzung auf eigenes Risiko.',
-        ],
-      },
-      {
-        h: '8) Geistiges Eigentum',
-        p: `Alle Inhalte, Grafiken und der Code sind Eigentum des Entwicklers. Ohne Erlaubnis kein Kopieren, Reverse-Engineering oder Verbreitung.`,
-      },
-      {
-        h: '9) Beendigung',
-        p: `Bei Verstößen gegen diese Bedingungen oder Missbrauch kann der Zugang gesperrt/beendet werden.`,
-      },
-      {
-        h: '10) Änderungen',
-        p: `Diese Bedingungen können angepasst werden. Die weitere Nutzung nach Änderungen gilt als Zustimmung.`,
-      },
-      {
-        h: '11) Kontakt',
-        p: `E-Mail: stay_active@outlook.de`,
-      },
-    ],
-    toggleDe: 'Deutsch',
-    toggleEn: 'English',
-  },
-};
+    header{position:sticky; top:0; z-index:5; backdrop-filter:blur(6px);
+      background:linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,0));
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .bar{display:flex; align-items:center; justify-content:space-between; gap:12px; margin:10px 0 18px}
+    .back{
+      display:inline-flex; align-items:center; gap:.5rem; padding:10px 14px; border-radius:12px;
+      border:1px solid rgba(255,255,255,.14); color:var(--text); text-decoration:none;
+      background:rgba(255,255,255,.05);
+    }
+    .back:hover{filter:brightness(1.08)}
+    .chips{display:flex; gap:10px; flex-wrap:wrap}
+    .chip{
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.06);
+      padding:8px 14px; border-radius:999px; font-weight:800; letter-spacing:.2px; color:var(--text);
+      cursor:pointer; user-select:none;
+    }
+    .chip[aria-pressed="true"]{
+      background:rgba(0,229,255,.2);
+      border-color:rgba(0,229,255,.6);
+      color:#06141a;
+    }
 
-const Chip = ({ active, label, onPress }: { active: boolean; label: string; onPress: () => void }) => (
-  <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-    <View style={[styles.chip, active && styles.chipActive]}>
-      <Text style={[styles.chipText, active && styles.chipTextActive]}>{label}</Text>
-    </View>
-  </TouchableOpacity>
-);
+    .title{
+      margin:64px 0 4px; text-align:center; font-weight:900; letter-spacing:.3px;
+      font-size:clamp(22px,4vw,32px);
+      background:linear-gradient(90deg, var(--brand), var(--accent2));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+      text-shadow:0 6px 18px rgba(0,229,255,.22);
+    }
+    .date{margin:0 0 12px; text-align:center; color:var(--muted); font-weight:700}
 
-const Card: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <View style={styles.card}>{children}</View>
-);
+    main{padding:6px 0 40px}
+    .card{
+      background:var(--card); border:1px solid var(--card-bd); border-radius:var(--radius);
+      padding:16px; margin-top:12px; box-shadow:0 10px 22px rgba(0,0,0,.25);
+    }
+    h2{
+      margin:.2rem 0 .6rem; font-size:18px; font-weight:900; letter-spacing:.2px;
+      color:var(--accent);
+    }
+    p{margin:.35rem 0; line-height:1.6}
+    ul{margin:.2rem 0 .2rem 1.2rem}
+    li{margin:.2rem 0}
+    .hidden{display:none}
 
-const TermsScreen = ({ navigation }: { navigation: any }) => {
-  const [lang, setLang] = useState<Lang>('en');
-  const t = useMemo(() => copy[lang], [lang]);
+    footer{
+      border-top:1px solid rgba(255,255,255,.06);
+      background:linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.05));
+      color:var(--muted); padding:20px; text-align:center; font-weight:600; letter-spacing:.2px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="bar">
+        <a class="back" href="index.html" id="backBtn">← Back</a>
+        <div class="chips" role="group" aria-label="Choose language">
+          <button id="btn-de" class="chip" type="button" aria-pressed="false">Deutsch</button>
+          <button id="btn-en" class="chip" type="button" aria-pressed="true">English</button>
+        </div>
+      </div>
+      <h1 class="title" id="title">📜 Terms of Service</h1>
+      <p class="date"><span id="datePrefix">Effective Date:</span> <span id="dateValue">May 30, 2025</span></p>
+    </div>
+  </header>
 
-  return (
-    <LinearGradient colors={['#0f0c29', '#302b63', '#24243e']} style={styles.container}>
-      {/* Back button */}
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Ionicons name="arrow-back" size={28} color="#00F0FF" />
-      </TouchableOpacity>
+  <main class="wrap">
+    <!-- EN -->
+    <section id="sec-en">
+      <article class="card"><h2>1) Purpose of the App</h2><p>The app helps you track physical activity via step counting and related stats. It is for informational and motivational purposes only and does not constitute medical advice.</p></article>
+      <article class="card"><h2>2) Eligibility</h2><p>You must be at least 13 years old to use the app.</p></article>
+      <article class="card"><h2>3) Subscriptions</h2><ul>
+        <li>Subscriptions remove ads and are managed by your app store account.</li>
+        <li>Plans may include monthly or yearly options.</li>
+        <li>Auto-renewal unless cancelled at least 24 hours before renewal.</li>
+        <li>No refunds for unused periods.</li>
+      </ul></article>
+      <article class="card"><h2>4) Advertisements</h2><p>The free version shows ads. We are not responsible for the accuracy, content, or legality of third-party ads.</p></article>
+      <article class="card"><h2>5) Push Notifications</h2><p>You may receive reminders, updates, or motivational content. Manage/disable notifications in your device settings.</p></article>
+      <article class="card"><h2>6) User Data</h2><p>No account is required. Optional height, weight, and gender inputs can improve accuracy. Personal data is stored locally on your device. We do not transmit or sell personal data.</p></article>
+      <article class="card"><h2>7) Limitation of Liability</h2><ul>
+        <li>We are not responsible for inaccuracies due to device sensors.</li>
+        <li>We are not liable for health issues, injuries, or losses related to app use.</li>
+        <li>Use the app at your own risk.</li>
+      </ul></article>
+      <article class="card"><h2>8) Intellectual Property</h2><p>All content, graphics, and code are the property of the developer. You may not copy, reverse-engineer, or distribute any part of the app without permission.</p></article>
+      <article class="card"><h2>9) Termination</h2><p>We may suspend or terminate access if you violate these Terms or misuse the service.</p></article>
+      <article class="card"><h2>10) Modifications</h2><p>We may update these Terms from time to time. Continued use after changes means you accept the updated Terms.</p></article>
+      <article class="card"><h2>11) Contact</h2><p>Email: <a href="mailto:stay_active@outlook.de">stay_active@outlook.de</a></p></article>
+    </section>
 
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {/* Header */}
-        <View style={styles.header}>
-          <Text style={styles.title}>📜 {t.title}</Text>
-          <Text style={styles.date}>
-            {t.datePrefix} {t.date}
-          </Text>
+    <!-- DE -->
+    <section id="sec-de" class="hidden">
+      <article class="card"><h2>1) Zweck der App</h2><p>Die App dient der Erfassung körperlicher Aktivität (Schritte, Statistiken). Sie ist rein informativ/motivierend und stellt keine medizinische Beratung dar.</p></article>
+      <article class="card"><h2>2) Berechtigung</h2><p>Für die Nutzung musst du mindestens 13 Jahre alt sein.</p></article>
+      <article class="card"><h2>3) Abonnements</h2><ul>
+        <li>Abos entfernen Werbung und werden über dein App-Store-Konto verwaltet.</li>
+        <li>Es können monatliche/jährliche Optionen angeboten werden.</li>
+        <li>Automatische Verlängerung, sofern nicht mindestens 24 Stunden vorher gekündigt.</li>
+        <li>Keine Erstattung für ungenutzte Zeiträume.</li>
+      </ul></article>
+      <article class="card"><h2>4) Werbung</h2><p>Die kostenlose Version zeigt Werbung. Für Richtigkeit, Inhalte oder Rechtmäßigkeit von Drittanbieter-Werbung übernehmen wir keine Verantwortung.</p></article>
+      <article class="card"><h2>5) Push-Benachrichtigungen</h2><p>Du kannst Erinnerungen, Updates oder motivierende Inhalte erhalten. Verwaltung/Deaktivierung in den Geräteeinstellungen.</p></article>
+      <article class="card"><h2>6) Benutzerdaten</h2><p>Kein Konto erforderlich. Optionale Angaben (Größe, Gewicht, Geschlecht) verbessern die Genauigkeit. Persönliche Daten werden lokal auf deinem Gerät gespeichert. Keine Übermittlung/kein Verkauf persönlicher Daten.</p></article>
+      <article class="card"><h2>7) Haftungsbeschränkung</h2><ul>
+        <li>Keine Haftung für Ungenauigkeiten durch Gerätesensoren.</li>
+        <li>Keine Haftung für gesundheitliche Probleme, Verletzungen oder Verluste im Zusammenhang mit der App-Nutzung.</li>
+        <li>Nutzung auf eigenes Risiko.</li>
+      </ul></article>
+      <article class="card"><h2>8) Geistiges Eigentum</h2><p>Alle Inhalte, Grafiken und der Code sind Eigentum des Entwicklers. Ohne Erlaubnis kein Kopieren, Reverse-Engineering oder Verbreitung.</p></article>
+      <article class="card"><h2>9) Beendigung</h2><p>Bei Verstößen gegen diese Bedingungen oder Missbrauch kann der Zugang gesperrt/beendet werden.</p></article>
+      <article class="card"><h2>10) Änderungen</h2><p>Diese Bedingungen können angepasst werden. Die weitere Nutzung nach Änderungen gilt als Zustimmung.</p></article>
+      <article class="card"><h2>11) Kontakt</h2><p>E-Mail: <a href="mailto:stay_active@outlook.de">stay_active@outlook.de</a></p></article>
+    </section>
+  </main>
 
-          <View style={styles.langRow}>
-            <Chip active={lang === 'de'} label={copy.de.toggleDe} onPress={() => setLang('de')} />
-            <Chip active={lang === 'en'} label={copy.en.toggleEn} onPress={() => setLang('en')} />
-          </View>
-        </View>
+  <footer>
+    © <span id="y"></span> Stay Active
+  </footer>
 
-        {/* Content */}
-        {t.sections.map((s, i) => (
-          <Card key={i}>
-            <Text style={styles.heading}>{s.h}</Text>
-            {!!s.p && <Text style={styles.paragraph}>{s.p}</Text>}
-            {!!s.bullets &&
-              s.bullets.map((b: string, j: number) => (
-                <Text key={j} style={styles.bullet}>{`• ${b}`}</Text>
-              ))}
-          </Card>
-        ))}
+  <script>
+    // Year
+    document.getElementById('y').textContent = new Date().getFullYear();
 
-        <View style={{ height: 28 }} />
-      </ScrollView>
-    </LinearGradient>
-  );
-};
+    // Back button: try history.back(), else go to index.html
+    document.getElementById('backBtn').addEventListener('click', function (e) {
+      if (document.referrer && document.referrer !== location.href) {
+        e.preventDefault();
+        history.back();
+      }
+    });
 
-const styles = StyleSheet.create({
-  container: { flex: 1 },
-  scrollContainer: { padding: 20, paddingTop: 84 },
-  header: { alignItems: 'center', marginBottom: 8 },
-  title: {
-    fontSize: 28,
-    fontWeight: '900',
-    color: '#00F2FF',
-    textAlign: 'center',
-    letterSpacing: 0.4,
-    textShadowColor: 'rgba(0, 242, 255, 0.35)',
-    textShadowOffset: { width: 0, height: 4 },
-    textShadowRadius: 12,
-  },
-  date: { fontSize: 14, color: '#E8ECF3', opacity: 0.8, marginTop: 6, marginBottom: 8 },
-  langRow: { flexDirection: 'row', gap: 10, marginTop: 6 },
+    const dict = {
+      en: { title:'📜 Terms of Service', datePrefix:'Effective Date:', date:'May 30, 2025' },
+      de: { title:'📜 Nutzungsbedingungen', datePrefix:'Gültig ab:', date:'30. Mai 2025' }
+    };
 
-  chip: {
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.18)',
-    paddingVertical: 8,
-    paddingHorizontal: 14,
-    borderRadius: 999,
-    backgroundColor: 'rgba(255,255,255,0.06)',
-  },
-  chipActive: {
-    backgroundColor: 'rgba(0, 242, 255, 0.18)',
-    borderColor: 'rgba(0, 242, 255, 0.6)',
-  },
-  chipText: { color: '#E6E9EF', fontWeight: '800', letterSpacing: 0.2 },
-  chipTextActive: { color: '#07131a' },
+    function setLang(l){
+      const isDe = l === 'de';
+      document.getElementById('sec-de').classList.toggle('hidden', !isDe);
+      document.getElementById('sec-en').classList.toggle('hidden', isDe);
+      document.getElementById('btn-de').setAttribute('aria-pressed', isDe ? 'true' : 'false');
+      document.getElementById('btn-en').setAttribute('aria-pressed', !isDe ? 'true' : 'false');
 
-  card: {
-    backgroundColor: 'rgba(255,255,255,0.06)',
-    borderColor: 'rgba(255,255,255,0.14)',
-    borderWidth: 1,
-    borderRadius: 16,
-    padding: 16,
-    marginTop: 12,
-    shadowColor: '#00F2FF',
-    shadowOpacity: 0.08,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: 6 },
-  },
-  heading: {
-    fontSize: 18,
-    color: '#FF00CC',
-    fontWeight: '900',
-    marginBottom: 8,
-  },
-  paragraph: {
-    fontSize: 16,
-    color: '#D1D1D1',
-    lineHeight: 22,
-  },
-  bullet: {
-    fontSize: 16,
-    color: '#D1D1D1',
-    lineHeight: 22,
-    marginTop: 4,
-  },
-  backButton: { position: 'absolute', top: 50, left: 20, zIndex: 10 },
-});
+      const d = dict[isDe ? 'de' : 'en'];
+      document.documentElement.lang = isDe ? 'de' : 'en';
+      document.getElementById('title').textContent = d.title;
+      document.getElementById('datePrefix').textContent = d.datePrefix;
+      document.getElementById('dateValue').textContent = d.date;
 
-export default TermsScreen;
+      // keep ?lang in URL
+      const url = new URL(location.href);
+      url.searchParams.set('lang', isDe ? 'de' : 'en');
+      history.replaceState({}, '', url.toString());
+      localStorage.setItem('sa_terms_lang', isDe ? 'de' : 'en');
+    }
+
+    const qs = new URLSearchParams(location.search).get('lang');
+    const stored = localStorage.getItem('sa_terms_lang');
+    const browser = (navigator.language || 'en').toLowerCase().startsWith('de') ? 'de' : 'en';
+    setLang(qs || stored || browser);
+
+    document.getElementById('btn-de').addEventListener('click', ()=>setLang('de'));
+    document.getElementById('btn-en').addEventListener('click', ()=>setLang('en'));
+  </script>
+</body>
+</html>
