@@ -2,140 +2,224 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Stay Active · Privacy / Datenschutz</title>
+  <title>Stay Active • Privacy / Datenschutz</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="dark" />
-  <meta name="description" content="Stay Active – Privacy Policy / Datenschutzerklärung (EN/DE).">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%9A%B6%3C/text%3E%3C/svg%3E">
+  <meta name="description" content="Stay Active – Privacy Policy / Datenschutzerklärung (EN/DE)." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%94%92%3C/text%3E%3C/svg%3E">
+
   <style>
     :root{
-      --brand:#00e5ff;     /* cyan neon */
-      --accent:#ff00cc;    /* pink neon */
-      --accent2:#9b4dff;   /* violet neon */
+      /* Brand / Neon – identisch zu index.html */
+      --brand:#00e5ff;        /* Cyan Neon */
+      --accent:#9b4dff;       /* Lila Neon */
+      --ok:#22c55e;
+
+      /* Dark surface */
+      --bg:#05060b;
+      --bg-soft:#090b12;
+      --card:#0e121b;
+      --border:#141a24;
       --text:#e6e9ef;
-      --muted:#b5bdc8;
-      --bg:#0f0c29;
-      --bg2:#302b63;
-      --bg3:#24243e;
-      --card:rgba(255,255,255,.06);
-      --card-bd:rgba(255,255,255,.14);
+      --muted:#9aa3af;
+
       --radius:16px;
+      --blur:44px;
+      --emoji-alpha:.12;
     }
+
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
-      margin:0; color:var(--text);
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
-      background: linear-gradient(135deg, var(--bg), var(--bg2), var(--bg3)) fixed;
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      margin:0; color:var(--text); background:var(--bg);
+      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Inter,Arial,sans-serif;
+      line-height:1.65; overflow-x:hidden;
+      background:
+        radial-gradient(1200px 600px at 85% -10%, color-mix(in oklab, var(--brand) 18%, transparent) 0%, transparent 60%),
+        radial-gradient(900px 520px at 10% -20%, color-mix(in oklab, var(--accent) 20%, transparent) 0%, transparent 58%),
+        linear-gradient(to bottom, var(--bg), var(--bg-soft));
     }
-    a{color:var(--brand); text-decoration:underline}
-    a:focus-visible,button:focus-visible{outline:2px solid var(--brand); outline-offset:3px; border-radius:12px}
 
-    .wrap{max-width:980px; margin:0 auto; padding:20px}
-    header{position:sticky; top:0; z-index:5; backdrop-filter:blur(6px);
-      background:linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,0));
-      border-bottom:1px solid rgba(255,255,255,.06);
+    a{color:inherit; text-decoration:none}
+    a:focus-visible,button:focus-visible{outline:2px solid var(--brand); outline-offset:2px; border-radius:12px}
+
+    .wrap{max-width:1000px; margin:0 auto; padding:22px}
+
+    /* Hero */
+    header.hero{position:relative; border-bottom:1px solid var(--border); overflow:hidden}
+    .glow{position:absolute; inset:0; pointer-events:none; filter:blur(var(--blur)); opacity:.9}
+    .glow::before,.glow::after{
+      content:""; position:absolute; width:55vmax; height:55vmax; border-radius:50%;
+      background:radial-gradient(circle at 30% 30%, color-mix(in oklab, var(--brand) 34%, transparent), transparent 60%);
     }
+    .glow::before{top:-36vmax; left:-20vmax}
+    .glow::after{
+      top:-30vmax; right:-26vmax;
+      background:radial-gradient(circle at 70% 40%, color-mix(in oklab, var(--accent) 38%, transparent), transparent 60%);
+    }
+
+    .emoji-cloud{position:absolute; inset:0; pointer-events:none; filter:blur(1px); opacity:var(--emoji-alpha)}
+    .bg-emoji{position:absolute; font-size:clamp(22px,3.2vw,34px); transform:translate(-50%,-50%)}
+    .e1{left:12%; top:26%} .e2{left:27%; top:14%} .e3{left:44%; top:22%}
+    .e4{left:66%; top:16%} .e5{left:82%; top:30%} .e6{left:18%; top:48%}
+    .e7{left:36%; top:54%} .e8{left:72%; top:50%}
+
+    @media (prefers-reduced-motion:reduce){ .glow,.emoji-cloud{display:none} }
+
     .title{
-      margin:64px 0 4px; text-align:center; font-weight:900; letter-spacing:.3px;
-      font-size:clamp(22px,4vw,32px);
-      background:linear-gradient(90deg, var(--brand), var(--accent2));
+      margin:.2rem 0; font-weight:900; letter-spacing:.4px;
+      font-size:clamp(1.9rem,3.4vw,2.6rem);
+      background:linear-gradient(90deg,var(--brand),var(--accent));
       -webkit-background-clip:text; background-clip:text; color:transparent;
-      text-shadow:0 6px 18px rgba(0,229,255,.22);
+      text-shadow:0 6px 28px rgba(0,229,255,.18);
+      position:relative; z-index:1; text-align:center;
     }
-    .date{margin:0 0 12px; text-align:center; color:var(--muted); font-weight:700}
+    .sub{color:var(--muted); font-weight:700; letter-spacing:.3px; margin:.2rem 0 .8rem; position:relative; z-index:1; text-align:center}
 
-    .bar{display:flex; align-items:center; justify-content:space-between; gap:12px; margin:10px 0 18px}
-    .back{
-      display:inline-flex; align-items:center; gap:.5rem; padding:10px 14px; border-radius:12px;
-      border:1px solid rgba(255,255,255,.14); color:var(--text); text-decoration:none;
-      background:rgba(255,255,255,.05);
+    /* Lang pills + nav */
+    .bar{display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin:10px 0 18px; position:relative; z-index:1}
+    .pills{display:flex; gap:10px; flex-wrap:wrap}
+    .pill{
+      border:1px solid var(--border); border-radius:999px; padding:8px 14px; background:var(--card);
+      font-weight:800; letter-spacing:.2px; color:var(--text);
     }
-    .back:hover{filter:brightness(1.08)}
-    .chips{display:flex; gap:10px; flex-wrap:wrap}
-    .chip{
-      border:1px solid rgba(255,255,255,.18);
-      background:rgba(255,255,255,.06);
-      padding:8px 14px; border-radius:999px; font-weight:800; letter-spacing:.2px; color:var(--text);
-      cursor:pointer; user-select:none;
-    }
-    .chip[aria-pressed="true"]{
-      background:rgba(0,229,255,.2);
-      border-color:rgba(0,229,255,.6);
-      color:#06141a;
-    }
+    .pill[aria-current="true"]{background:linear-gradient(90deg,var(--brand),var(--accent)); color:#081018; border-color:transparent}
 
-    main{padding:6px 0 40px}
+    nav.tabs{display:flex; gap:12px; flex-wrap:wrap}
+    .tab{
+      background:var(--card); border:1px solid var(--border); border-radius:12px;
+      padding:10px 14px; font-weight:800; letter-spacing:.2px;
+      transition:border-color .2s ease, transform .2s ease; color:var(--text);
+    }
+    .tab:hover{transform:translateY(-2px); border-color:color-mix(in oklab, var(--brand) 50%, var(--border))}
+    .tab small{opacity:.65; font-weight:700}
+
+    /* Cards */
+    .grid{display:grid; gap:18px}
+    @media (min-width:880px){ .grid-2{grid-template-columns:1fr 1fr} }
+
     .card{
-      background:var(--card); border:1px solid var(--card-bd); border-radius:var(--radius);
-      padding:16px; margin-top:12px; box-shadow:0 10px 22px rgba(0,0,0,.25);
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--border); border-radius:var(--radius);
+      padding:18px; box-shadow:0 10px 24px rgba(0,0,0,.22);
     }
-    h2{
-      margin:.2rem 0 .6rem; font-size:18px; font-weight:900; letter-spacing:.2px;
-      color:var(--accent);
-    }
-    p{margin:.35rem 0; line-height:1.6}
+    h2{font-size:clamp(1.05rem,2vw,1.25rem); margin:.2rem 0 .6rem; font-weight:900;
+       background:linear-gradient(90deg,var(--brand),var(--accent)); -webkit-background-clip:text; background-clip:text; color:transparent;}
+    p{margin:.45rem 0}
+    .muted{color:var(--muted); font-weight:600}
+    .link{color:var(--brand); text-decoration:underline}
 
     .hidden{display:none}
 
-    footer{
-      border-top:1px solid rgba(255,255,255,.06);
-      background:linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.05));
-      color:var(--muted); padding:20px; text-align:center; font-weight:600; letter-spacing:.2px;
-    }
+    /* Footer */
+    footer{border-top:1px solid var(--border); margin-top:26px; padding:20px; color:var(--muted); text-align:center; background:var(--bg-soft)}
+    .links{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:8px}
   </style>
 </head>
 <body>
-  <header>
-    <div class="wrap">
+  <!-- Glow & emoji fog -->
+  <header class="hero">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="emoji-cloud" aria-hidden="true">
+      <span class="bg-emoji e1">🏃‍♂️</span>
+      <span class="bg-emoji e2">📊</span>
+      <span class="bg-emoji e3">⏱️</span>
+      <span class="bg-emoji e4">💪</span>
+      <span class="bg-emoji e5">⚡</span>
+      <span class="bg-emoji e6">🧭</span>
+      <span class="bg-emoji e7">✨</span>
+      <span class="bg-emoji e8">🧠</span>
+    </div>
+
+    <div class="wrap" style="position:relative; z-index:1">
+      <h1 class="title" id="pageTitle">Stay Active • Privacy / Datenschutz</h1>
+      <p class="sub" id="subtitle">Read in your language. / In deiner Sprache lesen.</p>
+
       <div class="bar">
-        <a class="back" href="index.html" id="backBtn">← Back</a>
-        <div class="chips" role="group" aria-label="Choose language">
-          <button id="btn-de" class="chip" type="button" aria-pressed="false">Deutsch</button>
-          <button id="btn-en" class="chip" type="button" aria-pressed="true">English</button>
+        <!-- Language pills -->
+        <div class="pills" role="group" aria-label="Choose language">
+          <a id="pill-de" href="#" class="pill" aria-current="false">Deutsch</a>
+          <a id="pill-en" href="#" class="pill" aria-current="true">English</a>
         </div>
+
+        <!-- Quick tabs (tragen ?lang mit) -->
+        <nav class="tabs" aria-label="Quick links">
+          <a class="tab" id="link-home"    href="index.html">🏠 Home</a>
+          <a class="tab" id="link-terms"   href="terms.html">📜 Terms / Nutzungsbedingungen</a>
+          <a class="tab" id="link-upgrade" href="upgrade.html">⭐ Upgrade</a>
+          <a class="tab" id="link-imprint" href="impressum.html">ℹ️ Imprint / Impressum</a>
+        </nav>
       </div>
-      <h1 class="title" id="title">🛡️ Privacy Policy</h1>
-      <p class="date"><span id="datePrefix">Effective Date:</span> <span id="dateValue">May 30, 2025</span></p>
     </div>
   </header>
 
   <main class="wrap">
-    <!-- EN -->
+    <!-- ========= English ========= -->
     <section id="sec-en">
-      <article class="card"><h2>1) Data We Collect</h2><p>We collect height, weight, and gender that you enter voluntarily. This data is used only for step-tracking calculations and is stored locally on your device. It is never sent to external servers unless explicitly stated.</p></article>
-      <article class="card"><h2>2) Sensor Data & Device Access</h2><p>The app uses your phone’s motion sensors (accelerometer and step counter) to track activity. This processing happens locally and is not shared externally.</p></article>
-      <article class="card"><h2>3) Usage Data & Analytics</h2><p>We may collect anonymous technical data (step counts, usage patterns, crash logs, device info) to improve performance and user experience. This data is aggregated for app optimization.</p></article>
-      <article class="card"><h2>4) Advertising & Tracking</h2><p>We use Google AdMob to show ads. AdMob may collect device ID, IP address, and interaction data, potentially for personalized ads under Google’s policies. Learn more: <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">Google Ads & technologies</a>.</p></article>
-      <article class="card"><h2>5) Subscriptions</h2><p>Subscriptions remove ads and are handled by your app store account. Monthly and yearly options may be available. Subscriptions auto-renew unless you cancel at least 24 hours before renewal. Manage them in your app store settings.</p></article>
-      <article class="card"><h2>6) Push Notifications</h2><p>We may send reminders, updates, or motivational messages. You can manage or disable notifications in your device settings.</p></article>
-      <article class="card"><h2>7) External Links</h2><p>The app may link to platforms like Instagram or X (Twitter). These services handle data per their own privacy policies. We are not responsible for third-party content or practices.</p></article>
-      <article class="card"><h2>8) Children’s Privacy</h2><p>The app is not intended for children under 13. We do not knowingly collect data from children. If you believe we have done so unintentionally, please contact us.</p></article>
-      <article class="card"><h2>9) Your Rights</h2><p>You may access, correct, or delete your personal data and withdraw consent to collection. Contact: <a href="mailto:stay_active@outlook.de">stay_active@outlook.de</a></p></article>
-      <article class="card"><h2>10) Security</h2><p>We take reasonable steps to protect your data from unauthorized access, alteration, or destruction. However, no method of transmission or electronic storage is 100% secure.</p></article>
-      <article class="card"><h2>11) Changes</h2><p>We may update this notice. Changes will appear here with an updated effective date. Continued app use after changes implies acceptance.</p></article>
-      <article class="card"><h2>12) Contact</h2><p>Questions? Email us at: <a href="mailto:stay_active@outlook.de">stay_active@outlook.de</a></p></article>
+      <div class="card"><h2>Effective Date</h2><p class="muted">May 30, 2025</p></div>
+
+      <div class="card"><h2>1) Data We Collect</h2><p>We collect height, weight, and gender that you enter voluntarily. This data is used only for step-tracking calculations and is stored locally on your device. It is never sent to external servers unless explicitly stated.</p></div>
+
+      <div class="card"><h2>2) Sensor Data & Device Access</h2><p>The app uses your phone’s motion sensors (accelerometer and step counter) to track activity. This processing happens locally and is not shared externally.</p></div>
+
+      <div class="card"><h2>3) Usage Data & Analytics</h2><p>We may collect anonymous technical data (step counts, usage patterns, crash logs, device info) to improve performance and user experience. This data is aggregated for app optimization.</p></div>
+
+      <div class="card"><h2>4) Advertising & Tracking</h2><p>We use Google AdMob to show ads. AdMob may collect device ID, IP address, and interaction data, potentially for personalized ads under Google’s policies. Learn more: <a class="link" href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">Google Ads & technologies</a>.</p></div>
+
+      <div class="card"><h2>5) Subscriptions</h2><p>Subscriptions remove ads and are handled by your app store account. Monthly and yearly options may be available. Subscriptions auto-renew unless you cancel at least 24 hours before renewal. Manage them in your app store settings.</p></div>
+
+      <div class="card"><h2>6) Push Notifications</h2><p>We may send reminders, updates, or motivational messages. You can manage or disable notifications in your device settings.</p></div>
+
+      <div class="card"><h2>7) External Links</h2><p>The app may link to platforms like Instagram or X (Twitter). These services handle data per their own privacy policies. We are not responsible for third-party content or practices.</p></div>
+
+      <div class="card"><h2>8) Children’s Privacy</h2><p>The app is not intended for children under 13. We do not knowingly collect data from children. If you believe we have done so unintentionally, please contact us.</p></div>
+
+      <div class="card"><h2>9) Your Rights</h2><p>You may access, correct, or delete your personal data and withdraw consent to collection. Contact: <a class="link" href="mailto:stay_active@outlook.de">stay_active@outlook.de</a></p></div>
+
+      <div class="card"><h2>10) Security</h2><p>We take reasonable steps to protect your data from unauthorized access, alteration, or destruction. However, no method of transmission or electronic storage is 100% secure.</p></div>
+
+      <div class="card"><h2>11) Changes</h2><p>We may update this notice. Changes will appear here with an updated effective date. Continued app use after changes implies acceptance.</p></div>
+
+      <div class="card"><h2>12) Contact</h2><p>Questions? Email us at: <a class="link" href="mailto:stay_active@outlook.de">stay_active@outlook.de</a></p></div>
     </section>
 
-    <!-- DE -->
+    <!-- ========= Deutsch ========= -->
     <section id="sec-de" class="hidden">
-      <article class="card"><h2>1) Erhobene Daten</h2><p>Wir verarbeiten Größe, Gewicht und Geschlecht, die du freiwillig angibst. Diese Daten werden nur für Schritt-Berechnungen genutzt und lokal auf deinem Gerät gespeichert. Eine Übermittlung an externe Server erfolgt nicht, außer wenn ausdrücklich erwähnt.</p></article>
-      <article class="card"><h2>2) Sensordaten & Gerätezugriff</h2><p>Die App nutzt Bewegungssensoren (Beschleunigungsmesser, Schrittzähler) zur Aktivitätsmessung. Die Verarbeitung erfolgt lokal und wird nicht extern geteilt.</p></article>
-      <article class="card"><h2>3) Nutzungsdaten & Analysen</h2><p>Wir können anonyme technische Daten (Schrittwerte, Nutzungsverhalten, Crash-Logs, Geräteinfos) erheben, um Leistung und Nutzererlebnis zu verbessern. Diese Daten werden aggregiert zur Optimierung verwendet.</p></article>
-      <article class="card"><h2>4) Werbung & Tracking</h2><p>Wir verwenden Google AdMob zur Anzeige von Werbung. AdMob kann Geräte-ID, IP-Adresse und Interaktionsdaten erfassen und für personalisierte Werbung gemäß den Google-Richtlinien nutzen. Mehr Infos: <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">Google – Technologien & Anzeigen</a>.</p></article>
-      <article class="card"><h2>5) Abonnements</h2><p>Abos entfernen Werbung und werden über dein App-Store-Konto verwaltet. Monatliche/Jährliche Optionen können verfügbar sein. Automatische Verlängerung, wenn nicht mindestens 24 Stunden vorher gekündigt. Verwaltung im App-Store.</p></article>
-      <article class="card"><h2>6) Push-Benachrichtigungen</h2><p>Wir können Erinnerungen, Updates oder Motivation senden. Du kannst Benachrichtigungen in den Geräteeinstellungen verwalten/deaktivieren.</p></article>
-      <article class="card"><h2>7) Externe Links</h2><p>Die App kann Links zu Diensten wie Instagram oder X (Twitter) enthalten. Diese erheben Daten nach ihren eigenen Richtlinien. Für Inhalte/Praktiken Dritter sind wir nicht verantwortlich.</p></article>
-      <article class="card"><h2>8) Kinder</h2><p>Nicht für Kinder unter 13 Jahren bestimmt. Wir erheben wissentlich keine Daten von Kindern. Wenn du anderes vermutest, kontaktiere uns bitte.</p></article>
-      <article class="card"><h2>9) Deine Rechte</h2><p>Du kannst Zugriff, Berichtigung oder Löschung deiner Daten verlangen und Einwilligungen widerrufen. Kontakt: <a href="mailto:stay_active@outlook.de">stay_active@outlook.de</a></p></article>
-      <article class="card"><h2>10) Sicherheit</h2><p>Wir ergreifen angemessene Maßnahmen zum Schutz deiner Daten. Dennoch ist keine Übertragung/Speicherung zu 100% sicher.</p></article>
-      <article class="card"><h2>11) Änderungen</h2><p>Wir können diese Erklärung anpassen. Die aktuelle Fassung samt Datum findest du stets hier. Die weitere Nutzung gilt als Zustimmung.</p></article>
-      <article class="card"><h2>12) Kontakt</h2><p>Fragen? Schreibe an: <a href="mailto:stay_active@outlook.de">stay_active@outlook.de</a></p></article>
+      <div class="card"><h2>Gültig ab</h2><p class="muted">30. Mai 2025</p></div>
+
+      <div class="card"><h2>1) Erhobene Daten</h2><p>Wir verarbeiten Größe, Gewicht und Geschlecht, die du freiwillig angibst. Diese Daten werden nur für Schritt-Berechnungen genutzt und lokal auf deinem Gerät gespeichert. Eine Übermittlung an externe Server erfolgt nicht, außer wenn ausdrücklich erwähnt.</p></div>
+
+      <div class="card"><h2>2) Sensordaten & Gerätezugriff</h2><p>Die App nutzt Bewegungssensoren (Beschleunigungsmesser, Schrittzähler) zur Aktivitätsmessung. Die Verarbeitung erfolgt lokal und wird nicht extern geteilt.</p></div>
+
+      <div class="card"><h2>3) Nutzungsdaten & Analysen</h2><p>Wir können anonyme technische Daten (Schrittwerte, Nutzungsverhalten, Crash-Logs, Geräteinfos) erheben, um Leistung und Nutzererlebnis zu verbessern. Diese Daten werden aggregiert zur Optimierung verwendet.</p></div>
+
+      <div class="card"><h2>4) Werbung & Tracking</h2><p>Wir verwenden Google AdMob zur Anzeige von Werbung. AdMob kann Geräte-ID, IP-Adresse und Interaktionsdaten erfassen und für personalisierte Werbung gemäß den Google-Richtlinien nutzen. Mehr Infos: <a class="link" href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">Google – Technologien & Anzeigen</a>.</p></div>
+
+      <div class="card"><h2>5) Abonnements</h2><p>Abos entfernen Werbung und werden über dein App-Store-Konto verwaltet. Monatliche/Jährliche Optionen können verfügbar sein. Automatische Verlängerung, wenn nicht mindestens 24 Stunden vorher gekündigt. Verwaltung im App-Store.</p></div>
+
+      <div class="card"><h2>6) Push-Benachrichtigungen</h2><p>Wir können Erinnerungen, Updates oder Motivation senden. Du kannst Benachrichtigungen in den Geräteeinstellungen verwalten/deaktivieren.</p></div>
+
+      <div class="card"><h2>7) Externe Links</h2><p>Die App kann Links zu Diensten wie Instagram oder X (Twitter) enthalten. Diese erheben Daten nach ihren eigenen Richtlinien. Für Inhalte/Praktiken Dritter sind wir nicht verantwortlich.</p></div>
+
+      <div class="card"><h2>8) Kinder</h2><p>Nicht für Kinder unter 13 Jahren bestimmt. Wir erheben wissentlich keine Daten von Kindern. Wenn du anderes vermutest, kontaktiere uns bitte.</p></div>
+
+      <div class="card"><h2>9) Deine Rechte</h2><p>Du kannst Zugriff, Berichtigung oder Löschung deiner Daten verlangen und Einwilligungen widerrufen. Kontakt: <a class="link" href="mailto:stay_active@outlook.de">stay_active@outlook.de</a></p></div>
+
+      <div class="card"><h2>10) Sicherheit</h2><p>Wir ergreifen angemessene Maßnahmen zum Schutz deiner Daten. Dennoch ist keine Übertragung/Speicherung zu 100% sicher.</p></div>
+
+      <div class="card"><h2>11) Änderungen</h2><p>Wir können diese Erklärung anpassen. Die aktuelle Fassung samt Datum findest du stets hier. Die weitere Nutzung gilt als Zustimmung.</p></div>
+
+      <div class="card"><h2>12) Kontakt</h2><p>Fragen? Schreibe an: <a class="link" href="mailto:stay_active@outlook.de">stay_active@outlook.de</a></p></div>
     </section>
   </main>
 
   <footer>
+    <div class="links">
+      <a class="tab" id="f-home"    href="index.html">Home</a>
+      <a class="tab" id="f-terms"   href="terms.html">Terms / Nutzungsbedingungen</a>
+      <a class="tab" id="f-upgrade" href="upgrade.html">Upgrade</a>
+      <a class="tab" id="f-imprint" href="impressum.html">Imprint / Impressum</a>
+    </div>
     © <span id="y"></span> Stay Active
   </footer>
 
@@ -143,37 +227,50 @@
     // Year
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Back button: try history.back(), else go to index.html
-    document.getElementById('backBtn').addEventListener('click', function (e) {
-      if (document.referrer && document.referrer !== location.href) {
-        e.preventDefault();
-        history.back();
-      }
-    });
-
+    // i18n + carry ?lang in every link
     const dict = {
-      en: { title:'🛡️ Privacy Policy', datePrefix:'Effective Date:', date:'May 30, 2025' },
-      de: { title:'🛡️ Datenschutzerklärung', datePrefix:'Gültig ab:', date:'30. Mai 2025' }
+      de: {
+        title:"Stay Active • Datenschutz",
+        sub:"In deiner Sprache lesen.",
+      },
+      en: {
+        title:"Stay Active • Privacy",
+        sub:"Read in your language.",
+      }
     };
 
     function setLang(l){
-      const isDe = l === 'de';
-      document.getElementById('sec-de').classList.toggle('hidden', !isDe);
-      document.getElementById('sec-en').classList.toggle('hidden', isDe);
-      document.getElementById('btn-de').setAttribute('aria-pressed', isDe ? 'true' : 'false');
-      document.getElementById('btn-en').setAttribute('aria-pressed', !isDe ? 'true' : 'false');
+      const de = l === 'de';
+      document.documentElement.lang = l;
 
-      const d = dict[isDe ? 'de' : 'en'];
-      document.documentElement.lang = isDe ? 'de' : 'en';
-      document.getElementById('title').textContent = d.title;
-      document.getElementById('datePrefix').textContent = d.datePrefix;
-      document.getElementById('dateValue').textContent = d.date;
+      // toggle sections
+      document.getElementById('sec-de').classList.toggle('hidden', !de);
+      document.getElementById('sec-en').classList.toggle('hidden', de);
 
-      // keep ?lang in URL
+      // pills state
+      document.getElementById('pill-de').setAttribute('aria-current', de);
+      document.getElementById('pill-en').setAttribute('aria-current', !de);
+
+      // titles
+      document.getElementById('pageTitle').textContent = dict[l].title + " / " + (de ? "Privacy" : "Datenschutz");
+      document.getElementById('subtitle').textContent  = dict[l].sub + " / " + (de ? "Read in your language." : "In deiner Sprache lesen.");
+
+      // append ?lang to nav/footer links
+      const linkIds = ['link-home','link-terms','link-upgrade','link-imprint','f-home','f-terms','f-upgrade','f-imprint'];
+      linkIds.forEach(id=>{
+        const a = document.getElementById(id);
+        if(!a) return;
+        const href = a.getAttribute('href');
+        const u = new URL(href, location.href); // relative -> absolute
+        u.searchParams.set('lang', l);
+        a.setAttribute('href', u.pathname.replace(location.origin,'') + u.search);
+      });
+
+      // keep in URL + remember
       const url = new URL(location.href);
-      url.searchParams.set('lang', isDe ? 'de' : 'en');
+      url.searchParams.set('lang', l);
       history.replaceState({}, '', url.toString());
-      localStorage.setItem('sa_privacy_lang', isDe ? 'de' : 'en');
+      localStorage.setItem('sa_privacy_lang', l);
     }
 
     const qs = new URLSearchParams(location.search).get('lang');
@@ -181,8 +278,8 @@
     const browser = (navigator.language || 'en').toLowerCase().startsWith('de') ? 'de' : 'en';
     setLang(qs || stored || browser);
 
-    document.getElementById('btn-de').addEventListener('click', ()=>setLang('de'));
-    document.getElementById('btn-en').addEventListener('click', ()=>setLang('en'));
+    document.getElementById('pill-de').addEventListener('click', e => { e.preventDefault(); setLang('de'); });
+    document.getElementById('pill-en').addEventListener('click', e => { e.preventDefault(); setLang('en'); });
   </script>
 </body>
 </html>
