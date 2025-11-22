@@ -1,266 +1,259 @@
 <!doctype html>
-<html lang="en">
+<html lang="de">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Stay Active — Legal & Info</title>
-  <meta name="color-scheme" content="dark light" />
-  <meta name="description" content="Stay Active App — Privacy / Terms / Upgrade. English & Deutsch." />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.8em' font-size='80'%3E👟%3C/text%3E%3C/svg%3E" />
+  <title>Stay Active • Legal & Info Hub</title>
+  <meta name="description" content="Stay Active – Privacy, Terms, Upgrade und Impressum. Deutsch & Englisch." />
+  <meta name="color-scheme" content="dark" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%9A%B6%3C/text%3E%3C/svg%3E">
+
   <style>
     :root{
-      --bg:#0E0E12; --bg2:#12131d; --card:#171926;
-      --line:rgba(255,255,255,.08);
-      --text:#EDEFF6; --muted:#9AA0A6;
-      --p1:#20D5F4; --p2:#9A4DFF; --ok:#22c55e;
-      --radius:16px; --shadow:0 10px 30px rgba(0,0,0,.45);
+      /* Brand / Neon */
+      --brand:#00e5ff;        /* Cyan Neon */
+      --accent:#9b4dff;       /* Lila Neon */
+      --ok:#22c55e;
+
+      /* Dark surface */
+      --bg:#05060b;
+      --bg-soft:#090b12;
+      --card:#0e121b;
+      --border:#141a24;
+      --text:#e6e9ef;
+      --muted:#9aa3af;
+
+      --radius:16px;
+      --blur:44px;
+      --emoji-alpha:.12;
     }
+
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
-      margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      color:var(--text);
+      margin:0; color:var(--text); background:var(--bg);
+      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Inter,Arial,sans-serif;
+      line-height:1.65; overflow-x:hidden;
+      /* layered background */
       background:
-        radial-gradient(1200px 600px at 10% -10%, rgba(154,77,255,.18), transparent 60%),
-        radial-gradient(900px 500px at 110% -20%, rgba(32,213,244,.16), transparent 60%),
-        linear-gradient(180deg, var(--bg), var(--bg2));
-      min-height:100%;
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+        radial-gradient(1200px 600px at 85% -10%, color-mix(in oklab, var(--brand) 18%, transparent) 0%, transparent 60%),
+        radial-gradient(900px 520px at 10% -20%, color-mix(in oklab, var(--accent) 20%, transparent) 0%, transparent 58%),
+        linear-gradient(to bottom, var(--bg), var(--bg-soft));
     }
+
     a{color:inherit; text-decoration:none}
-    a:focus-visible,button:focus-visible{
-      outline:2px solid var(--p1); outline-offset:3px; border-radius:12px;
+    a:focus-visible,button:focus-visible{outline:2px solid var(--brand); outline-offset:2px; border-radius:12px}
+
+    .wrap{max-width:1000px; margin:0 auto; padding:22px}
+
+    /* Hero */
+    header.hero{position:relative; border-bottom:1px solid var(--border); overflow:hidden}
+    .glow{position:absolute; inset:0; pointer-events:none; filter:blur(var(--blur)); opacity:.9}
+    .glow::before,.glow::after{
+      content:""; position:absolute; width:55vmax; height:55vmax; border-radius:50%;
+      background:radial-gradient(circle at 30% 30%, color-mix(in oklab, var(--brand) 34%, transparent), transparent 60%);
+    }
+    .glow::before{top:-36vmax; left:-20vmax}
+    .glow::after{
+      top:-30vmax; right:-26vmax;
+      background:radial-gradient(circle at 70% 40%, color-mix(in oklab, var(--accent) 38%, transparent), transparent 60%);
     }
 
-    .wrap{max-width:980px; margin:0 auto; padding:28px 18px 44px}
+    .emoji-cloud{position:absolute; inset:0; pointer-events:none; filter:blur(1px); opacity:var(--emoji-alpha)}
+    .bg-emoji{position:absolute; font-size:clamp(22px,3.2vw,34px); transform:translate(-50%,-50%)}
+    .e1{left:12%; top:26%} .e2{left:27%; top:14%} .e3{left:44%; top:22%}
+    .e4{left:66%; top:16%} .e5{left:82%; top:30%} .e6{left:18%; top:48%}
+    .e7{left:36%; top:54%} .e8{left:72%; top:50%}
 
-    header{
-      padding:18px 0 8px; border-bottom:1px solid var(--line);
-      position:relative;
-    }
-    h1{
-      margin:0; font-weight:900; letter-spacing:.3px;
-      font-size:clamp(26px,3.4vw,38px); line-height:1.1;
-      background:linear-gradient(90deg,var(--p2),var(--p1));
+    @media (prefers-reduced-motion:reduce){ .glow,.emoji-cloud{display:none} }
+
+    .title{
+      margin:.2rem 0; font-weight:900; letter-spacing:.4px;
+      font-size:clamp(1.9rem,3.4vw,2.6rem);
+      background:linear-gradient(90deg,var(--brand),var(--accent));
       -webkit-background-clip:text; background-clip:text; color:transparent;
-      text-shadow:0 6px 30px rgba(154,77,255,.18);
+      text-shadow:0 6px 28px rgba(0,229,255,.18);
+      position:relative; z-index:1;
     }
-    .sub{margin:8px 0 0; color:var(--muted); font-weight:700; letter-spacing:.2px}
+    .sub{color:var(--muted); font-weight:700; letter-spacing:.3px; margin:.2rem 0 .8rem; position:relative; z-index:1}
 
-    .bar{margin-top:14px; display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap}
-    .lang{display:flex; gap:8px}
-    .chip{
-      border:1px solid var(--line); background:rgba(255,255,255,.04);
-      color:var(--text); padding:8px 12px; border-radius:999px; font-weight:900;
-      cursor:pointer; transition:transform .18s ease, background .18s ease, border-color .18s ease;
+    /* Lang pills + nav */
+    .bar{display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin:10px 0 18px; position:relative; z-index:1}
+    .pills{display:flex; gap:10px; flex-wrap:wrap}
+    .pill{
+      border:1px solid var(--border); border-radius:999px; padding:8px 14px; background:var(--card);
+      font-weight:800; letter-spacing:.2px; color:var(--text);
     }
-    .chip[aria-pressed="true"]{
-      background:linear-gradient(90deg,var(--p2),var(--p1));
-      border-color:rgba(255,255,255,.2); transform:translateY(-1px);
-    }
-    .home{
-      border:1px solid var(--line); background:rgba(255,255,255,.04);
-      padding:8px 12px; border-radius:10px; font-weight:900;
-      transition:transform .18s ease, border-color .18s ease;
-    }
-    .home:hover{transform:translateY(-1px); border-color:rgba(255,255,255,.12)}
+    .pill[aria-current="true"]{background:linear-gradient(90deg,var(--brand),var(--accent)); color:#081018; border-color:transparent}
 
-    main{padding:22px 0 0}
-    .grid{display:grid; gap:16px}
-    @media (min-width:900px){ .grid{grid-template-columns:repeat(3,1fr)} }
+    nav.tabs{display:flex; gap:12px; flex-wrap:wrap}
+    .tab{
+      background:var(--card); border:1px solid var(--border); border-radius:12px;
+      padding:10px 14px; font-weight:800; letter-spacing:.2px;
+      transition:border-color .2s ease, transform .2s ease;
+    }
+    .tab:hover{transform:translateY(-2px); border-color:color-mix(in oklab, var(--brand) 50%, var(--border))}
+    .tab small{opacity:.65; font-weight:700}
+
+    /* Cards */
+    .grid{display:grid; gap:18px}
+    @media (min-width:880px){ .grid-2{grid-template-columns:1.2fr .8fr} }
 
     .card{
-      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-      border:1px solid var(--line); border-radius:var(--radius); padding:20px;
-      box-shadow:var(--shadow); backdrop-filter:blur(8px);
-      display:flex; flex-direction:column; justify-content:space-between; min-height:170px;
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--border); border-radius:var(--radius);
+      padding:18px; box-shadow:0 10px 24px rgba(0,0,0,.22);
     }
-    h2{
-      margin:.2rem 0 .3rem; font-size:18px; font-weight:900; letter-spacing:.2px;
-      background:linear-gradient(90deg,var(--p2),var(--p1));
-      -webkit-background-clip:text; background-clip:text; color:transparent;
-    }
-    p{margin:.4rem 0; color:var(--muted); font-weight:600}
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center; gap:.6rem;
-      padding:12px 16px; border-radius:12px; font-weight:900; letter-spacing:.2px;
-      border:1px solid rgba(255,255,255,.12);
-      background:linear-gradient(90deg, var(--p2), var(--p1));
-      color:white; box-shadow:0 8px 24px rgba(32,213,244,.12);
-      transition:transform .14s ease, filter .14s ease;
-    }
-    .btn:hover{transform:translateY(-1px); filter:brightness(1.04)}
+    h2{font-size:clamp(1.2rem,2.2vw,1.5rem); margin:.2rem 0 .6rem; font-weight:900;
+       background:linear-gradient(90deg,var(--brand),var(--accent)); -webkit-background-clip:text; background-clip:text; color:transparent;}
+    p{margin:.45rem 0}
 
-    details{
-      margin-top:18px; border:1px dashed var(--line); border-radius:12px; padding:10px 12px;
-      background:rgba(255,255,255,.02);
+    /* CTA buttons */
+    .cta-row{display:flex; gap:12px; flex-wrap:wrap; margin-top:12px}
+    .btn{
+      display:inline-flex; align-items:center; gap:.6rem; padding:12px 16px; border-radius:12px;
+      font-weight:900; letter-spacing:.2px; text-decoration:none;
+      background:linear-gradient(90deg, var(--brand), var(--accent)); color:#07131a; border:1px solid transparent;
+      box-shadow:0 6px 22px rgba(0,229,255,.22);
     }
-    summary{cursor:pointer; font-weight:800}
-    .list{display:grid; gap:10px; margin-top:10px}
-    .itag{display:inline-flex; gap:8px; align-items:center; border:1px solid var(--line);
-      border-radius:999px; padding:6px 10px; background:rgba(255,255,255,.04); font-weight:800}
-    footer{
-      margin-top:28px; border-top:1px solid var(--line); padding:18px 0 10px; color:var(--muted);
-      display:grid; gap:8px; justify-items:center; text-align:center;
-    }
-    .brand{display:inline-flex; gap:8px; align-items:center; padding:6px 10px; border-radius:999px; border:1px solid var(--line); background:rgba(255,255,255,.02)}
+    .btn.outline{background:transparent; color:var(--text); border-color:color-mix(in oklab, var(--brand) 50%, var(--border))}
+    .btn:hover{filter:brightness(1.05)}
+
+    /* Footer */
+    footer{border-top:1px solid var(--border); margin-top:26px; padding:20px; color:var(--muted); text-align:center; background:var(--bg-soft)}
+    .links{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:8px}
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <h1>👟 Stay Active</h1>
-      <p class="sub" id="subtitle">Legal & Info pages</p>
+  <!-- Fancy glow & emoji fog -->
+  <header class="hero">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="emoji-cloud" aria-hidden="true">
+      <span class="bg-emoji e1">🏃‍♂️</span>
+      <span class="bg-emoji e2">📊</span>
+      <span class="bg-emoji e3">⏱️</span>
+      <span class="bg-emoji e4">💪</span>
+      <span class="bg-emoji e5">⚡</span>
+      <span class="bg-emoji e6">🧭</span>
+      <span class="bg-emoji e7">✨</span>
+      <span class="bg-emoji e8">🧠</span>
+    </div>
+
+    <div class="wrap" style="position:relative; z-index:1">
+      <h1 class="title">Stay Active • Legal & Info Hub</h1>
+      <p class="sub" id="subtitle">Choose a document. / Wähle ein Dokument.</p>
 
       <div class="bar">
-        <div class="lang" role="group" aria-label="Choose language / Sprache wählen">
-          <button id="btn-en" class="chip" type="button" aria-pressed="true">English</button>
-          <button id="btn-de" class="chip" type="button" aria-pressed="false">Deutsch</button>
+        <!-- Language pills -->
+        <div class="pills" role="group" aria-label="Choose language">
+          <a id="pill-de" href="#" class="pill" aria-current="true">Deutsch</a>
+          <a id="pill-en" href="#" class="pill" aria-current="false">English</a>
         </div>
-        <!-- optional link back to your app site if you add one later -->
-        <a class="home" href="./">↻ Refresh</a>
+
+        <!-- Quick tabs -->
+        <nav class="tabs" aria-label="Quick links">
+          <a class="tab" id="link-privacy"  href="privacy.html">🔒 Privacy / Datenschutz</a>
+          <a class="tab" id="link-terms"    href="terms.html">📜 Terms / Nutzungsbedingungen</a>
+          <a class="tab" id="link-upgrade"  href="upgrade.html">⭐ Upgrade</a>
+          <a class="tab" id="link-imprint"  href="impressum.html">ℹ️ Imprint / Impressum</a>
+        </nav>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <main>
-      <div class="grid">
-        <!-- PRIVACY -->
-        <article class="card">
-          <div>
-            <h2 id="h-privacy">🔒 Privacy Policy</h2>
-            <p id="p-privacy">How we handle your data with care.</p>
-          </div>
-          <div><a id="lnk-privacy" class="btn" href="privacy_en.html">Open</a></div>
-        </article>
-
-        <!-- TERMS -->
-        <article class="card">
-          <div>
-            <h2 id="h-terms">📜 Terms of Service</h2>
-            <p id="p-terms">Usage rules and your rights.</p>
-          </div>
-          <div><a id="lnk-terms" class="btn" href="terms_en.html">Open</a></div>
-        </article>
-
-        <!-- UPGRADE -->
-        <article class="card">
-          <div>
-            <h2 id="h-upgrade">⭐ Upgrade Plans</h2>
-            <p id="p-upgrade">Free vs. Premium features.</p>
-          </div>
-          <div><a id="lnk-upgrade" class="btn" href="upgrade_en.html">Open</a></div>
-        </article>
-      </div>
-
-      <!-- Optional full list -->
-      <details>
-        <summary id="sum-all">All documents</summary>
-        <div class="list" style="margin-top:8px">
-          <a class="itag" href="privacy_en.html">🔒 Privacy (EN)</a>
-          <a class="itag" href="privacy_de.html">🔒 Datenschutz (DE)</a>
-          <a class="itag" href="terms_en.html">📜 Terms (EN)</a>
-          <a class="itag" href="terms_de.html">📜 Nutzungsbedingungen (DE)</a>
-          <a class="itag" href="upgrade_en.html">⭐ Upgrade (EN)</a>
-          <a class="itag" href="upgrade_de.html">⭐ Upgrade (DE)</a>
+  <main class="wrap">
+    <div class="grid grid-2">
+      <section class="card">
+        <h2 id="whyTitle">Why these pages?</h2>
+        <p id="whyText">
+          This hub gives you quick access to Privacy, Terms, Upgrade info and the Imprint for the Stay Active app.
+          / Dieser Hub bietet dir schnellen Zugriff auf Datenschutz, Nutzungsbedingungen, Upgrade-Infos und das Impressum der App.
+        </p>
+        <div class="cta-row">
+          <a class="btn" id="cta-privacy" href="privacy.html">🔒 Privacy / Datenschutz</a>
+          <a class="btn outline" id="cta-terms" href="terms.html">📜 Terms / Nutzungsbedingungen</a>
         </div>
-      </details>
-    </main>
+      </section>
 
-    <footer>
-      <div class="brand" aria-hidden="true">
-        <span>🏃‍♂️</span><strong>Stay Active</strong>
-      </div>
-      <div id="ft-line">© <span id="year"></span> Stay Active — Legal & Info</div>
-    </footer>
-  </div>
+      <aside class="card">
+        <h2 id="factsTitle">At a glance</h2>
+        <ul style="margin:.2rem 0 0 1.1rem">
+          <li>Neon dark theme</li>
+          <li>Fast links with language param</li>
+          <li>No trackers on these pages</li>
+        </ul>
+        <p class="muted" style="margin-top:.4rem">© 2025 Stay Active</p>
+      </aside>
+    </div>
+  </main>
+
+  <footer>
+    <div class="links">
+      <a class="tab" id="f-privacy" href="privacy.html">Privacy / Datenschutz</a>
+      <a class="tab" id="f-terms" href="terms.html">Terms / Nutzungsbedingungen</a>
+      <a class="tab" id="f-upgrade" href="upgrade.html">Upgrade</a>
+      <a class="tab" id="f-imprint" href="impressum.html">Imprint / Impressum</a>
+    </div>
+    <div>© <span id="y"></span> Stay Active</div>
+  </footer>
 
   <script>
-    (function(){
-      // Year
-      document.getElementById('year').textContent = new Date().getFullYear();
+    // Year
+    document.getElementById('y').textContent = new Date().getFullYear();
 
-      // tiny i18n dict
-      const T = {
-        en: {
-          subtitle: "Legal & Info pages",
-          hPrivacy: "🔒 Privacy Policy",
-          pPrivacy: "How we handle your data with care.",
-          hTerms: "📜 Terms of Service",
-          pTerms: "Usage rules and your rights.",
-          hUpgrade: "⭐ Upgrade Plans",
-          pUpgrade: "Free vs. Premium features.",
-          btnOpen: "Open",
-          all: "All documents",
-          ft: "© {y} Stay Active — Legal & Info"
-        },
-        de: {
-          subtitle: "Recht & Info-Seiten",
-          hPrivacy: "🔒 Datenschutzerklärung",
-          pPrivacy: "Wie wir sorgsam mit deinen Daten umgehen.",
-          hTerms: "📜 Nutzungsbedingungen",
-          pTerms: "Nutzungsregeln und deine Rechte.",
-          hUpgrade: "⭐ Upgrade-Pläne",
-          pUpgrade: "Free vs. Premium-Funktionen.",
-          btnOpen: "Öffnen",
-          all: "Alle Dokumente",
-          ft: "© {y} Stay Active — Recht & Info"
-        }
-      };
-
-      // derive lang: ?lang=de|en -> localStorage -> browser
-      const qs = new URLSearchParams(location.search);
-      const qsLang = (qs.get('lang') || '').toLowerCase();
-      const saved = localStorage.getItem('sa_lang');
-      const browserDe = (navigator.language||'en').toLowerCase().startsWith('de');
-      let lang = (qsLang==='de'||qsLang==='en') ? qsLang
-               : (saved==='de'||saved==='en') ? saved
-               : (browserDe ? 'de' : 'en');
-
-      const btnEN = document.getElementById('btn-en');
-      const btnDE = document.getElementById('btn-de');
-
-      function setLang(l){
-        lang = l;
-        localStorage.setItem('sa_lang', l);
-        document.documentElement.lang = l;
-
-        const t = T[l];
-        document.getElementById('subtitle').textContent = t.subtitle;
-
-        document.getElementById('h-privacy').textContent = t.hPrivacy;
-        document.getElementById('p-privacy').textContent = t.pPrivacy;
-        document.getElementById('h-terms').textContent = t.hTerms;
-        document.getElementById('p-terms').textContent = t.pTerms;
-        document.getElementById('h-upgrade').textContent = t.hUpgrade;
-        document.getElementById('p-upgrade').textContent = t.pUpgrade;
-
-        // update main buttons' labels & hrefs
-        document.getElementById('lnk-privacy').textContent = t.btnOpen;
-        document.getElementById('lnk-terms').textContent = t.btnOpen;
-        document.getElementById('lnk-upgrade').textContent = t.btnOpen;
-        document.getElementById('lnk-privacy').setAttribute('href', l==='de' ? 'privacy_de.html' : 'privacy_en.html');
-        document.getElementById('lnk-terms').setAttribute('href',   l==='de' ? 'terms_de.html'   : 'terms_en.html');
-        document.getElementById('lnk-upgrade').setAttribute('href', l==='de' ? 'upgrade_de.html' : 'upgrade_en.html');
-
-        // toggle chips
-        btnEN.setAttribute('aria-pressed', l==='en');
-        btnDE.setAttribute('aria-pressed', l==='de');
-
-        // reflect in URL for sharing
-        const url = new URL(location.href);
-        url.searchParams.set('lang', l);
-        history.replaceState({}, '', url.toString());
-
-        // footer line
-        document.getElementById('ft-line').textContent =
-          t.ft.replace('{y}', new Date().getFullYear());
+    // Simple i18n + make links carry ?lang=
+    const dict = {
+      de: {
+        sub: "Wähle ein Dokument.",
+        whyTitle: "Wozu dieser Hub?",
+        whyText: "Dieser Hub bietet dir schnellen Zugriff auf Datenschutz, Nutzungsbedingungen, Upgrade-Infos und das Impressum der App.",
+        factsTitle: "Kurz & knapp",
+      },
+      en: {
+        sub: "Choose a document.",
+        whyTitle: "Why these pages?",
+        whyText: "This hub gives you quick access to Privacy, Terms, Upgrade info and the Imprint for the Stay Active app.",
+        factsTitle: "At a glance",
       }
+    };
 
-      btnEN.addEventListener('click', ()=>setLang('en'));
-      btnDE.addEventListener('click', ()=>setLang('de'));
+    function setLang(l){
+      const d = dict[l] || dict.de;
+      document.documentElement.lang = l;
+      document.getElementById('subtitle').textContent = d.sub + " / " + (l === 'de' ? "Choose a document." : "Wähle ein Dokument.");
+      document.getElementById('whyTitle').textContent = d.whyTitle;
+      document.getElementById('whyText').textContent  = d.whyText + (l==='de' ? "" : " / Dieser Hub bietet dir schnellen Zugriff auf Datenschutz, Nutzungsbedingungen, Upgrade-Infos und das Impressum der App.");
+      document.getElementById('factsTitle').textContent = d.factsTitle;
 
-      setLang(lang);
-    })();
+      // pills state
+      document.getElementById('pill-de').setAttribute('aria-current', l==='de');
+      document.getElementById('pill-en').setAttribute('aria-current', l==='en');
+
+      // Append ?lang to all main links (keep them RELATIVE so GH Pages works)
+      const linkIds = ['link-privacy','link-terms','link-upgrade','link-imprint','cta-privacy','cta-terms','f-privacy','f-terms','f-upgrade','f-imprint'];
+      linkIds.forEach(id=>{
+        const a = document.getElementById(id);
+        if(!a) return;
+        const href = a.getAttribute('href');          // e.g. "privacy.html"
+        const u = new URL(href, location.href);
+        u.searchParams.set('lang', l);
+        a.setAttribute('href', u.pathname.replace(location.origin,'') + u.search);
+      });
+
+      // keep ?lang in address bar
+      const url = new URL(location.href);
+      url.searchParams.set('lang', l);
+      history.replaceState({}, '', url.toString());
+      localStorage.setItem('sa_lang', l);
+    }
+
+    const qsLang = new URLSearchParams(location.search).get('lang');
+    const stored = localStorage.getItem('sa_lang');
+    const browser = (navigator.language || 'en').toLowerCase().startsWith('de') ? 'de' : 'en';
+    setLang(qsLang || stored || browser);
+
+    document.getElementById('pill-de').addEventListener('click', e => { e.preventDefault(); setLang('de'); });
+    document.getElementById('pill-en').addEventListener('click', e => { e.preventDefault(); setLang('en'); });
   </script>
 </body>
 </html>
