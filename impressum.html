@@ -1,261 +1,286 @@
-
 <!doctype html>
 <html lang="de">
 <head>
   <meta charset="utf-8" />
-  <title>Stay Active · Imprint / Impressum</title>
+  <title>Stay Active • Imprint / Impressum</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="dark" />
-  <meta name="description" content="Aurevoir (Kleingewerbe) – Impressum / Imprint für die Apps 'Stay Active' & 'ToDo Business'." />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%84%B9%EF%B8%8F%3C/text%3E%3C/svg%3E">
+  <meta name="description" content="Aurevoir (Kleingewerbe) – Impressum / Imprint für die Apps Stay Active & ToDo Business." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%E2%84%B9%EF%B8%8F%3C/text%3E%3C/svg%3E">
+
   <style>
     :root{
-      --brand:#00e5ff;      /* cyan neon */
-      --accent:#9b4dff;     /* violet neon */
-      --accent2:#ff00cc;    /* pink neon */
-      --text:#e6e9ef;
-      --muted:#b5bdc8;
-      --bg:#0f0c29; --bg2:#302b63; --bg3:#24243e;
-      --card:rgba(255,255,255,.06);
-      --card-bd:rgba(255,255,255,.14);
+      /* Brand / Neon – wie index.html */
+      --brand:#00e5ff;        /* Cyan Neon */
+      --accent:#9b4dff;       /* Lila Neon */
+      --ok:#22c55e;
+
+      /* Dark surface */
+      --bg:#05060b;
+      --bg-soft:#090b12;
+      --card:#0e121b;
       --border:#141a24;
+      --text:#e6e9ef;
+      --muted:#9aa3af;
+
       --radius:16px;
+      --blur:44px;
+      --emoji-alpha:.12;
     }
+
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
-      margin:0; color:var(--text);
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
-      background: linear-gradient(135deg, var(--bg), var(--bg2), var(--bg3)) fixed;
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-      line-height:1.65;
+      margin:0; color:var(--text); background:var(--bg);
+      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Inter,Arial,sans-serif;
+      line-height:1.65; overflow-x:hidden;
+      background:
+        radial-gradient(1200px 600px at 85% -10%, color-mix(in oklab, var(--brand) 18%, transparent) 0%, transparent 60%),
+        radial-gradient(900px 520px at 10% -20%, color-mix(in oklab, var(--accent) 20%, transparent) 0%, transparent 58%),
+        linear-gradient(to bottom, var(--bg), var(--bg-soft));
     }
-    a{color:var(--brand); text-decoration:underline}
-    a:focus-visible,button:focus-visible{outline:2px solid var(--brand); outline-offset:3px; border-radius:12px}
 
-    .wrap{max-width:980px; margin:0 auto; padding:20px}
+    a{color:inherit; text-decoration:none}
+    a:focus-visible,button:focus-visible{outline:2px solid var(--brand); outline-offset:2px; border-radius:12px}
 
-    header{position:sticky; top:0; z-index:5; backdrop-filter:blur(6px);
-      background:linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,0));
-      border-bottom:1px solid rgba(255,255,255,.06);
+    .wrap{max-width:1000px; margin:0 auto; padding:22px}
+
+    /* Hero */
+    header.hero{position:relative; border-bottom:1px solid var(--border); overflow:hidden}
+    .glow{position:absolute; inset:0; pointer-events:none; filter:blur(var(--blur)); opacity:.9}
+    .glow::before,.glow::after{
+      content:""; position:absolute; width:55vmax; height:55vmax; border-radius:50%;
+      background:radial-gradient(circle at 30% 30%, color-mix(in oklab, var(--brand) 34%, transparent), transparent 60%);
     }
-    .bar{display:flex; align-items:center; justify-content:space-between; gap:12px; margin:10px 0 18px}
-    .back{
-      display:inline-flex; align-items:center; gap:.5rem; padding:10px 14px; border-radius:12px;
-      border:1px solid rgba(255,255,255,.14); color:var(--text); text-decoration:none;
-      background:rgba(255,255,255,.05);
+    .glow::before{top:-36vmax; left:-20vmax}
+    .glow::after{
+      top:-30vmax; right:-26vmax;
+      background:radial-gradient(circle at 70% 40%, color-mix(in oklab, var(--accent) 38%, transparent), transparent 60%);
     }
-    .back:hover{filter:brightness(1.08)}
-    .chips{display:flex; gap:10px; flex-wrap:wrap}
-    .chip{
-      border:1px solid rgba(255,255,255,.18);
-      background:rgba(255,255,255,.06);
-      padding:8px 14px; border-radius:999px; font-weight:800; letter-spacing:.2px; color:var(--text);
-      cursor:pointer; user-select:none;
-    }
-    .chip[aria-pressed="true"]{
-      background:rgba(0,229,255,.2);
-      border-color:rgba(0,229,255,.6);
-      color:#06141a;
-    }
+
+    .emoji-cloud{position:absolute; inset:0; pointer-events:none; filter:blur(1px); opacity:var(--emoji-alpha)}
+    .bg-emoji{position:absolute; font-size:clamp(22px,3.2vw,34px); transform:translate(-50%,-50%)}
+    .e1{left:12%; top:26%} .e2{left:27%; top:14%} .e3{left:44%; top:22%}
+    .e4{left:66%; top:16%} .e5{left:82%; top:30%} .e6{left:18%; top:48%}
+    .e7{left:36%; top:54%} .e8{left:72%; top:50%}
+
+    @media (prefers-reduced-motion:reduce){ .glow,.emoji-cloud{display:none} }
 
     .title{
-      margin:64px 0 4px; text-align:center; font-weight:900; letter-spacing:.3px;
-      font-size:clamp(22px,4vw,32px);
-      background:linear-gradient(90deg, var(--brand), var(--accent2));
+      margin:.2rem 0; font-weight:900; letter-spacing:.4px;
+      font-size:clamp(1.9rem,3.4vw,2.6rem);
+      background:linear-gradient(90deg,var(--brand),var(--accent));
       -webkit-background-clip:text; background-clip:text; color:transparent;
-      text-shadow:0 6px 18px rgba(0,229,255,.22);
+      text-shadow:0 6px 28px rgba(0,229,255,.18);
+      position:relative; z-index:1; text-align:center;
     }
-    .subtitle{margin:0 0 12px; text-align:center; color:var(--muted); font-weight:700}
+    .sub{color:var(--muted); font-weight:700; letter-spacing:.3px; margin:.2rem 0 .8rem; position:relative; z-index:1; text-align:center}
 
-    main{padding:6px 0 40px}
-    .card{
-      background:var(--card); border:1px solid var(--card-bd); border-radius:var(--radius);
-      padding:16px; margin-top:12px; box-shadow:0 10px 22px rgba(0,0,0,.25);
+    /* Lang pills + nav */
+    .bar{display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin:10px 0 18px; position:relative; z-index:1}
+    .pills{display:flex; gap:10px; flex-wrap:wrap}
+    .pill{
+      border:1px solid var(--border); border-radius:999px; padding:8px 14px; background:var(--card);
+      font-weight:800; letter-spacing:.2px; color:var(--text);
     }
-    h2{
-      margin:.2rem 0 .6rem; font-size:18px; font-weight:900; letter-spacing:.2px;
-      color:var(--accent2);
-    }
-    p{margin:.35rem 0}
-    ul{margin:.2rem 0 .2rem 1.2rem}
-    li{margin:.25rem 0}
-    code.kbd{
-      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-      background:rgba(255,255,255,.08); padding:.08rem .45rem; border-radius:8px; border:1px solid rgba(255,255,255,.12)
-    }
-    .muted{color:var(--muted)}
+    .pill[aria-current="true"]{background:linear-gradient(90deg,var(--brand),var(--accent)); color:#081018; border-color:transparent}
 
+    nav.tabs{display:flex; gap:12px; flex-wrap:wrap}
+    .tab{
+      background:var(--card); border:1px solid var(--border); border-radius:12px;
+      padding:10px 14px; font-weight:800; letter-spacing:.2px;
+      transition:border-color .2s ease, transform .2s ease; color:var(--text); text-decoration:none;
+    }
+    .tab:hover{transform:translateY(-2px); border-color:color-mix(in oklab, var(--brand) 50%, var(--border))}
+    .tab small{opacity:.65; font-weight:700}
+
+    /* Cards */
     .grid{display:grid; gap:18px}
     @media (min-width:880px){ .grid-2{grid-template-columns:1fr 1fr} }
 
-    .hidden{display:none}
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--border); border-radius:var(--radius);
+      padding:18px; box-shadow:0 10px 24px rgba(0,0,0,.22);
+    }
+    h2{font-size:clamp(1.05rem,2vw,1.25rem); margin:.2rem 0 .6rem; font-weight:900;
+       background:linear-gradient(90deg,var(--brand),var(--accent)); -webkit-background-clip:text; background-clip:text; color:transparent;}
+    p{margin:.45rem 0}
+    ul{margin:.2rem 0 .2rem 1.1rem}
+    li{margin:.25rem 0}
+    .muted{color:var(--muted); font-weight:600}
+    .link{color:var(--brand); text-decoration:underline}
 
-    footer{
-      border-top:1px solid rgba(255,255,255,.06);
-      background:linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.05));
-      color:var(--muted); padding:20px; text-align:center; font-weight:600; letter-spacing:.2px;
-    }
+    /* Footer */
+    footer{border-top:1px solid var(--border); margin-top:26px; padding:20px; color:var(--muted); text-align:center; background:var(--bg-soft)}
     .links{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:8px}
-    .tab{
-      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:12px;
-      padding:8px 12px; font-weight:800; letter-spacing:.2px; text-decoration:none; color:var(--text);
-    }
-    .tab:hover{filter:brightness(1.05)}
   </style>
 </head>
 <body>
-  <header>
-    <div class="wrap">
+  <!-- Glow & emoji fog -->
+  <header class="hero">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="emoji-cloud" aria-hidden="true">
+      <span class="bg-emoji e1">🏃‍♂️</span>
+      <span class="bg-emoji e2">📊</span>
+      <span class="bg-emoji e3">⏱️</span>
+      <span class="bg-emoji e4">💪</span>
+      <span class="bg-emoji e5">⚡</span>
+      <span class="bg-emoji e6">🧭</span>
+      <span class="bg-emoji e7">✨</span>
+      <span class="bg-emoji e8">🧠</span>
+    </div>
+
+    <div class="wrap" style="position:relative; z-index:1">
+      <h1 class="title" id="pageTitle">Stay Active • Imprint / Impressum</h1>
+      <p class="sub" id="subtitle">Legal provider disclosure / Gesetzliche Anbieterkennzeichnung</p>
+
       <div class="bar">
-        <a class="back" href="index.html" id="backBtn">← Zurück</a>
-        <div class="chips" role="group" aria-label="Sprache wählen / Choose language">
-          <button id="btn-de" class="chip" type="button" aria-pressed="true">Deutsch</button>
-          <button id="btn-en" class="chip" type="button" aria-pressed="false">English</button>
+        <!-- Language pills -->
+        <div class="pills" role="group" aria-label="Sprache wählen / Choose language">
+          <a id="pill-de" href="#" class="pill" aria-current="true">Deutsch</a>
+          <a id="pill-en" href="#" class="pill" aria-current="false">English</a>
         </div>
+
+        <!-- Quick tabs (gleich wie index.html, tragen ?lang mit) -->
+        <nav class="tabs" aria-label="Quick links">
+          <a class="tab" id="link-home"    href="index.html">🏠 Home</a>
+          <a class="tab" id="link-privacy" href="privacy.html">🔒 Privacy / Datenschutz</a>
+          <a class="tab" id="link-terms"   href="terms.html">📜 Terms / Nutzungsbedingungen</a>
+          <a class="tab" id="link-upgrade" href="upgrade.html">⭐ Upgrade</a>
+        </nav>
       </div>
-      <h1 class="title" id="pageTitle">ℹ️ Impressum</h1>
-      <p class="subtitle" id="pageSub">Rechtliche Anbieterkennzeichnung gemäß § 5 TMG / § 18 Abs. 2 MStV</p>
     </div>
   </header>
 
   <main class="wrap">
-    <!-- ================= DE ================= -->
+    <!-- ========= Deutsch ========= -->
     <section id="sec-de">
       <div class="card">
         <h2>Anbieter / Verantwortlich</h2>
-        <p><strong>Aurevoir</strong> (Kleingewerbe) – Apps: <em>Stay Active</em>, <em>ToDo Business</em></p>
+        <p><strong>Aurevoir</strong> (Kleingewerbe) — Apps: <em>Stay Active</em>, <em>ToDo Business</em></p>
         <p><strong>Inhaber:</strong> [INHABER: VOLLSTÄNDIGER NAME]<br>
            <strong>Adresse:</strong> [STRASSE, HAUSNUMMER], [PLZ] [ORT], Deutschland</p>
-        <p><strong>E-Mail:</strong> <a href="mailto:stay_active@outlook.de">stay_active@outlook.de</a> ·
-           <a href="mailto:keystone@aurevoir.de">keystone@aurevoir.de</a></p>
+        <p><strong>E-Mail:</strong> <a class="link" href="mailto:stay_active@outlook.de">stay_active@outlook.de</a> ·
+           <a class="link" href="mailto:keystone@aurevoir.de">keystone@aurevoir.de</a></p>
         <p><strong>Telefon (optional):</strong> [TELEFONNUMMER]</p>
         <p><strong>USt-ID (falls vorhanden):</strong> [UST-ID-NR.]</p>
       </div>
 
       <div class="grid grid-2">
         <div class="card">
-          <h2>Inhaltlich verantwortlich (MStV)</h2>
-          <p>Gemäß § 18 Abs. 2 MStV:<br>
-             [NAME DER VERANTWORTLICHEN PERSON], [STRASSE, NR.], [PLZ] [ORT], Deutschland</p>
+          <h2>Inhaltlich verantwortlich (§ 18 Abs. 2 MStV)</h2>
+          <p>[NAME DER VERANTWORTLICHEN PERSON], [STRASSE, NR.], [PLZ] [ORT], Deutschland</p>
         </div>
-
         <div class="card">
           <h2>Hosting</h2>
           <p>Diese Informationsseiten werden über <strong>GitHub Pages</strong> bereitgestellt.</p>
-          <p class="muted">App-Dienste (falls genutzt): Firebase / Google Play / Apple App Store.</p>
+          <p class="muted">App-Dienste (sofern genutzt): Firebase / Google Play / Apple App Store.</p>
         </div>
       </div>
 
       <div class="card">
         <h2>Haftung für Inhalte</h2>
-        <p>Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich.
-           Nach §§ 8 bis 10 TMG sind wir jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen
-           oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung
-           der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch
-           erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden entsprechender Rechtsverletzungen
-           werden wir diese Inhalte umgehend entfernen.</p>
+        <p>Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte nach den allgemeinen Gesetzen verantwortlich.
+           Nach §§ 8–10 TMG sind wir jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen
+           oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder
+           Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben unberührt. Eine Haftung ist erst ab
+           Kenntnis konkreter Rechtsverletzungen möglich. Bei Bekanntwerden werden wir entsprechende Inhalte umgehend entfernen.</p>
       </div>
 
       <div class="card">
         <h2>Haftung für Links</h2>
-        <p>Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese
-           fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber
-           der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige
-           Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne
-           konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links
-           umgehend entfernen.</p>
+        <p>Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben; daher können wir
+           hierfür keine Gewähr übernehmen. Für Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter/Betreiber verantwortlich.
+           Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Bei Bekanntwerden von Rechtsverletzungen entfernen
+           wir derartige Links umgehend.</p>
       </div>
 
       <div class="card">
         <h2>Urheberrecht</h2>
-        <p>Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Beiträge Dritter sind als solche
-           gekennzeichnet. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der
-           schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers. Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen
-           Gebrauch gestattet. Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet.</p>
+        <p>Die durch die Seitenbetreiber erstellten Inhalte und Werke unterliegen dem deutschen Urheberrecht. Beiträge Dritter sind
+           als solche gekennzeichnet. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen
+           des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors. Downloads/Kopien dieser Seite sind nur für
+           den privaten, nicht kommerziellen Gebrauch gestattet.</p>
       </div>
 
       <div class="card">
         <h2>Streitbeilegung</h2>
-        <p>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener">ec.europa.eu/consumers/odr</a>.</p>
+        <p>EU-Plattform zur Online-Streitbeilegung (OS): <a class="link" href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener">ec.europa.eu/consumers/odr</a></p>
         <p>Wir sind nicht verpflichtet und grundsätzlich nicht bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
       </div>
 
       <div class="card">
         <h2>Bild-/Icon-Nachweise</h2>
-        <p>System-Emojis / System-Icons. Eigene Grafiken & UI. Externe Marken sind Eigentum der jeweiligen Inhaber.</p>
+        <p>System-Emojis & -Icons, eigene UI-Grafiken. Externe Marken gehören den jeweiligen Inhabern.</p>
       </div>
     </section>
 
-    <!-- ================= EN ================= -->
+    <!-- ========= English ========= -->
     <section id="sec-en" class="hidden">
       <div class="card">
         <h2>Provider / Legal Disclosure</h2>
-        <p><strong>Aurevoir</strong> (small business) – Apps: <em>Stay Active</em>, <em>ToDo Business</em></p>
+        <p><strong>Aurevoir</strong> (small business) — Apps: <em>Stay Active</em>, <em>ToDo Business</em></p>
         <p><strong>Owner:</strong> [OWNER: FULL LEGAL NAME]<br>
            <strong>Address:</strong> [STREET, NO.], [POSTCODE] [CITY], Germany</p>
-        <p><strong>Email:</strong> <a href="mailto:stay_active@outlook.de">stay_active@outlook.de</a> ·
-           <a href="mailto:keystone@aurevoir.de">keystone@aurevoir.de</a></p>
+        <p><strong>Email:</strong> <a class="link" href="mailto:stay_active@outlook.de">stay_active@outlook.de</a> ·
+           <a class="link" href="mailto:keystone@aurevoir.de">keystone@aurevoir.de</a></p>
         <p><strong>Phone (optional):</strong> [PHONE NUMBER]</p>
         <p><strong>VAT ID (if applicable):</strong> [VAT NUMBER]</p>
       </div>
 
       <div class="grid grid-2">
         <div class="card">
-          <h2>Responsible for content (German media law)</h2>
-          <p>Pursuant to § 18 (2) MStV:<br>
-             [RESPONSIBLE PERSON], [STREET, NO.], [POSTCODE] [CITY], Germany</p>
+          <h2>Responsible for Content (German media law)</h2>
+          <p>According to § 18 (2) MStV:<br>[RESPONSIBLE PERSON], [STREET, NO.], [POSTCODE] [CITY], Germany</p>
         </div>
-
         <div class="card">
           <h2>Hosting</h2>
-          <p>These informational pages are hosted via <strong>GitHub Pages</strong>.</p>
+          <p>These info pages are hosted via <strong>GitHub Pages</strong>.</p>
           <p class="muted">App services (if used): Firebase / Google Play / Apple App Store.</p>
         </div>
       </div>
 
       <div class="card">
         <h2>Liability for Content</h2>
-        <p>We are responsible for our own content under general laws (§ 7 (1) TMG). However, according to §§ 8–10 TMG, we are not obliged to
-           monitor transmitted or stored third-party information or to investigate circumstances indicating illegal activity. Obligations to remove
-           or block the use of information under general laws remain unaffected. Liability is only possible from the time we become aware of a specific
-           infringement. Upon notification, such content will be removed without delay.</p>
+        <p>We are responsible for our own content under § 7 (1) TMG. Under §§ 8–10 TMG, we are not obliged to monitor third-party
+           information or investigate circumstances indicating illegal activity. Obligations to remove/block information under general
+           laws remain unaffected. Liability arises only upon knowledge of a concrete infringement; such content will be removed without delay.</p>
       </div>
 
       <div class="card">
         <h2>Liability for Links</h2>
-        <p>Our offer contains links to external websites of third parties on whose contents we have no influence. Therefore, we cannot assume any liability
-           for these external contents. The respective provider or operator is always responsible for the content of the linked pages. At the time of linking,
-           no illegal content was recognizable. Permanent monitoring of the linked pages is not reasonable without specific indications of a violation.
-           If we become aware of infringements, we will remove such links immediately.</p>
+        <p>Our offer contains links to external third-party websites. We have no influence over their content and assume no liability.
+           The respective provider/operator is responsible. No unlawful content was recognizable at the time of linking. Upon notice,
+           we will remove such links immediately.</p>
       </div>
 
       <div class="card">
         <h2>Copyright</h2>
-        <p>Content and works created by the site operator are subject to German copyright law. Third-party contributions are marked as such. Reproduction,
-           processing, distribution, and any kind of exploitation outside the limits of copyright require written consent of the respective author.
-           Downloads and copies of this site are permitted for private, non-commercial use only.</p>
+        <p>Content and works created by the site operator are subject to German copyright law. Third-party content is indicated.
+           Reproduction, processing, distribution or any exploitation outside copyright limits requires prior written consent.
+           Downloads/copies are permitted for private, non-commercial use only.</p>
       </div>
 
       <div class="card">
         <h2>Dispute Resolution</h2>
-        <p>The European Commission provides a platform for Online Dispute Resolution (ODR): <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener">ec.europa.eu/consumers/odr</a>.</p>
-        <p>We are not obliged and generally not willing to participate in dispute resolution proceedings before a consumer arbitration board.</p>
+        <p>EU Online Dispute Resolution (ODR): <a class="link" href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener">ec.europa.eu/consumers/odr</a></p>
+        <p>We are not obliged and generally not willing to participate in dispute resolution before a consumer arbitration board.</p>
       </div>
 
       <div class="card">
         <h2>Image / Icon Credits</h2>
-        <p>System emojis / system icons. Custom UI & graphics. External trademarks belong to their respective owners.</p>
+        <p>System emojis & icons; custom UI graphics. External trademarks belong to their respective owners.</p>
       </div>
     </section>
   </main>
 
   <footer>
     <div class="links">
-      <a class="tab" href="index.html">Home</a>
-      <a class="tab" href="privacy.html">Privacy / Datenschutz</a>
-      <a class="tab" href="terms.html">Terms / Nutzungsbedingungen</a>
-      <a class="tab" href="upgrade.html">Upgrade</a>
+      <a class="tab" id="f-home"    href="index.html">Home</a>
+      <a class="tab" id="f-privacy" href="privacy.html">Privacy / Datenschutz</a>
+      <a class="tab" id="f-terms"   href="terms.html">Terms / Nutzungsbedingungen</a>
+      <a class="tab" id="f-upgrade" href="upgrade.html">Upgrade</a>
     </div>
     © <span id="y"></span> Aurevoir · Stay Active
   </footer>
@@ -264,41 +289,57 @@
     // Year
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Back button: try history.back(), else fall through to index.html href
-    document.getElementById('backBtn').addEventListener('click', function (e) {
-      if (document.referrer && document.referrer !== location.href) {
-        e.preventDefault();
-        history.back();
+    // i18n + carry ?lang in every link (just like index.html)
+    const dict = {
+      de: {
+        sub: "Gesetzliche Anbieterkennzeichnung",
+        title: "Stay Active • Impressum",
+      },
+      en: {
+        sub: "Legal provider disclosure",
+        title: "Stay Active • Imprint",
       }
-    });
+    };
 
-    // Simple i18n
     function setLang(l){
       const de = l === 'de';
+      document.documentElement.lang = l;
       document.getElementById('sec-de').classList.toggle('hidden', !de);
       document.getElementById('sec-en').classList.toggle('hidden', de);
-      document.getElementById('btn-de').setAttribute('aria-pressed', de ? 'true' : 'false');
-      document.getElementById('btn-en').setAttribute('aria-pressed', !de ? 'true' : 'false');
-      document.documentElement.lang = de ? 'de' : 'en';
-      document.getElementById('pageTitle').textContent = de ? 'ℹ️ Impressum' : 'ℹ️ Imprint';
-      document.getElementById('pageSub').textContent = de
-        ? 'Rechtliche Anbieterkennzeichnung gemäß § 5 TMG / § 18 Abs. 2 MStV'
-        : 'Legal provider disclosure under German law (TMG / MStV)';
 
-      // keep ?lang in URL and remember
+      // pills state
+      document.getElementById('pill-de').setAttribute('aria-current', de);
+      document.getElementById('pill-en').setAttribute('aria-current', !de);
+
+      // titles
+      document.getElementById('pageTitle').textContent = dict[l].title;
+      document.getElementById('subtitle').textContent = dict[l].sub + " / " + (de ? "Legal provider disclosure" : "Gesetzliche Anbieterkennzeichnung");
+
+      // append ?lang to nav/footer links
+      const linkIds = ['link-home','link-privacy','link-terms','link-upgrade','f-home','f-privacy','f-terms','f-upgrade'];
+      linkIds.forEach(id=>{
+        const a = document.getElementById(id);
+        if(!a) return;
+        const href = a.getAttribute('href');
+        const u = new URL(href, location.href);
+        u.searchParams.set('lang', l);
+        a.setAttribute('href', u.pathname.replace(location.origin,'') + u.search);
+      });
+
+      // keep in URL + remember
       const url = new URL(location.href);
-      url.searchParams.set('lang', de ? 'de' : 'en');
+      url.searchParams.set('lang', l);
       history.replaceState({}, '', url.toString());
-      localStorage.setItem('sa_imprint_lang', de ? 'de' : 'en');
+      localStorage.setItem('sa_impressum_lang', l);
     }
 
     const qs = new URLSearchParams(location.search).get('lang');
-    const stored = localStorage.getItem('sa_imprint_lang');
+    const stored = localStorage.getItem('sa_impressum_lang');
     const browser = (navigator.language || 'en').toLowerCase().startsWith('de') ? 'de' : 'en';
     setLang(qs || stored || browser);
 
-    document.getElementById('btn-de').addEventListener('click', ()=>setLang('de'));
-    document.getElementById('btn-en').addEventListener('click', ()=>setLang('en'));
+    document.getElementById('pill-de').addEventListener('click', e => { e.preventDefault(); setLang('de'); });
+    document.getElementById('pill-en').addEventListener('click', e => { e.preventDefault(); setLang('en'); });
   </script>
 </body>
 </html>
