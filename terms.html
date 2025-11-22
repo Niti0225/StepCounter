@@ -1,210 +1,254 @@
-import React from "react";
-import { ScrollView, Text, StyleSheet, View, TouchableOpacity } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { Ionicons } from "@expo/vector-icons"; // Zurück-Pfeil
+import React, { useMemo, useState } from 'react';
+import { ScrollView, Text, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
 
-const TermsAndPrivacyPolicy = ({ navigation }: { navigation: any }) => {
+type Lang = 'en' | 'de';
+
+const copy = {
+  en: {
+    title: 'Terms of Service',
+    datePrefix: 'Effective Date:',
+    date: 'May 30, 2025',
+    sections: [
+      {
+        h: '1) Purpose of the App',
+        p: `The app helps you track physical activity via step counting and related stats. It is for informational and motivational purposes only and does not constitute medical advice.`,
+      },
+      {
+        h: '2) Eligibility',
+        p: `You must be at least 13 years old to use the app.`,
+      },
+      {
+        h: '3) Subscriptions',
+        bullets: [
+          'Subscriptions remove ads and are managed by your app store account.',
+          'Plans may include monthly or yearly options.',
+          'Auto-renewal unless cancelled at least 24 hours before renewal.',
+          'No refunds for unused periods.',
+        ],
+      },
+      {
+        h: '4) Advertisements',
+        p: `The free version shows ads. We are not responsible for the accuracy, content, or legality of third-party ads.`,
+      },
+      {
+        h: '5) Push Notifications',
+        p: `You may receive reminders, updates, or motivational content. Manage/disable notifications in your device settings.`,
+      },
+      {
+        h: '6) User Data',
+        p: `No account is required. Optional height, weight, and gender inputs can improve accuracy. Personal data is stored locally on your device. We do not transmit or sell personal data.`,
+      },
+      {
+        h: '7) Limitation of Liability',
+        bullets: [
+          'We are not responsible for inaccuracies due to device sensors.',
+          'We are not liable for health issues, injuries, or losses related to app use.',
+          'Use the app at your own risk.',
+        ],
+      },
+      {
+        h: '8) Intellectual Property',
+        p: `All content, graphics, and code are the property of the developer. You may not copy, reverse-engineer, or distribute any part of the app without permission.`,
+      },
+      {
+        h: '9) Termination',
+        p: `We may suspend or terminate access if you violate these Terms or misuse the service.`,
+      },
+      {
+        h: '10) Modifications',
+        p: `We may update these Terms from time to time. Continued use after changes means you accept the updated Terms.`,
+      },
+      {
+        h: '11) Contact',
+        p: `Email: stay_active@outlook.de`,
+      },
+    ],
+    toggleDe: 'Deutsch',
+    toggleEn: 'English',
+  },
+  de: {
+    title: 'Nutzungsbedingungen',
+    datePrefix: 'Gültig ab:',
+    date: '30. Mai 2025',
+    sections: [
+      {
+        h: '1) Zweck der App',
+        p: `Die App dient der Erfassung körperlicher Aktivität (Schritte, Statistiken). Sie ist rein informativ/motivierend und stellt keine medizinische Beratung dar.`,
+      },
+      {
+        h: '2) Berechtigung',
+        p: `Für die Nutzung musst du mindestens 13 Jahre alt sein.`,
+      },
+      {
+        h: '3) Abonnements',
+        bullets: [
+          'Abos entfernen Werbung und werden über dein App-Store-Konto verwaltet.',
+          'Es können monatliche/jährliche Optionen angeboten werden.',
+          'Automatische Verlängerung, sofern nicht mindestens 24 Stunden vorher gekündigt.',
+          'Keine Erstattung für ungenutzte Zeiträume.',
+        ],
+      },
+      {
+        h: '4) Werbung',
+        p: `Die kostenlose Version zeigt Werbung. Für Richtigkeit, Inhalte oder Rechtmäßigkeit von Drittanbieter-Werbung übernehmen wir keine Verantwortung.`,
+      },
+      {
+        h: '5) Push-Benachrichtigungen',
+        p: `Du kannst Erinnerungen, Updates oder motivierende Inhalte erhalten. Verwaltung/Deaktivierung in den Geräteeinstellungen.`,
+      },
+      {
+        h: '6) Benutzerdaten',
+        p: `Kein Konto erforderlich. Optionale Angaben (Größe, Gewicht, Geschlecht) verbessern die Genauigkeit. Persönliche Daten werden lokal auf deinem Gerät gespeichert. Keine Übermittlung/kein Verkauf persönlicher Daten.`,
+      },
+      {
+        h: '7) Haftungsbeschränkung',
+        bullets: [
+          'Keine Haftung für Ungenauigkeiten durch Gerätesensoren.',
+          'Keine Haftung für gesundheitliche Probleme, Verletzungen oder Verluste im Zusammenhang mit der App-Nutzung.',
+          'Nutzung auf eigenes Risiko.',
+        ],
+      },
+      {
+        h: '8) Geistiges Eigentum',
+        p: `Alle Inhalte, Grafiken und der Code sind Eigentum des Entwicklers. Ohne Erlaubnis kein Kopieren, Reverse-Engineering oder Verbreitung.`,
+      },
+      {
+        h: '9) Beendigung',
+        p: `Bei Verstößen gegen diese Bedingungen oder Missbrauch kann der Zugang gesperrt/beendet werden.`,
+      },
+      {
+        h: '10) Änderungen',
+        p: `Diese Bedingungen können angepasst werden. Die weitere Nutzung nach Änderungen gilt als Zustimmung.`,
+      },
+      {
+        h: '11) Kontakt',
+        p: `E-Mail: stay_active@outlook.de`,
+      },
+    ],
+    toggleDe: 'Deutsch',
+    toggleEn: 'English',
+  },
+};
+
+const Chip = ({ active, label, onPress }: { active: boolean; label: string; onPress: () => void }) => (
+  <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
+    <View style={[styles.chip, active && styles.chipActive]}>
+      <Text style={[styles.chipText, active && styles.chipTextActive]}>{label}</Text>
+    </View>
+  </TouchableOpacity>
+);
+
+const Card: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <View style={styles.card}>{children}</View>
+);
+
+const TermsScreen = ({ navigation }: { navigation: any }) => {
+  const [lang, setLang] = useState<Lang>('en');
+  const t = useMemo(() => copy[lang], [lang]);
+
   return (
-    <LinearGradient
-      colors={['#0f0c29', '#302b63', '#24243e']}
-      style={styles.container}
-    >
-      {/* Zurück Pfeil oben links */}
+    <LinearGradient colors={['#0f0c29', '#302b63', '#24243e']} style={styles.container}>
+      {/* Back button */}
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <Ionicons name="arrow-back" size={28} color="#00F0FF" />
       </TouchableOpacity>
 
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {/* English Version */}
-        <Text style={styles.title}>Terms of Service</Text>
-        <Text style={styles.date}>Effective Date: May 30, 2025</Text>
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.title}>📜 {t.title}</Text>
+          <Text style={styles.date}>
+            {t.datePrefix} {t.date}
+          </Text>
 
-        <Text style={styles.paragraph}>
-          These Terms of Service ("Terms") govern your use of this mobile application ("the App"). By using the App, you agree to be bound by these Terms.
-        </Text>
+          <View style={styles.langRow}>
+            <Chip active={lang === 'de'} label={copy.de.toggleDe} onPress={() => setLang('de')} />
+            <Chip active={lang === 'en'} label={copy.en.toggleEn} onPress={() => setLang('en')} />
+          </View>
+        </View>
 
-        <Text style={styles.heading}>1. Purpose of the App</Text>
-        <Text style={styles.paragraph}>
-          The App is intended to help users track their physical activity through step counting and display related statistics. It is provided for <Text style={{ fontWeight: "bold" }}>informational and motivational purposes only</Text> and does <Text style={{ fontWeight: "bold" }}>not constitute medical advice</Text>.
-        </Text>
+        {/* Content */}
+        {t.sections.map((s, i) => (
+          <Card key={i}>
+            <Text style={styles.heading}>{s.h}</Text>
+            {!!s.p && <Text style={styles.paragraph}>{s.p}</Text>}
+            {!!s.bullets &&
+              s.bullets.map((b: string, j: number) => (
+                <Text key={j} style={styles.bullet}>{`• ${b}`}</Text>
+              ))}
+          </Card>
+        ))}
 
-        <Text style={styles.heading}>2. Eligibility</Text>
-        <Text style={styles.paragraph}>
-          This app is intended for users <Text style={{ fontWeight: "bold" }}>aged 13 and older</Text>. By using the app, you confirm that you meet this age requirement.
-        </Text>
-
-        <Text style={styles.heading}>3. Subscriptions</Text>
-        <Text style={styles.paragraph}>The App offers two subscription options:</Text>
-        <Text style={styles.paragraph}>• Monthly plan</Text>
-        <Text style={styles.paragraph}>• Yearly plan</Text>
-        <Text style={styles.paragraph}>Subscriptions:</Text>
-        <Text style={styles.paragraph}>• Remove all ads</Text>
-        <Text style={styles.paragraph}>• Are automatically renewed unless canceled at least 24 hours before the renewal date</Text>
-        <Text style={styles.paragraph}>• Are managed by your app store account</Text>
-        <Text style={styles.paragraph}>No refunds are provided for unused periods.</Text>
-
-        <Text style={styles.heading}>4. Advertisements</Text>
-        <Text style={styles.paragraph}>
-          The free version of the app displays ads. We are not responsible for the accuracy, content, or legality of third-party ads shown in the app.
-        </Text>
-
-        <Text style={styles.heading}>5. Push Notifications</Text>
-        <Text style={styles.paragraph}>
-          You may receive push notifications such as daily reminders, updates, or motivational content. You can manage or disable notifications in your device’s settings.
-        </Text>
-
-        <Text style={styles.heading}>6. User Data</Text>
-        <Text style={styles.paragraph}>
-          You are not required to create an account. Optional input of height, weight, and gender helps improve tracking accuracy. All personal data is stored locally on your device.
-        </Text>
-        <Text style={styles.paragraph}>We do not transmit or sell personal data.</Text>
-
-        <Text style={styles.heading}>7. Limitation of Liability</Text>
-        <Text style={styles.paragraph}>• We are not responsible for inaccuracies in step counts or device sensor errors.</Text>
-        <Text style={styles.paragraph}>• We are not liable for any health issues, injuries, or losses related to use of the App.</Text>
-        <Text style={styles.paragraph}>• You use the App at your own risk.</Text>
-
-        <Text style={styles.heading}>8. Intellectual Property</Text>
-        <Text style={styles.paragraph}>
-          All content, graphics, and code in the App are the property of the developer. You may not copy, reverse-engineer, or distribute any part of the App without permission.
-        </Text>
-
-        <Text style={styles.heading}>9. Termination</Text>
-        <Text style={styles.paragraph}>
-          We reserve the right to suspend or terminate access to the App if you violate these Terms or misuse the service.
-        </Text>
-
-        <Text style={styles.heading}>10. Modifications</Text>
-        <Text style={styles.paragraph}>
-          We may update these Terms and our Privacy Policy from time to time. Continued use of the App after changes means you accept the updated Terms.
-        </Text>
-
-        <Text style={styles.heading}>11. Contact</Text>
-        <Text style={styles.paragraph}>
-          <Text style={{ fontWeight: "bold" }}>Email:</Text> stay_active@outlook.de
-        </Text>
-
-        {/* --- German Version --- */}
-        <Text style={styles.title}>Nutzungsbedingungen</Text>
-        <Text style={styles.date}>Gültig ab: 30. Mai 2025</Text>
-
-        <Text style={styles.paragraph}>
-          Diese Nutzungsbedingungen ("Bedingungen") regeln deine Nutzung dieser mobilen Anwendung ("die App").
-          Durch die Nutzung der App erklärst du dich mit diesen Bedingungen einverstanden.
-        </Text>
-
-        <Text style={styles.heading}>1. Zweck der App</Text>
-        <Text style={styles.paragraph}>
-          Die App dient dazu, den Benutzern ihre körperliche Aktivität durch Schrittezählung zu verfolgen
-          und verwandte Statistiken anzuzeigen. Sie wird nur zu <Text style={{ fontWeight: "bold" }}>informellen und motivierenden Zwecken</Text> bereitgestellt und stellt <Text style={{ fontWeight: "bold" }}>keine medizinische Beratung dar</Text>.
-        </Text>
-
-        <Text style={styles.heading}>2. Berechtigung</Text>
-        <Text style={styles.paragraph}>
-          Diese App richtet sich an Benutzer <Text style={{ fontWeight: "bold" }}>ab 13 Jahren</Text>. Durch die Nutzung
-          der App bestätigst du, dass du dieses Alterskriterium erfüllst.
-        </Text>
-
-        <Text style={styles.heading}>3. Abonnements</Text>
-        <Text style={styles.paragraph}>Die App bietet zwei Abonnementoptionen an:</Text>
-        <Text style={styles.paragraph}>• Monatliches Abo</Text>
-        <Text style={styles.paragraph}>• Jährliches Abo</Text>
-        <Text style={styles.paragraph}>Abonnements:</Text>
-        <Text style={styles.paragraph}>• Entfernen aller Werbung</Text>
-        <Text style={styles.paragraph}>• Werden automatisch verlängert, es sei denn, sie werden mindestens 24 Stunden vor dem Verlängerungsdatum gekündigt</Text>
-        <Text style={styles.paragraph}>• Werden über dein App Store-Konto verwaltet</Text>
-        <Text style={styles.paragraph}>Es werden keine Rückerstattungen für nicht genutzte Perioden gewährt.</Text>
-
-        <Text style={styles.heading}>4. Werbung</Text>
-        <Text style={styles.paragraph}>
-          Die kostenlose Version der App zeigt Werbung an. Wir sind nicht verantwortlich für die Richtigkeit,
-          den Inhalt oder die Rechtmäßigkeit von Drittanbieter-Werbung, die in der App angezeigt wird.
-        </Text>
-
-        <Text style={styles.heading}>5. Push-Benachrichtigungen</Text>
-        <Text style={styles.paragraph}>
-          Du kannst Push-Benachrichtigungen wie tägliche Erinnerungen, Updates oder motivierende Inhalte erhalten.
-          Du kannst Benachrichtigungen in den Einstellungen deines Geräts verwalten oder deaktivieren.
-        </Text>
-
-        <Text style={styles.heading}>6. Benutzerdaten</Text>
-        <Text style={styles.paragraph}>
-          Du musst kein Konto erstellen. Die optionale Eingabe von Größe, Gewicht und Geschlecht hilft
-          dabei, die Genauigkeit der Verfolgung zu verbessern. Alle persönlichen Daten werden lokal auf deinem Gerät gespeichert.
-        </Text>
-        <Text style={styles.paragraph}>Wir übermitteln oder verkaufen keine persönlichen Daten.</Text>
-
-        <Text style={styles.heading}>7. Haftungsbeschränkung</Text>
-        <Text style={styles.paragraph}>• Wir sind nicht verantwortlich für Ungenauigkeiten bei der Schrittezählung oder Fehler der Gerätesensoren.</Text>
-        <Text style={styles.paragraph}>• Wir haften nicht für gesundheitliche Probleme, Verletzungen oder Verluste im Zusammenhang mit der Nutzung der App.</Text>
-        <Text style={styles.paragraph}>• Du nutzt die App auf eigenes Risiko.</Text>
-
-        <Text style={styles.heading}>8. Geistiges Eigentum</Text>
-        <Text style={styles.paragraph}>
-          Alle Inhalte, Grafiken und der Code in der App sind Eigentum des Entwicklers. Du darfst keinen Teil der App ohne Erlaubnis kopieren,
-          zurückentwickeln oder verteilen.
-        </Text>
-
-        <Text style={styles.heading}>9. Beendigung</Text>
-        <Text style={styles.paragraph}>
-          Wir behalten uns das Recht vor, den Zugang zur App zu sperren oder zu beenden, wenn du gegen diese Bedingungen verstößt oder den Dienst missbrauchst.
-        </Text>
-
-        <Text style={styles.heading}>10. Änderungen</Text>
-        <Text style={styles.paragraph}>
-          Wir können diese Bedingungen und unsere Datenschutzerklärung von Zeit zu Zeit aktualisieren. Die fortgesetzte Nutzung der App nach
-          Änderungen bedeutet, dass du die aktualisierten Bedingungen akzeptierst.
-        </Text>
-
-        <Text style={styles.heading}>11. Kontakt</Text>
-        <Text style={styles.paragraph}>
-          <Text style={{ fontWeight: "bold" }}>E-Mail:</Text> stay_active@outlook.de
-        </Text>
+        <View style={{ height: 28 }} />
       </ScrollView>
     </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scrollContainer: {
-    padding: 20,
-  },
+  container: { flex: 1 },
+  scrollContainer: { padding: 20, paddingTop: 84 },
+  header: { alignItems: 'center', marginBottom: 8 },
   title: {
     fontSize: 28,
-    fontWeight: "bold",
-    color: "#00f2ff",
-    marginBottom: 10,
-    textAlign: "center",
-    marginTop: 70, // Title further down
+    fontWeight: '900',
+    color: '#00F2FF',
+    textAlign: 'center',
+    letterSpacing: 0.4,
+    textShadowColor: 'rgba(0, 242, 255, 0.35)',
+    textShadowOffset: { width: 0, height: 4 },
+    textShadowRadius: 12,
   },
-  date: {
-    fontSize: 16,
-    color: "#fff",
-    textAlign: "center",
-    marginBottom: 30,
+  date: { fontSize: 14, color: '#E8ECF3', opacity: 0.8, marginTop: 6, marginBottom: 8 },
+  langRow: { flexDirection: 'row', gap: 10, marginTop: 6 },
+
+  chip: {
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.18)',
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 999,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+  },
+  chipActive: {
+    backgroundColor: 'rgba(0, 242, 255, 0.18)',
+    borderColor: 'rgba(0, 242, 255, 0.6)',
+  },
+  chipText: { color: '#E6E9EF', fontWeight: '800', letterSpacing: 0.2 },
+  chipTextActive: { color: '#07131a' },
+
+  card: {
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    borderColor: 'rgba(255,255,255,0.14)',
+    borderWidth: 1,
+    borderRadius: 16,
+    padding: 16,
+    marginTop: 12,
+    shadowColor: '#00F2FF',
+    shadowOpacity: 0.08,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 6 },
   },
   heading: {
     fontSize: 18,
-    color: "#ff00cc",
-    fontWeight: "bold",
-    marginTop: 20,
-    marginBottom: 5,
+    color: '#FF00CC',
+    fontWeight: '900',
+    marginBottom: 8,
   },
   paragraph: {
     fontSize: 16,
-    color: "#d1d1d1",
+    color: '#D1D1D1',
     lineHeight: 22,
-    marginBottom: 10,
   },
-  backButton: {
-    position: "absolute",
-    top: 50,
-    left: 20,
-    zIndex: 1,
+  bullet: {
+    fontSize: 16,
+    color: '#D1D1D1',
+    lineHeight: 22,
+    marginTop: 4,
   },
+  backButton: { position: 'absolute', top: 50, left: 20, zIndex: 10 },
 });
 
-export default TermsAndPrivacyPolicy;
+export default TermsScreen;
