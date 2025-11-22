@@ -1,192 +1,260 @@
-import React from 'react';
-import { ScrollView, Text, StyleSheet, View, TouchableOpacity } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import {
+  ScrollView,
+  Text,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Linking,
+} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons'; // Zurück-Pfeil
+import { Ionicons } from '@expo/vector-icons';
+
+type Lang = 'en' | 'de';
+
+const ADMOB_URL = 'https://policies.google.com/technologies/ads';
+
+const copy = {
+  en: {
+    title: 'Privacy Policy',
+    datePrefix: 'Effective Date:',
+    date: 'May 30, 2025',
+    sections: [
+      {
+        h: '1) Data We Collect',
+        p: `We collect height, weight, and gender that you enter voluntarily. This data is used only for step-tracking calculations and is stored locally on your device. It is never sent to external servers unless explicitly stated.`,
+      },
+      {
+        h: '2) Sensor Data & Device Access',
+        p: `The app uses your phone’s motion sensors (accelerometer and step counter) to track activity. This processing happens locally and is not shared externally.`,
+      },
+      {
+        h: '3) Usage Data & Analytics',
+        p: `We may collect anonymous technical data (step counts, usage patterns, crash logs, device info) to improve performance and user experience. This data is aggregated for app optimization.`,
+      },
+      {
+        h: '4) Advertising & Tracking',
+        p: `We use Google AdMob to show ads. AdMob may collect device ID, IP address, and interaction data, potentially for personalized ads under Google’s policies. Learn more:`,
+        linkLabel: 'Google Ads & technologies',
+        linkUrl: ADMOB_URL,
+      },
+      {
+        h: '5) Subscriptions',
+        p: `Subscriptions remove ads and are handled by your app store account. Monthly and yearly options may be available. Subscriptions auto-renew unless you cancel at least 24 hours before renewal. Manage them in your app store settings.`,
+      },
+      {
+        h: '6) Push Notifications',
+        p: `We may send reminders, updates, or motivational messages. You can manage or disable notifications in your device settings.`,
+      },
+      {
+        h: '7) External Links',
+        p: `The app may link to platforms like Instagram or X (Twitter). These services handle data per their own privacy policies. We are not responsible for third-party content or practices.`,
+      },
+      {
+        h: '8) Children’s Privacy',
+        p: `The app is not intended for children under 13. We do not knowingly collect data from children. If you believe we have done so unintentionally, please contact us.`,
+      },
+      {
+        h: '9) Your Rights',
+        p: `You may access, correct, or delete your personal data and withdraw consent to collection. Contact: stay_active@outlook.de`,
+      },
+      {
+        h: '10) Security',
+        p: `We take reasonable steps to protect your data from unauthorized access, alteration, or destruction. However, no method of transmission or electronic storage is 100% secure.`,
+      },
+      {
+        h: '11) Changes',
+        p: `We may update this notice. Changes will appear here with an updated effective date. Continued app use after changes implies acceptance.`,
+      },
+      {
+        h: '12) Contact',
+        p: `Questions? Email us at: stay_active@outlook.de`,
+      },
+    ],
+    toggleDe: 'Deutsch',
+    toggleEn: 'English',
+    deHeading: '— German version below —', // helper when switching
+  },
+  de: {
+    title: 'Datenschutzerklärung',
+    datePrefix: 'Gültig ab:',
+    date: '30. Mai 2025',
+    sections: [
+      {
+        h: '1) Erhobene Daten',
+        p: `Wir verarbeiten Größe, Gewicht und Geschlecht, die du freiwillig angibst. Diese Daten werden nur für Schritt-Berechnungen genutzt und lokal auf deinem Gerät gespeichert. Eine Übermittlung an externe Server erfolgt nicht, außer wenn ausdrücklich erwähnt.`,
+      },
+      {
+        h: '2) Sensordaten & Gerätezugriff',
+        p: `Die App nutzt Bewegungssensoren (Beschleunigungsmesser, Schrittzähler) zur Aktivitätsmessung. Die Verarbeitung erfolgt lokal und wird nicht extern geteilt.`,
+      },
+      {
+        h: '3) Nutzungsdaten & Analysen',
+        p: `Wir können anonyme technische Daten (Schrittwerte, Nutzungsverhalten, Crash-Logs, Geräteinfos) erheben, um Leistung und Nutzererlebnis zu verbessern. Diese Daten werden aggregiert zur Optimierung verwendet.`,
+      },
+      {
+        h: '4) Werbung & Tracking',
+        p: `Wir verwenden Google AdMob zur Anzeige von Werbung. AdMob kann Geräte-ID, IP-Adresse und Interaktionsdaten erfassen und für personalisierte Werbung gemäß den Google-Richtlinien nutzen. Mehr Infos:`,
+        linkLabel: 'Google – Technologien & Anzeigen',
+        linkUrl: ADMOB_URL,
+      },
+      {
+        h: '5) Abonnements',
+        p: `Abos entfernen Werbung und werden über dein App-Store-Konto verwaltet. Monatliche/Jährliche Optionen können verfügbar sein. Automatische Verlängerung, wenn nicht mindestens 24 Stunden vorher gekündigt. Verwaltung im App-Store.`,
+      },
+      {
+        h: '6) Push-Benachrichtigungen',
+        p: `Wir können Erinnerungen, Updates oder Motivation senden. Du kannst Benachrichtigungen in den Geräteeinstellungen verwalten/deaktivieren.`,
+      },
+      {
+        h: '7) Externe Links',
+        p: `Die App kann Links zu Diensten wie Instagram oder X (Twitter) enthalten. Diese erheben Daten nach ihren eigenen Richtlinien. Für Inhalte/Praktiken Dritter sind wir nicht verantwortlich.`,
+      },
+      {
+        h: '8) Kinder',
+        p: `Nicht für Kinder unter 13 Jahren bestimmt. Wir erheben wissentlich keine Daten von Kindern. Wenn du anderes vermutest, kontaktiere uns bitte.`,
+      },
+      {
+        h: '9) Deine Rechte',
+        p: `Du kannst Zugriff, Berichtigung oder Löschung deiner Daten verlangen und Einwilligungen widerrufen. Kontakt: stay_active@outlook.de`,
+      },
+      {
+        h: '10) Sicherheit',
+        p: `Wir ergreifen angemessene Maßnahmen zum Schutz deiner Daten. Dennoch ist keine Übertragung/Speicherung zu 100% sicher.`,
+      },
+      {
+        h: '11) Änderungen',
+        p: `Wir können diese Erklärung anpassen. Die aktuelle Fassung samt Datum findest du stets hier. Die weitere Nutzung gilt als Zustimmung.`,
+      },
+      {
+        h: '12) Kontakt',
+        p: `Fragen? Schreibe an: stay_active@outlook.de`,
+      },
+    ],
+    toggleDe: 'Deutsch',
+    toggleEn: 'English',
+    deHeading: '— Deutsche Version —',
+  },
+};
+
+const Chip = ({ active, label, onPress }: { active: boolean; label: string; onPress: () => void }) => (
+  <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
+    <View style={[styles.chip, active && styles.chipActive]}>
+      <Text style={[styles.chipText, active && styles.chipTextActive]}>{label}</Text>
+    </View>
+  </TouchableOpacity>
+);
+
+const Card: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <View style={styles.card}>{children}</View>
+);
 
 const PrivacyPolicyScreen = ({ navigation }: { navigation: any }) => {
+  const [lang, setLang] = useState<Lang>('en');
+  const t = useMemo(() => copy[lang], [lang]);
+
   return (
-    <LinearGradient
-      colors={['#0f0c29', '#302b63', '#24243e']}
-      style={styles.container}
-    >
-      {/* Zurück Pfeil oben links */}
+    <LinearGradient colors={['#0f0c29', '#302b63', '#24243e']} style={styles.container}>
+      {/* Back button */}
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <Ionicons name="arrow-back" size={28} color="#00F0FF" />
       </TouchableOpacity>
 
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {/* English Version */}
-        <Text style={styles.title}>Privacy Policy</Text>
-        <Text style={styles.date}>Effective Date: May 30, 2025</Text>
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.title}>🛡️ {t.title}</Text>
+          <Text style={styles.date}>
+            {t.datePrefix} {t.date}
+          </Text>
 
-        <Text style={styles.heading}>1. Data We Collect</Text>
-        <Text style={styles.paragraph}>
-          We collect the following data that you provide voluntarily: height, weight, and gender. This data is used only for step tracking calculations and remains stored locally on your device. It is never transmitted to any external server unless explicitly mentioned.
-        </Text>
+          <View style={styles.langRow}>
+            <Chip active={lang === 'de'} label={copy.de.toggleDe} onPress={() => setLang('de')} />
+            <Chip active={lang === 'en'} label={copy.en.toggleEn} onPress={() => setLang('en')} />
+          </View>
+        </View>
 
-        <Text style={styles.heading}>2. Sensor Data & Device Access</Text>
-        <Text style={styles.paragraph}>
-          Our app uses your phone's motion sensors (accelerometer and step counter) to track physical activity. This data is processed locally and not shared externally.
-        </Text>
+        {/* Content */}
+        {t.sections.map((s, i) => (
+          <Card key={i}>
+            <Text style={styles.heading}>{s.h}</Text>
+            <Text style={styles.paragraph}>{s.p}</Text>
+            {!!s.linkUrl && (
+              <TouchableOpacity onPress={() => Linking.openURL(s.linkUrl)} activeOpacity={0.8}>
+                <Text style={styles.linkText}>🔗 {s.linkLabel}</Text>
+              </TouchableOpacity>
+            )}
+          </Card>
+        ))}
 
-        <Text style={styles.heading}>3. Usage Data and Analytics</Text>
-        <Text style={styles.paragraph}>
-          We may collect anonymous technical data such as step counts, usage patterns, crash logs, and device information to improve performance and enhance user experience. This data is aggregated and used for app optimization.
-        </Text>
-
-        <Text style={styles.heading}>4. Advertising & Tracking</Text>
-        <Text style={styles.paragraph}>
-          We use Google AdMob to display ads. AdMob may collect device ID, IP address, and interaction data. This data may be used for personalized advertising under Google’s policies. Learn more: https://policies.google.com/technologies/ads.
-        </Text>
-
-        <Text style={styles.heading}>5. Subscriptions</Text>
-        <Text style={styles.paragraph}>
-          Subscriptions remove ads and are handled securely by your app store. Monthly and yearly options are available. Subscriptions automatically renew unless canceled at least 24 hours before the renewal date. You can manage subscriptions through your app store account.
-        </Text>
-
-        <Text style={styles.heading}>6. Push Notifications</Text>
-        <Text style={styles.paragraph}>
-          The app may send notifications such as reminders, updates, or motivational messages. You can manage or disable notifications through your device’s settings.
-        </Text>
-
-        <Text style={styles.heading}>7. External Links</Text>
-        <Text style={styles.paragraph}>
-          The app contains links to external platforms like Instagram, Snapchat, and Twitter. These platforms may collect data in accordance with their privacy policies. We are not responsible for the content or privacy practices of third-party websites.
-        </Text>
-
-        <Text style={styles.heading}>8. Children's Privacy</Text>
-        <Text style={styles.paragraph}>
-          This app is not intended for children under 13. We do not knowingly collect or solicit data from children under this age. If you believe we have unintentionally collected data from a child, please contact us immediately.
-        </Text>
-
-        <Text style={styles.heading}>9. Your Rights</Text>
-        <Text style={styles.paragraph}>
-          You have the right to access, correct, or delete your personal data. You can also withdraw your consent to data collection. For any of these actions, please contact us at stay_active@outlook.de.
-        </Text>
-
-        <Text style={styles.heading}>10. Security</Text>
-        <Text style={styles.paragraph}>
-          We take reasonable steps to protect your personal data from unauthorized access, alteration, or destruction. However, no method of data transmission over the internet or method of electronic storage is 100% secure.
-        </Text>
-
-        <Text style={styles.heading}>11. Changes to This Privacy Policy</Text>
-        <Text style={styles.paragraph}>
-          We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated effective date. Continued use of the app after such changes constitutes your acceptance of the updated Privacy Policy.
-        </Text>
-
-        <Text style={styles.heading}>12. Contact Us</Text>
-        <Text style={styles.paragraph}>
-          If you have any questions about this Privacy Policy or our practices, you can contact us at: stay_active@outlook.de.
-        </Text>
-
-        {/* --- German Version --- */}
-        <Text style={styles.title}>Datenschutzerklärung</Text>
-        <Text style={styles.date}>Gültig ab: 30. Mai 2025</Text>
-
-        <Text style={styles.heading}>1. Erhobene Daten</Text>
-        <Text style={styles.paragraph}>
-          Wir erheben die folgenden Daten, die du freiwillig bereitstellst: Größe, Gewicht und Geschlecht. Diese Daten werden nur für die Berechnungen der Schrittmessung verwendet und bleiben lokal auf deinem Gerät gespeichert. Sie werden niemals an einen externen Server übertragen, es sei denn, dies wird ausdrücklich erwähnt.
-        </Text>
-
-        <Text style={styles.heading}>2. Sensordaten und Gerätezugriff</Text>
-        <Text style={styles.paragraph}>
-          Unsere App verwendet die Bewegungssensoren deines Telefons (Beschleunigungsmesser und Schrittzähler), um körperliche Aktivität zu verfolgen. Diese Daten werden lokal verarbeitet und nicht extern geteilt.
-        </Text>
-
-        <Text style={styles.heading}>3. Nutzungsdaten und Analysen</Text>
-        <Text style={styles.paragraph}>
-          Wir können anonyme technische Daten wie Schrittzählergebnisse, Nutzungsgewohnheiten, Fehlerprotokolle und Geräteinformationen erheben. Diese Daten werden aggregiert und zur Optimierung der App verwendet.
-        </Text>
-
-        <Text style={styles.heading}>4. Werbung & Tracking</Text>
-        <Text style={styles.paragraph}>
-          Wir verwenden Google AdMob, um Werbung anzuzeigen. AdMob kann Geräte-ID, IP-Adresse und Interaktionsdaten sammeln. Diese Daten können für personalisierte Werbung gemäß den Richtlinien von Google verwendet werden. Weitere Informationen: https://policies.google.com/technologies/ads.
-        </Text>
-
-        <Text style={styles.heading}>5. Abonnements</Text>
-        <Text style={styles.paragraph}>
-          Abonnements entfernen Werbung und werden sicher über dein App Store-Konto verwaltet. Es sind monatliche und jährliche Optionen verfügbar. Abonnements erneuern sich automatisch, es sei denn, sie werden mindestens 24 Stunden vor dem Verlängerungsdatum gekündigt. Du kannst Abonnements über dein App Store-Konto verwalten.
-        </Text>
-
-        <Text style={styles.heading}>6. Push-Benachrichtigungen</Text>
-        <Text style={styles.paragraph}>
-          Die App kann Benachrichtigungen senden, wie z. B. Erinnerungen, Updates oder motivierende Nachrichten. Du kannst sie in den Einstellungen deines Geräts verwalten oder deaktivieren.
-        </Text>
-
-        <Text style={styles.heading}>7. Externe Links</Text>
-        <Text style={styles.paragraph}>
-          Die App enthält Links zu externen Plattformen wie Instagram, Snapchat und Twitter. Diese Plattformen können gemäß ihren eigenen Datenschutzrichtlinien Daten erheben. Wir sind nicht verantwortlich für den Inhalt oder die Datenschutzpraktiken von Drittanbieterseiten.
-        </Text>
-
-        <Text style={styles.heading}>8. Datenschutz von Kindern</Text>
-        <Text style={styles.paragraph}>
-          Diese App ist nicht für Kinder unter 13 Jahren bestimmt. Wir erheben nicht wissentlich Daten von Kindern unter diesem Alter. Falls du glaubst, dass wir unbeabsichtigt Daten von einem Kind erhoben haben, kontaktiere uns bitte umgehend.
-        </Text>
-
-        <Text style={styles.heading}>9. Deine Rechte</Text>
-        <Text style={styles.paragraph}>
-          Du hast das Recht, auf deine Daten zuzugreifen, sie zu korrigieren oder zu löschen. Du kannst auch deine Zustimmung zur Datenerhebung widerrufen. Für diese Anliegen kontaktiere uns bitte unter stay_active@outlook.de.
-        </Text>
-
-        <Text style={styles.heading}>10. Sicherheit</Text>
-        <Text style={styles.paragraph}>
-          Wir unternehmen angemessene Schritte, um deine persönlichen Daten vor unbefugtem Zugriff, Änderung oder Zerstörung zu schützen. Allerdings ist keine Methode der Datenübertragung über das Internet oder der elektronischen Speicherung 100% sicher.
-        </Text>
-
-        <Text style={styles.heading}>11. Änderungen dieser Datenschutzerklärung</Text>
-        <Text style={styles.paragraph}>
-          Wir können diese Datenschutzerklärung von Zeit zu Zeit aktualisieren. Alle Änderungen werden auf dieser Seite mit einem aktualisierten Gültigkeitsdatum veröffentlicht. Die fortgesetzte Nutzung der App nach solchen Änderungen bedeutet, dass du die aktualisierte Datenschutzerklärung akzeptierst.
-        </Text>
-
-        <Text style={styles.heading}>12. Kontakt</Text>
-        <Text style={styles.paragraph}>
-          Wenn du Fragen zu dieser Datenschutzerklärung oder unseren Praktiken hast, kannst du uns unter stay_active@outlook.de kontaktieren.
-        </Text>
+        <View style={{ height: 28 }} />
       </ScrollView>
     </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scrollContainer: {
-    padding: 20,
-  },
+  container: { flex: 1 },
+  scrollContainer: { padding: 20, paddingTop: 84 },
+  header: { alignItems: 'center', marginBottom: 8 },
   title: {
     fontSize: 28,
-    fontWeight: 'bold',
-    color: '#00f2ff',
-    marginBottom: 10,
+    fontWeight: '900',
+    color: '#00F2FF',
     textAlign: 'center',
-    marginTop: 70, // Title further down
+    letterSpacing: 0.4,
+    textShadowColor: 'rgba(0, 242, 255, 0.35)',
+    textShadowOffset: { width: 0, height: 4 },
+    textShadowRadius: 12,
   },
-  date: {
-    fontSize: 16,
-    color: '#fff',
-    textAlign: 'center',
-    marginBottom: 30,
+  date: { fontSize: 14, color: '#E8ECF3', opacity: 0.8, marginTop: 6, marginBottom: 8 },
+  langRow: { flexDirection: 'row', gap: 10, marginTop: 6 },
+  chip: {
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.18)',
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 999,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+  },
+  chipActive: {
+    backgroundColor: 'rgba(0, 242, 255, 0.18)',
+    borderColor: 'rgba(0, 242, 255, 0.6)',
+  },
+  chipText: { color: '#E6E9EF', fontWeight: '800', letterSpacing: 0.2 },
+  chipTextActive: { color: '#07131a' },
+
+  card: {
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    borderColor: 'rgba(255,255,255,0.14)',
+    borderWidth: 1,
+    borderRadius: 16,
+    padding: 16,
+    marginTop: 12,
+    shadowColor: '#00F2FF',
+    shadowOpacity: 0.08,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 6 },
   },
   heading: {
     fontSize: 18,
-    color: '#ff00cc',
-    fontWeight: 'bold',
-    marginTop: 20,
-    marginBottom: 5,
+    color: '#FF00CC',
+    fontWeight: '900',
+    marginBottom: 8,
   },
   paragraph: {
     fontSize: 16,
-    color: '#d1d1d1',
+    color: '#D1D1D1',
     lineHeight: 22,
-    marginBottom: 10,
   },
-  backButton: {
-    position: 'absolute',
-    top: 50,  // Zurück-Pfeil oben links
-    left: 20,
-    zIndex: 1,
+  linkText: {
+    marginTop: 8,
+    fontSize: 16,
+    fontWeight: '800',
+    color: '#00F2FF',
+    textDecorationLine: 'underline',
   },
+  backButton: { position: 'absolute', top: 50, left: 20, zIndex: 10 },
 });
 
 export default PrivacyPolicyScreen;
