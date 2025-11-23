@@ -7,53 +7,48 @@
   <meta name="color-scheme" content="dark" />
   <meta name="description" content="Stay Active – Terms of Service / Nutzungsbedingungen (EN/DE)." />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%9C%3C/text%3E%3C/svg%3E">
+
   <style>
     :root{
       /* Neon palette */
-      --brand:#00e5ff;      /* cyan */
-      --accent:#ff00cc;     /* pink */
-      --accent2:#9b4dff;    /* violet */
-      --text:#e6e9ef;       /* main text */
-      --muted:#b5bdc8;      /* secondary text */
+      --brand:#00e5ff;
+      --accent:#ff00cc;
+      --accent2:#9b4dff;
+      --ok:#22c55e;
 
-      /* Surfaces */
-      --bg:#08101a;         /* constant dark base */
+      /* Text & surfaces */
+      --text:#e6e9ef;
+      --muted:#b5bdc8;
+      --bg:#08101a;
       --bg-soft:#0b1421;
       --border:rgba(255,255,255,.12);
-
       --card:rgba(255,255,255,.06);
       --card-bd:rgba(255,255,255,.16);
 
       --radius:16px;
+      --radius-sm:12px;
+      --shadow:0 10px 24px rgba(0,0,0,.28);
     }
 
     *{box-sizing:border-box}
     html,body{height:100%}
+
+    /* ===== CONSTANT BACKGROUND + EMOJI LAYER (unchanged) ===== */
     body{
       margin:0; color:var(--text);
       font-family:system-ui,-apple-system,"Segoe UI",Roboto,Inter,Arial,sans-serif;
-      /* CONSTANT background (no hue shift on scroll) */
       background:
         radial-gradient(1200px 800px at 85% -10%, rgba(155,77,255,.14), transparent 60%),
         radial-gradient(900px 600px at 10% -20%, rgba(0,229,255,.16), transparent 58%),
         linear-gradient(180deg, var(--bg), var(--bg-soft));
-      background-attachment: fixed, fixed, fixed; /* stays the same while scrolling */
+      background-attachment:fixed, fixed, fixed;
       -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-      overflow-x:hidden;
-      position:relative;
-      isolation:isolate; /* keep emoji layer behind content */
+      overflow-x:hidden; isolation:isolate; position:relative;
     }
-
-    /* FULL-PAGE EMOJI LAYER (repeats and is fixed) */
     body::before{
       content:"";
-      position:fixed;
-      inset:0;
-      z-index:-1;
-      pointer-events:none;
-      opacity:.10;                /* subtle */
-      filter:blur(.25px);         /* tiny blur for softness */
-      /* Tiled SVG with emojis; each tile is 220x220px */
+      position:fixed; inset:0; z-index:-1; pointer-events:none;
+      opacity:.10; filter:blur(.25px);
       background-image:
         url("data:image/svg+xml;utf8,\
 <svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'>\
@@ -69,142 +64,227 @@
     <text x='148' y='182'>🧠</text>\
   </g>\
 </svg>");
-      background-size:220px 220px; /* repeat size */
-      background-repeat:repeat;
-      background-attachment:fixed; /* anchored to viewport */
+      background-size:220px 220px; background-repeat:repeat; background-attachment:fixed;
     }
 
+    /* ===== Global UI ===== */
     a{color:var(--brand); text-decoration:underline}
     a:focus-visible,button:focus-visible{outline:2px solid var(--brand); outline-offset:3px; border-radius:12px}
-
     .wrap{max-width:980px; margin:0 auto; padding:20px}
 
-    /* Sticky header */
-    header{
-      position:sticky; top:0; z-index:10; backdrop-filter:blur(6px);
+    /* Top app bar with breadcrumbs */
+    .topbar{
+      position:sticky; top:0; z-index:10; backdrop-filter:blur(10px);
       background:linear-gradient(180deg, rgba(8,16,26,.75), rgba(8,16,26,.35), rgba(8,16,26,0));
       border-bottom:1px solid var(--border);
     }
-    .bar{display:flex; align-items:center; justify-content:space-between; gap:12px; margin:10px 0 18px}
-    .back{
-      display:inline-flex; align-items:center; gap:.5rem; padding:10px 14px; border-radius:12px;
-      border:1px solid var(--border); color:var(--text); text-decoration:none;
-      background:rgba(255,255,255,.05);
+    .toolbar{
+      display:flex; gap:12px; align-items:center; justify-content:space-between;
+      padding:10px 0 14px;
     }
-    .back:hover{filter:brightness(1.08)}
+    .crumbs{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+    .crumb{
+      display:inline-flex; gap:.5rem; align-items:center; padding:8px 12px; border-radius:12px;
+      border:1px solid var(--border); background:rgba(255,255,255,.05);
+      text-decoration:none; color:var(--text); font-weight:800; letter-spacing:.2px;
+    }
+    .crumb:hover{filter:brightness(1.06)}
     .chips{display:flex; gap:10px; flex-wrap:wrap}
     .chip{
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.06);
-      padding:8px 14px; border-radius:999px; font-weight:800; letter-spacing:.2px; color:var(--text);
-      cursor:pointer; user-select:none;
-      transition:filter .2s ease, transform .2s ease, border-color .2s ease;
+      border:1px solid var(--border); background:rgba(255,255,255,.06);
+      padding:8px 14px; border-radius:999px; font-weight:900; letter-spacing:.2px; color:var(--text);
+      transition:transform .2s ease, filter .2s ease, border-color .2s ease;
+      user-select:none; cursor:pointer;
     }
     .chip[aria-pressed="true"]{
       background:linear-gradient(90deg, var(--brand), var(--accent2));
-      border-color:transparent;
-      color:#06141a;
-      transform:translateY(-1px);
+      border-color:transparent; color:#06141a; transform:translateY(-1px);
       box-shadow:0 8px 22px rgba(0,229,255,.18);
     }
 
+    /* Headline */
+    .headline{
+      text-align:center; margin:18px 0 10px;
+    }
     .title{
-      margin:64px 0 4px; text-align:center; font-weight:900; letter-spacing:.3px;
-      font-size:clamp(22px,4vw,32px);
-      background:linear-gradient(90deg, var(--brand), var(--accent2));
+      margin:46px 0 4px; font-weight:1000; letter-spacing:.3px;
+      font-size:clamp(24px,4vw,36px);
+      background:linear-gradient(90deg,var(--brand),var(--accent2));
       -webkit-background-clip:text; background-clip:text; color:transparent;
-      text-shadow:0 6px 18px rgba(0,229,255,.22);
+      text-shadow:0 6px 20px rgba(0,229,255,.22);
     }
-    .date{margin:0 0 12px; text-align:center; color:var(--muted); font-weight:700}
+    .date{margin:0; color:var(--muted); font-weight:700}
 
-    main{padding:6px 0 40px}
+    /* Info ribbon */
+    .ribbon{
+      margin:16px 0 6px; border:1px dashed var(--border); border-radius:14px;
+      padding:10px 14px; background:rgba(255,255,255,.04);
+      display:flex; gap:10px; align-items:center; color:var(--muted); font-weight:700;
+    }
+
+    main{padding:8px 0 46px}
+
+    /* Table of contents */
+    .toc{
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04));
+      border:1px solid var(--card-bd); border-radius:var(--radius); box-shadow:var(--shadow);
+      padding:16px; margin-top:12px;
+    }
+    .toc h2{margin:0 0 8px; font-size:16px; color:var(--brand); letter-spacing:.2px}
+    .toc ul{margin:.2rem 0 .2rem 1.1rem}
+    .toc li{margin:.2rem 0}
+    .toc a{ text-decoration:none; color:var(--text) }
+    .toc a:hover{ color:var(--brand) }
+
+    /* Content cards */
     .card{
-      background:var(--card); border:1px solid var(--card-bd); border-radius:var(--radius);
-      padding:16px; margin-top:12px; box-shadow:0 10px 22px rgba(0,0,0,.28);
-      backdrop-filter:saturate(120%) blur(2px);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04));
+      border:1px solid var(--card-bd); border-radius:var(--radius); box-shadow:var(--shadow);
+      padding:18px; margin-top:14px; backdrop-filter:saturate(120%) blur(2px);
     }
-    h2{
-      margin:.2rem 0 .6rem; font-size:18px; font-weight:900; letter-spacing:.2px;
-      color:var(--accent);
+    .card h2{
+      margin:.2rem 0 .6rem; font-size:18px; font-weight:1000; letter-spacing:.2px;
+      background:linear-gradient(90deg,var(--accent),var(--accent2));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
     }
-    p{margin:.35rem 0; line-height:1.6}
-    ul{margin:.2rem 0 .2rem 1.2rem}
-    li{margin:.2rem 0}
-    .hidden{display:none}
+    p{margin:.45rem 0; line-height:1.65}
+    ul{margin:.35rem 0 .35rem 1.2rem}
+    li{margin:.26rem 0; line-height:1.6; list-style:none; position:relative; padding-left:.8rem}
+    li::before{
+      content:""; width:.42rem; height:.42rem; border-radius:50%;
+      background:linear-gradient(90deg,var(--brand),var(--accent));
+      position:absolute; left:0; top:.62rem; box-shadow:0 0 10px rgba(0,229,255,.35);
+    }
 
+    /* Sticky back-to-top */
+    .to-top{
+      position:fixed; right:16px; bottom:16px; z-index:20;
+      border-radius:999px; padding:12px 14px; border:1px solid var(--border);
+      background:rgba(255,255,255,.06); color:var(--text); font-weight:900; letter-spacing:.2px;
+      text-decoration:none; box-shadow:var(--shadow);
+    }
+    .to-top:hover{filter:brightness(1.08)}
+
+    /* Footer */
     footer{
       border-top:1px solid var(--border);
       background:linear-gradient(180deg, rgba(8,16,26,.65), rgba(8,16,26,.35), rgba(8,16,26,.0));
-      color:var(--muted); padding:20px; text-align:center; font-weight:600; letter-spacing:.2px;
+      color:var(--muted); padding:22px; text-align:center; font-weight:700; letter-spacing:.2px;
     }
+    .foot-links{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:8px}
+    .chip-link{
+      display:inline-flex; align-items:center; gap:.5rem; padding:8px 12px;
+      border:1px solid var(--border); border-radius:12px; background:rgba(255,255,255,.05);
+      text-decoration:none; color:var(--text); font-weight:800; letter-spacing:.2px;
+    }
+    .chip-link:hover{filter:brightness(1.06)}
   </style>
 </head>
 <body>
-  <header>
-    <div class="wrap">
-      <div class="bar">
-        <a class="back" href="index.html" id="backBtn">← Back</a>
-        <div class="chips" role="group" aria-label="Choose language">
-          <button id="btn-de" class="chip" type="button" aria-pressed="false">Deutsch</button>
-          <button id="btn-en" class="chip" type="button" aria-pressed="true">English</button>
-        </div>
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="wrap toolbar">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a class="crumb" href="index.html">🏠 Home</a>
+        <a class="crumb" href="privacy.html">🔒 Privacy</a>
+        <a class="crumb" href="upgrade.html">⭐ Upgrade</a>
+        <a class="crumb" href="impressum.html">ℹ️ Imprint</a>
+      </nav>
+      <div class="chips" role="group" aria-label="Choose language">
+        <button id="btn-de" class="chip" type="button" aria-pressed="false">Deutsch</button>
+        <button id="btn-en" class="chip" type="button" aria-pressed="true">English</button>
       </div>
-      <h1 class="title" id="title">📜 Terms of Service</h1>
-      <p class="date"><span id="datePrefix">Effective Date:</span> <span id="dateValue">May 30, 2025</span></p>
+    </div>
+  </div>
+
+  <!-- Headline -->
+  <header class="wrap headline" id="top">
+    <h1 class="title" id="title">📜 Terms of Service</h1>
+    <p class="date"><span id="datePrefix">Effective Date:</span> <span id="dateValue">May 30, 2025</span></p>
+
+    <div class="ribbon" id="ribbon">
+      <span>✅</span>
+      <span id="ribbonText">No account required · Local processing · Ad removal available via subscription</span>
     </div>
   </header>
 
   <main class="wrap">
+    <!-- Table of contents -->
+    <aside class="toc" aria-label="Table of contents">
+      <h2 id="tocTitle">Contents</h2>
+      <ul>
+        <li><a href="#s1">1) Purpose of the App</a></li>
+        <li><a href="#s2">2) Eligibility</a></li>
+        <li><a href="#s3">3) Subscriptions</a></li>
+        <li><a href="#s4">4) Advertisements</a></li>
+        <li><a href="#s5">5) Push Notifications</a></li>
+        <li><a href="#s6">6) User Data</a></li>
+        <li><a href="#s7">7) Limitation of Liability</a></li>
+        <li><a href="#s8">8) Intellectual Property</a></li>
+        <li><a href="#s9">9) Termination</a></li>
+        <li><a href="#s10">10) Modifications</a></li>
+        <li><a href="#s11">11) Contact</a></li>
+      </ul>
+    </aside>
+
     <!-- EN -->
-    <section id="sec-en">
-      <article class="card"><h2>1) Purpose of the App</h2><p>The app helps you track physical activity via step counting and related stats. It is for informational and motivational purposes only and does not constitute medical advice.</p></article>
-      <article class="card"><h2>2) Eligibility</h2><p>You must be at least 13 years old to use the app.</p></article>
-      <article class="card"><h2>3) Subscriptions</h2><ul>
+    <section id="sec-en" aria-label="Terms (EN)">
+      <article class="card" id="s1"><h2>1) Purpose of the App</h2><p>The app helps you track physical activity via step counting and related stats. It is for informational and motivational purposes only and does not constitute medical advice.</p></article>
+      <article class="card" id="s2"><h2>2) Eligibility</h2><p>You must be at least 13 years old to use the app.</p></article>
+      <article class="card" id="s3"><h2>3) Subscriptions</h2><ul>
         <li>Subscriptions remove ads and are managed by your app store account.</li>
         <li>Plans may include monthly or yearly options.</li>
         <li>Auto-renewal unless cancelled at least 24 hours before renewal.</li>
         <li>No refunds for unused periods.</li>
       </ul></article>
-      <article class="card"><h2>4) Advertisements</h2><p>The free version shows ads. We are not responsible for the accuracy, content, or legality of third-party ads.</p></article>
-      <article class="card"><h2>5) Push Notifications</h2><p>You may receive reminders, updates, or motivational content. Manage/disable notifications in your device settings.</p></article>
-      <article class="card"><h2>6) User Data</h2><p>No account is required. Optional height, weight, and gender inputs can improve accuracy. Personal data is stored locally on your device. We do not transmit or sell personal data.</p></article>
-      <article class="card"><h2>7) Limitation of Liability</h2><ul>
+      <article class="card" id="s4"><h2>4) Advertisements</h2><p>The free version shows ads. We are not responsible for the accuracy, content, or legality of third-party ads.</p></article>
+      <article class="card" id="s5"><h2>5) Push Notifications</h2><p>You may receive reminders, updates, or motivational content. Manage/disable notifications in your device settings.</p></article>
+      <article class="card" id="s6"><h2>6) User Data</h2><p>No account is required. Optional height, weight, and gender inputs can improve accuracy. Personal data is stored locally on your device. We do not transmit or sell personal data.</p></article>
+      <article class="card" id="s7"><h2>7) Limitation of Liability</h2><ul>
         <li>We are not responsible for inaccuracies due to device sensors.</li>
         <li>We are not liable for health issues, injuries, or losses related to app use.</li>
         <li>Use the app at your own risk.</li>
       </ul></article>
-      <article class="card"><h2>8) Intellectual Property</h2><p>All content, graphics, and code are the property of the developer. You may not copy, reverse-engineer, or distribute any part of the app without permission.</p></article>
-      <article class="card"><h2>9) Termination</h2><p>We may suspend or terminate access if you violate these Terms or misuse the service.</p></article>
-      <article class="card"><h2>10) Modifications</h2><p>We may update these Terms from time to time. Continued use after changes means you accept the updated Terms.</p></article>
-      <article class="card"><h2>11) Contact</h2><p>Email: <a href="mailto:stay_active@outlook.de">stay_active@outlook.de</a></p></article>
+      <article class="card" id="s8"><h2>8) Intellectual Property</h2><p>All content, graphics, and code are the property of the developer. You may not copy, reverse-engineer, or distribute any part of the app without permission.</p></article>
+      <article class="card" id="s9"><h2>9) Termination</h2><p>We may suspend or terminate access if you violate these Terms or misuse the service.</p></article>
+      <article class="card" id="s10"><h2>10) Modifications</h2><p>We may update these Terms from time to time. Continued use after changes means you accept the updated Terms.</p></article>
+      <article class="card" id="s11"><h2>11) Contact</h2><p>Email: <a href="mailto:stay_active@outlook.de">stay_active@outlook.de</a></p></article>
     </section>
 
     <!-- DE -->
-    <section id="sec-de" class="hidden">
-      <article class="card"><h2>1) Zweck der App</h2><p>Die App dient der Erfassung körperlicher Aktivität (Schritte, Statistiken). Sie ist rein informativ/motivierend und stellt keine medizinische Beratung dar.</p></article>
-      <article class="card"><h2>2) Berechtigung</h2><p>Für die Nutzung musst du mindestens 13 Jahre alt sein.</p></article>
-      <article class="card"><h2>3) Abonnements</h2><ul>
+    <section id="sec-de" class="hidden" aria-label="Nutzungsbedingungen (DE)">
+      <article class="card" id="s1-de"><h2>1) Zweck der App</h2><p>Die App dient der Erfassung körperlicher Aktivität (Schritte, Statistiken). Sie ist rein informativ/motivierend und stellt keine medizinische Beratung dar.</p></article>
+      <article class="card" id="s2-de"><h2>2) Berechtigung</h2><p>Für die Nutzung musst du mindestens 13 Jahre alt sein.</p></article>
+      <article class="card" id="s3-de"><h2>3) Abonnements</h2><ul>
         <li>Abos entfernen Werbung und werden über dein App-Store-Konto verwaltet.</li>
         <li>Es können monatliche/jährliche Optionen angeboten werden.</li>
         <li>Automatische Verlängerung, sofern nicht mindestens 24 Stunden vorher gekündigt.</li>
         <li>Keine Erstattung für ungenutzte Zeiträume.</li>
       </ul></article>
-      <article class="card"><h2>4) Werbung</h2><p>Die kostenlose Version zeigt Werbung. Für Richtigkeit, Inhalte oder Rechtmäßigkeit von Drittanbieter-Werbung übernehmen wir keine Verantwortung.</p></article>
-      <article class="card"><h2>5) Push-Benachrichtigungen</h2><p>Du kannst Erinnerungen, Updates oder motivierende Inhalte erhalten. Verwaltung/Deaktivierung in den Geräteeinstellungen.</p></article>
-      <article class="card"><h2>6) Benutzerdaten</h2><p>Kein Konto erforderlich. Optionale Angaben (Größe, Gewicht, Geschlecht) verbessern die Genauigkeit. Persönliche Daten werden lokal auf deinem Gerät gespeichert. Keine Übermittlung/kein Verkauf persönlicher Daten.</p></article>
-      <article class="card"><h2>7) Haftungsbeschränkung</h2><ul>
+      <article class="card" id="s4-de"><h2>4) Werbung</h2><p>Die kostenlose Version zeigt Werbung. Für Richtigkeit, Inhalte oder Rechtmäßigkeit von Drittanbieter-Werbung übernehmen wir keine Verantwortung.</p></article>
+      <article class="card" id="s5-de"><h2>5) Push-Benachrichtigungen</h2><p>Du kannst Erinnerungen, Updates oder motivierende Inhalte erhalten. Verwaltung/Deaktivierung in den Geräteeinstellungen.</p></article>
+      <article class="card" id="s6-de"><h2>6) Benutzerdaten</h2><p>Kein Konto erforderlich. Optionale Angaben (Größe, Gewicht, Geschlecht) verbessern die Genauigkeit. Persönliche Daten werden lokal auf deinem Gerät gespeichert. Keine Übermittlung/kein Verkauf persönlicher Daten.</p></article>
+      <article class="card" id="s7-de"><h2>7) Haftungsbeschränkung</h2><ul>
         <li>Keine Haftung für Ungenauigkeiten durch Gerätesensoren.</li>
         <li>Keine Haftung für gesundheitliche Probleme, Verletzungen oder Verluste im Zusammenhang mit der App-Nutzung.</li>
         <li>Nutzung auf eigenes Risiko.</li>
       </ul></article>
-      <article class="card"><h2>8) Geistiges Eigentum</h2><p>Alle Inhalte, Grafiken und der Code sind Eigentum des Entwicklers. Ohne Erlaubnis kein Kopieren, Reverse-Engineering oder Verbreitung.</p></article>
-      <article class="card"><h2>9) Beendigung</h2><p>Bei Verstößen gegen diese Bedingungen oder Missbrauch kann der Zugang gesperrt/beendet werden.</p></article>
-      <article class="card"><h2>10) Änderungen</h2><p>Diese Bedingungen können angepasst werden. Die weitere Nutzung nach Änderungen gilt als Zustimmung.</p></article>
-      <article class="card"><h2>11) Kontakt</h2><p>E-Mail: <a href="mailto:stay_active@outlook.de">stay_active@outlook.de</a></p></article>
+      <article class="card" id="s8-de"><h2>8) Geistiges Eigentum</h2><p>Alle Inhalte, Grafiken und der Code sind Eigentum des Entwicklers. Ohne Erlaubnis kein Kopieren, Reverse-Engineering oder Verbreitung.</p></article>
+      <article class="card" id="s9-de"><h2>9) Beendigung</h2><p>Bei Verstößen gegen diese Bedingungen oder Missbrauch kann der Zugang gesperrt/beendet werden.</p></article>
+      <article class="card" id="s10-de"><h2>10) Änderungen</h2><p>Diese Bedingungen können angepasst werden. Die weitere Nutzung nach Änderungen gilt als Zustimmung.</p></article>
+      <article class="card" id="s11-de"><h2>11) Kontakt</h2><p>E-Mail: <a href="mailto:stay_active@outlook.de">stay_active@outlook.de</a></p></article>
     </section>
   </main>
 
+  <a class="to-top" href="#top" aria-label="Back to top">↑</a>
+
   <footer>
+    <div class="foot-links">
+      <a class="chip-link" id="f-privacy" href="privacy.html">🔒 Privacy / Datenschutz</a>
+      <a class="chip-link" id="f-terms" href="terms.html">📜 Terms / Nutzungsbedingungen</a>
+      <a class="chip-link" id="f-upgrade" href="upgrade.html">⭐ Upgrade</a>
+      <a class="chip-link" id="f-imprint" href="impressum.html">ℹ️ Imprint / Impressum</a>
+    </div>
     © <span id="y"></span> Stay Active
   </footer>
 
@@ -212,17 +292,40 @@
     // Year
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Back button: try history, else fall back to index.html (no hard refresh if possible)
-    document.getElementById('backBtn').addEventListener('click', function (e) {
-      if (document.referrer && document.referrer !== location.href) {
-        e.preventDefault();
-        history.back();
-      }
-    });
+    // Keep ?lang on all footer/breadcrumb links
+    function propagateLangToLinks(lang){
+      const ids = ['f-privacy','f-terms','f-upgrade','f-imprint'];
+      const crumbs = Array.from(document.querySelectorAll('.crumb'));
+      ids.forEach(id=>{
+        const a = document.getElementById(id);
+        if(!a) return;
+        const u = new URL(a.getAttribute('href'), location.href);
+        u.searchParams.set('lang', lang);
+        a.setAttribute('href', u.pathname.replace(location.origin,'') + u.search);
+      });
+      crumbs.forEach(a=>{
+        const u = new URL(a.getAttribute('href'), location.href);
+        u.searchParams.set('lang', lang);
+        a.setAttribute('href', u.pathname.replace(location.origin,'') + u.search);
+      });
+    }
 
+    // Language toggle
     const dict = {
-      en: { title:'📜 Terms of Service', datePrefix:'Effective Date:', date:'May 30, 2025' },
-      de: { title:'📜 Nutzungsbedingungen', datePrefix:'Gültig ab:', date:'30. Mai 2025' }
+      en: {
+        title:'📜 Terms of Service',
+        datePrefix:'Effective Date:',
+        date:'May 30, 2025',
+        ribbon:'No account required · Local processing · Ad removal available via subscription',
+        toc:'Contents'
+      },
+      de: {
+        title:'📜 Nutzungsbedingungen',
+        datePrefix:'Gültig ab:',
+        date:'30. Mai 2025',
+        ribbon:'Kein Konto erforderlich · Lokale Verarbeitung · Werbefrei per Abo möglich',
+        toc:'Inhalt'
+      }
     };
 
     function setLang(l){
@@ -237,12 +340,15 @@
       document.getElementById('title').textContent = d.title;
       document.getElementById('datePrefix').textContent = d.datePrefix;
       document.getElementById('dateValue').textContent = d.date;
+      document.getElementById('ribbonText').textContent = d.ribbon;
+      document.getElementById('tocTitle').textContent = d.toc;
 
-      // keep ?lang in URL and remember choice
+      // keep ?lang in URL + links & remember choice
       const url = new URL(location.href);
       url.searchParams.set('lang', isDe ? 'de' : 'en');
       history.replaceState({}, '', url.toString());
       localStorage.setItem('sa_terms_lang', isDe ? 'de' : 'en');
+      propagateLangToLinks(isDe ? 'de' : 'en');
     }
 
     const qs = new URLSearchParams(location.search).get('lang');
