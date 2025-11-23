@@ -2,230 +2,225 @@
 <html lang="de">
 <head>
   <meta charset="utf-8" />
+  <title>Stay Active • Upgrade</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Upgrade · Stay Active</title>
-  <meta name="description" content="Stay Active – Free vs. Premium. Preise, Vorteile, Rechtliches. / Pricing, benefits, legal." />
   <meta name="color-scheme" content="dark" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <meta name="description" content="Stay Active – Free vs. Pro (Monat/Jahr). Preise, Vorteile, Rechtliches. / Pricing, benefits, legal." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
+
   <style>
     :root{
-      --bg:#0b0d19;        /* dunkel */
-      --bg2:#0f1030;
-      --card:#0f1529;      /* Kartenhintergrund */
-      --line:rgba(255,255,255,.10);
-      --text:#eaf1ff;
-      --muted:#9fb0c6;
+      /* Brand / Neon – same across pages */
+      --brand:#00e5ff;        /* Cyan Neon */
+      --accent:#9b4dff;       /* Violet Neon */
+      --ok:#22c55e;
 
-      --c1:#20D5F4;        /* Cyan */
-      --c2:#9A4DFF;        /* Violett */
-      --c3:#FF00CC;        /* Pink für Headlines */
-      --ok:#22c55e;        /* Check */
+      /* Surfaces */
+      --bg:#081018;           /* fixed, uniform base tone */
+      --bg-soft:#0b121b;
+      --card:#0f1621;
+      --border:#15202b;
+      --text:#e6e9ef;
+      --muted:#9aa3af;
 
       --radius:18px;
-      --shadow:0 14px 40px rgba(0,0,0,.45);
-      --glow:0 0 140px color-mix(in oklab, var(--c1) 16%, transparent);
+      --blur:44px;
+      --emoji-alpha:.13;
     }
 
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0; color:var(--text);
-      font-family:ui-sans-serif,system-ui,Inter,Segoe UI,Roboto,Arial;
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Inter,Arial,sans-serif;
+      line-height:1.7; overflow-x:hidden; background:var(--bg);
+      position:relative; isolation:isolate;
+    }
+
+    /* Persistent glow + vignette + emoji background */
+    .glow{
+      position:fixed; inset:-10vmax; z-index:-2; pointer-events:none; filter:blur(var(--blur)); opacity:.9;
       background:
-        radial-gradient(1100px 520px at 15% -10%, rgba(154,77,255,.18), transparent 60%),
-        radial-gradient(1200px 600px at 110% 0%, rgba(32,213,244,.16), transparent 60%),
-        linear-gradient(180deg, var(--bg), var(--bg2));
-      min-height:100%;
+        radial-gradient(60vmax 60vmax at 15% -10%, color-mix(in oklab, var(--brand) 26%, transparent) 0%, transparent 60%),
+        radial-gradient(54vmax 54vmax at 100% -6%, color-mix(in oklab, var(--accent) 32%, transparent) 0%, transparent 60%);
     }
+    .vignette{
+      position:fixed; inset:0; z-index:-1; pointer-events:none;
+      background: radial-gradient(120vw 120vh at 50% 60%, rgba(0,0,0,.0) 35%, rgba(0,0,0,.45) 95%);
+    }
+    .emoji-canvas{position:fixed; inset:0; z-index:-3; pointer-events:none; overflow:hidden; filter:blur(0.6px)}
+    .emoji{position:absolute; font-size:clamp(18px,2.6vw,30px); opacity:var(--emoji-alpha); transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(var(--sc,1)); user-select:none}
+
     a{color:inherit; text-decoration:none}
-    a:focus-visible,button:focus-visible{outline:2px solid var(--c1); outline-offset:3px; border-radius:10px}
+    a:focus-visible,button:focus-visible{outline:2px solid var(--brand); outline-offset:3px; border-radius:12px}
 
-    .wrap{max-width:1000px; margin:0 auto; padding:0 20px}
+    .wrap{max-width:1000px; margin:0 auto; padding:22px}
 
-    /* ======= Header ======= */
-    header{
-      position:relative; padding:44px 0 24px;
-      border-bottom:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.0));
-    }
+    /* Header */
+    header.hero{border-bottom:1px solid var(--border)}
     .title{
-      margin:0; text-align:center;
-      font-size:clamp(28px,3.4vw,40px); font-weight:900; letter-spacing:.3px;
-      background:linear-gradient(90deg,var(--c2),var(--c1));
+      margin:.3rem 0 .2rem; font-weight:900; letter-spacing:.4px;
+      font-size:clamp(2rem,3.6vw,2.8rem);
+      background:linear-gradient(90deg,var(--brand),var(--accent));
       -webkit-background-clip:text; background-clip:text; color:transparent;
-      text-shadow:0 6px 22px rgba(32,213,244,.20);
+      text-shadow:0 8px 30px rgba(0,229,255,.22); text-align:center;
     }
-    .subtitle{
-      text-align:center; margin:8px 0 0; color:var(--muted); font-weight:700;
-    }
+    .sub{color:var(--muted); font-weight:700; letter-spacing:.3px; margin:.1rem 0 1rem; text-align:center}
 
-    .topbar{
-      margin-top:16px; display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap;
+    .bar{display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin:10px 0 18px}
+    .pills{display:flex; gap:10px; flex-wrap:wrap}
+    .pill{
+      border:1px solid var(--border); border-radius:999px; padding:10px 14px; background:rgba(255,255,255,.04);
+      font-weight:800; letter-spacing:.2px; color:var(--text); box-shadow:0 4px 12px rgba(0,0,0,.25)
     }
-    .nav{display:flex; gap:10px; flex-wrap:wrap}
-    .nav a{
-      border:1px solid var(--line); background:rgba(255,255,255,.05);
-      padding:8px 12px; border-radius:10px; font-weight:800; letter-spacing:.2px;
-      transition:transform .15s ease, border-color .15s ease;
-    }
-    .nav a:hover{transform:translateY(-1px); border-color:rgba(255,255,255,.18)}
+    .pill[aria-current="true"]{background:linear-gradient(90deg,var(--brand),var(--accent)); color:#081018; border-color:transparent}
 
-    .lang{
-      display:flex; gap:8px;
+    nav.tabs{display:flex; gap:10px; flex-wrap:wrap}
+    .tab{
+      display:inline-flex; align-items:center; gap:.5rem;
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border:1px solid var(--border); border-radius:12px; padding:10px 14px;
+      font-weight:800; letter-spacing:.2px; color:var(--text);
+      transition:transform .18s ease, border-color .18s ease, filter .18s ease;
+      box-shadow:0 10px 24px rgba(0,0,0,.22);
     }
-    .chip{
-      border:1px solid var(--line); background:rgba(255,255,255,.06);
-      padding:8px 12px; border-radius:999px; font-weight:900; letter-spacing:.2px; cursor:pointer;
-      transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease, background .15s ease;
-    }
-    .chip[aria-pressed="true"]{
-      background:linear-gradient(90deg,var(--c2),var(--c1));
-      color:#07131a; border-color:rgba(255,255,255,.25); transform:translateY(-1px);
-      box-shadow:var(--glow);
-    }
+    .tab:hover{transform:translateY(-2px); border-color:color-mix(in oklab, var(--brand) 55%, var(--border)); filter:brightness(1.06)}
 
-    /* ======= Main ======= */
-    main{padding:26px 0 46px}
-    .grid{display:grid; gap:16px}
-    @media (min-width:900px){ .grid-2{grid-template-columns:repeat(2,1fr)} }
+    /* Content */
+    main{padding:8px 0 44px}
+    .grid{display:grid; gap:18px}
+    @media (min-width:880px){ .grid-2{grid-template-columns:1fr 1fr} }
 
     .card{
-      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
-      border:1px solid var(--line); border-radius:var(--radius);
-      box-shadow:var(--shadow); padding:20px; backdrop-filter:blur(10px);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--border); border-radius:var(--radius);
+      padding:20px; box-shadow:0 12px 28px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.04);
     }
     h2{
-      margin:.2rem 0 .6rem; font-size:1.15rem; font-weight:900; letter-spacing:.2px;
-      color:var(--text);
+      margin:.1rem 0 .6rem; font-size:clamp(1.06rem,2.1vw,1.28rem); font-weight:900;
+      background:linear-gradient(90deg,var(--brand),var(--accent)); -webkit-background-clip:text; background-clip:text; color:transparent;
+      letter-spacing:.2px;
     }
-    .tag{
-      display:inline-flex; gap:8px; align-items:center;
-      padding:6px 10px; border-radius:999px; border:1px solid var(--line);
-      background:rgba(255,255,255,.04); color:var(--text); font-weight:800; letter-spacing:.2px;
-    }
+    p{margin:.45rem 0}
+    .muted{color:var(--muted); font-weight:600}
 
-    /* Pricing cards */
+    /* Plans */
     .plans{display:grid; gap:16px; margin-top:10px}
-    @media (min-width:900px){ .plans{grid-template-columns:repeat(2,1fr)} } /* Free + Pro (Monat/Jahr) */
+    @media (min-width:900px){ .plans{grid-template-columns:repeat(2,1fr)} }
 
     .plan{
-      position:relative;
-      background:var(--card); border:1px solid var(--line);
+      position:relative; background:var(--card); border:1px solid var(--border);
       border-radius:var(--radius); padding:20px; transition:transform .18s ease;
-      box-shadow:0 10px 28px rgba(32,213,244,.10);
+      box-shadow:0 10px 28px rgba(0,0,0,.22);
     }
     .plan:hover{transform:translateY(-3px)}
     .plan .label{
       position:absolute; top:12px; right:12px; font-size:.78rem;
       padding:.22rem .6rem; border-radius:999px; color:#07131a; font-weight:900; letter-spacing:.3px;
-      background:linear-gradient(90deg,var(--c2),var(--c1));
-      border:1px solid rgba(255,255,255,.25);
+      background:linear-gradient(90deg,var(--accent),var(--brand)); border:1px solid rgba(255,255,255,.25);
     }
-    .price{font-size:1.6rem; font-weight:900; margin:.1rem 0 .1rem; background:linear-gradient(90deg,var(--c1),var(--c2)); -webkit-background-clip:text; background-clip:text; color:transparent;}
-    .muted{color:var(--muted); font-weight:600}
-    ul{margin:.5rem 0 .2rem 1.15rem}
-    li{margin:.28rem 0}
-    li::marker{content:"✔ "; color:var(--ok)}
+    .price{font-size:1.6rem; font-weight:900; margin:.1rem 0 .1rem;
+      background:linear-gradient(90deg,var(--brand),var(--accent)); -webkit-background-clip:text; background-clip:text; color:transparent;}
+    ul{margin:.5rem 0 .2rem 1.15rem} li{margin:.28rem 0} li::marker{content:"✔ "; color:var(--ok)}
 
     .btn{
       display:inline-flex; align-items:center; justify-content:center; gap:.6rem;
       padding:12px 16px; border-radius:12px; font-weight:900; letter-spacing:.2px;
       border:1px solid rgba(255,255,255,.14);
-      background:linear-gradient(90deg, var(--c2), var(--c1));
-      color:#07131a; box-shadow:0 8px 26px rgba(32,213,244,.16);
+      background:linear-gradient(90deg, var(--accent), var(--brand));
+      color:#07131a; box-shadow:0 8px 26px rgba(0,229,255,.16);
       transition:transform .15s ease, filter .15s ease;
     }
     .btn:hover{transform:translateY(-1px); filter:brightness(1.05)}
-    .btn.ghost{
-      background:transparent; color:var(--text);
-      border-color:color-mix(in oklab, var(--c1) 45%, var(--line));
-    }
+    .btn.ghost{background:transparent; color:var(--text); border-color:color-mix(in oklab, var(--brand) 55%, var(--border))}
 
     /* Footer */
-    footer{
-      border-top:1px solid var(--line); background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
-      color:var(--muted); padding:20px; text-align:center; font-weight:600; letter-spacing:.2px;
-    }
-    .links{display:flex; gap:10px; justify-content:center; flex-wrap:wrap}
-    .links a{text-decoration:underline dotted}
+    footer{border-top:1px solid var(--border); margin-top:28px; padding:22px; color:var(--muted); text-align:center; background:rgba(255,255,255,.02)}
+    .links{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:8px}
     .hidden{display:none}
   </style>
 </head>
 <body>
-  <header>
+  <!-- persistent background layers -->
+  <div class="glow" aria-hidden="true"></div>
+  <div class="emoji-canvas" id="emojiCanvas" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <header class="hero">
     <div class="wrap">
       <h1 class="title">⚡ Stay Active – Premium</h1>
-      <p class="subtitle" id="sub">Werbefrei, mehr Motivation, klarere Insights.</p>
+      <p class="sub" id="subtitle">Werbefrei, mehr Motivation, klarere Insights.</p>
 
-      <div class="topbar">
-        <div class="lang" role="group" aria-label="Sprache wählen / Choose language">
-          <button class="chip" id="btn-de" type="button" aria-pressed="true">Deutsch</button>
-          <button class="chip" id="btn-en" type="button" aria-pressed="false">English</button>
+      <div class="bar">
+        <!-- language -->
+        <div class="pills" role="group" aria-label="Sprache / Language">
+          <a id="pill-de" href="#" class="pill" aria-current="true">Deutsch</a>
+          <a id="pill-en" href="#" class="pill" aria-current="false">English</a>
         </div>
-        <nav class="nav">
-          <a href="index.html">← Home</a>
-          <a href="privacy.html" id="lnk-priv">Datenschutz</a>
-          <a href="terms.html" id="lnk-terms">Nutzungsbedingungen</a>
-          <a href="impressum.html" id="lnk-imp">Impressum</a>
+
+        <!-- quick nav -->
+        <nav class="tabs" aria-label="Quick links">
+          <a class="tab" id="link-home"    href="index.html">🏠 Home</a>
+          <a class="tab" id="link-privacy" href="privacy.html">🔒 Datenschutz / Privacy</a>
+          <a class="tab" id="link-terms"   href="terms.html">📜 Nutzungsbedingungen / Terms</a>
+          <a class="tab" id="link-imprint" href="impressum.html">ℹ️ Impressum / Imprint</a>
         </nav>
       </div>
     </div>
   </header>
 
   <main class="wrap">
-    <!-- Intro -->
-    <section class="card" id="intro">
-      <span class="tag" id="tag-note">✨ Pläne können sich weiterentwickeln. Preise inkl. MwSt.</span>
+    <section class="card">
+      <p class="muted" id="note">✨ Pläne können sich weiterentwickeln. Preise inkl. MwSt.</p>
+
       <div class="plans" style="margin-top:14px">
         <!-- Free -->
         <article class="plan">
           <div class="label" id="lbl-free">FREE</div>
-          <h2 id="h-free">Kostenlos</h2>
-          <div class="price" id="p-free">0 €</div>
-          <div class="muted" id="m-free">mit Werbung</div>
+          <h2 id="free-h">Kostenlos</h2>
+          <div class="price" id="free-p">0 €</div>
+          <div class="muted" id="free-m">mit Werbung</div>
           <ul>
-            <li id="f1">Schrittzähler & Tagesziel</li>
-            <li id="f2">Basisstatistiken</li>
-            <li id="f3">Standard-Themes</li>
+            <li id="free-f1">Schrittzähler & Tagesziel</li>
+            <li id="free-f2">Basisstatistiken</li>
+            <li id="free-f3">Standard-Themes</li>
           </ul>
           <a class="btn ghost" id="cta-free" href="#">Bereits aktiv</a>
         </article>
 
-        <!-- Pro (Monthly) -->
+        <!-- Pro Monthly -->
         <article class="plan">
           <div class="label">PRO</div>
-          <h2 id="h-pro-m">Pro (Monatlich)</h2>
-          <div class="price" id="p-pro-m">2,99 € / Monat</div>
-          <div class="muted" id="m-pro-m">monatlich kündbar</div>
+          <h2 id="pm-h">Pro (Monatlich)</h2>
+          <div class="price" id="pm-p">2,99 € / Monat</div>
+          <div class="muted" id="pm-m">monatlich kündbar</div>
           <ul>
-            <li id="pm1">Keine Werbung</li>
-            <li id="pm2">Erweiterte Insights</li>
-            <li id="pm3">Premium-Themes & Icons</li>
-            <li id="pm4">Motivations-Badges & Erinnerungen</li>
+            <li id="pm-1">Keine Werbung</li>
+            <li id="pm-2">Erweiterte Insights</li>
+            <li id="pm-3">Premium-Themes & Icons</li>
+            <li id="pm-4">Motivations-Badges & Erinnerungen</li>
           </ul>
-          <!-- Ersetze '#' durch deine Deep-Links / Store-Links -->
-          <a class="btn" id="cta-pro-m" href="#">Jetzt freischalten</a>
+          <a class="btn" id="cta-pm" href="#">Jetzt freischalten</a>
         </article>
       </div>
 
-      <!-- Yearly as optional second Pro card -->
       <div class="plans">
+        <!-- Pro Yearly -->
         <article class="plan">
           <div class="label">PRO</div>
-          <h2 id="h-pro-y">Pro (Jährlich)</h2>
-          <div class="price" id="p-pro-y">24,99 € / Jahr</div>
-          <div class="muted" id="m-pro-y">entspricht ~2,08 €/Monat</div>
+          <h2 id="py-h">Pro (Jährlich)</h2>
+          <div class="price" id="py-p">24,99 € / Jahr</div>
+          <div class="muted" id="py-m">entspricht ~2,08 €/Monat</div>
           <ul>
-            <li id="py1">Alles aus Pro (Monat)</li>
-            <li id="py2">Preisvorteil gegenüber monatlich</li>
-            <li id="py3">Priorisierter Support</li>
+            <li id="py-1">Alles aus Pro (Monat)</li>
+            <li id="py-2">Preisvorteil gegenüber monatlich</li>
+            <li id="py-3">Priorisierter Support</li>
           </ul>
-          <a class="btn" id="cta-pro-y" href="#">Jetzt freischalten</a>
+          <a class="btn" id="cta-py" href="#">Jetzt freischalten</a>
         </article>
       </div>
 
-      <p class="muted" style="margin-top:10px" id="legal-line">
+      <p class="muted" style="margin-top:10px" id="legal">
         Käufe erfolgen über den App-Store. Es gelten die Store-Bedingungen.
       </p>
     </section>
@@ -233,166 +228,170 @@
 
   <footer>
     <div class="links">
-      <a href="privacy.html" id="f-priv">Datenschutz</a> ·
-      <a href="terms.html" id="f-terms">Nutzungsbedingungen</a> ·
-      <a href="impressum.html" id="f-imp">Impressum</a>
+      <a class="tab" id="f-privacy" href="privacy.html">Datenschutz</a>
+      <a class="tab" id="f-terms"   href="terms.html">Nutzungsbedingungen</a>
+      <a class="tab" id="f-imprint" href="impressum.html">Impressum</a>
     </div>
-    <p>© <span id="year"></span> Stay Active</p>
+    © <span id="year"></span> Stay Active
   </footer>
 
   <script>
-    // ===== Year =====
+    // Year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // ===== Simple i18n (DE/EN) =====
-    const t = {
-      de: {
+    // Emoji background (evenly distributed grid)
+    const EMOJIS = ['🏃‍♂️','📊','⏱️','💪','⚡','🧭','✨','🧠'];
+    const canvas = document.getElementById('emojiCanvas');
+    function seedRand(n){let x=Math.sin(n)*10000;return x-Math.floor(x)}
+    function paintEmojis(){
+      canvas.innerHTML='';
+      const cols = Math.max(6, Math.round(innerWidth/200));
+      const rows = Math.max(4, Math.round(innerHeight/220));
+      const cw = innerWidth/cols, ch = innerHeight/rows;
+      for(let r=0;r<rows;r++){
+        for(let c=0;c<cols;c++){
+          const n=r*cols+c;
+          if(seedRand(n)<0.7){
+            const e=document.createElement('span');
+            e.className='emoji';
+            e.textContent=EMOJIS[Math.floor(seedRand(n+13)*EMOJIS.length)];
+            const jx=(seedRand(n+23)-0.5)*0.6, jy=(seedRand(n+37)-0.5)*0.6;
+            e.style.left=((c+0.5+jx)*cw)+'px';
+            e.style.top=((r+0.5+jy)*ch)+'px';
+            e.style.setProperty('--rot',(seedRand(n+7)*40-20)+'deg');
+            e.style.setProperty('--sc',(0.9+seedRand(n+5)*0.4).toFixed(2));
+            canvas.appendChild(e);
+          }
+        }
+      }
+    }
+    paintEmojis(); addEventListener('resize', paintEmojis);
+
+    // i18n
+    const dict = {
+      de:{
         sub:'Werbefrei, mehr Motivation, klarere Insights.',
         note:'✨ Pläne können sich weiterentwickeln. Preise inkl. MwSt.',
-        nav:{ priv:'Datenschutz', terms:'Nutzungsbedingungen', imp:'Impressum'},
-
-        free:{ h:'Kostenlos', price:'0 €', m:'mit Werbung',
-               f1:'Schrittzähler & Tagesziel', f2:'Basisstatistiken', f3:'Standard-Themes',
-               cta:'Bereits aktiv' },
-
-        proM:{ h:'Pro (Monatlich)', price:'2,99 € / Monat', m:'monatlich kündbar',
-               p1:'Keine Werbung', p2:'Erweiterte Insights', p3:'Premium-Themes & Icons', p4:'Motivations-Badges & Erinnerungen',
-               cta:'Jetzt freischalten' },
-
-        proY:{ h:'Pro (Jährlich)', price:'24,99 € / Jahr', m:'entspricht ~2,08 €/Monat',
-               p1:'Alles aus Pro (Monat)', p2:'Preisvorteil gegenüber monatlich', p3:'Priorisierter Support',
-               cta:'Jetzt freischalten' },
-
+        links:{home:'🏠 Home', privacy:'🔒 Datenschutz / Privacy', terms:'📜 Nutzungsbedingungen / Terms', imprint:'ℹ️ Impressum / Imprint'},
+        free:{h:'Kostenlos', p:'0 €', m:'mit Werbung', f1:'Schrittzähler & Tagesziel', f2:'Basisstatistiken', f3:'Standard-Themes', cta:'Bereits aktiv'},
+        pm:{h:'Pro (Monatlich)', p:'2,99 € / Monat', m:'monatlich kündbar', b1:'Keine Werbung', b2:'Erweiterte Insights', b3:'Premium-Themes & Icons', b4:'Motivations-Badges & Erinnerungen', cta:'Jetzt freischalten'},
+        py:{h:'Pro (Jährlich)', p:'24,99 € / Jahr', m:'entspricht ~2,08 €/Monat', b1:'Alles aus Pro (Monat)', b2:'Preisvorteil gegenüber monatlich', b3:'Priorisierter Support', cta:'Jetzt freischalten'},
         legal:'Käufe erfolgen über den App-Store. Es gelten die Store-Bedingungen.',
-
-        foot:{ priv:'Datenschutz', terms:'Nutzungsbedingungen', imp:'Impressum' },
+        foot:{privacy:'Datenschutz', terms:'Nutzungsbedingungen', imprint:'Impressum'}
       },
-      en: {
+      en:{
         sub:'Ad-free, more motivation, clearer insights.',
         note:'✨ Plans may evolve. Prices include VAT where applicable.',
-        nav:{ priv:'Privacy', terms:'Terms', imp:'Imprint'},
-
-        free:{ h:'Free', price:'€0', m:'with ads',
-               f1:'Step counter & daily goal', f2:'Basic stats', f3:'Standard themes',
-               cta:'Already active' },
-
-        proM:{ h:'Pro (Monthly)', price:'€2.99 / month', m:'cancel anytime',
-               p1:'No ads', p2:'Advanced insights', p3:'Premium themes & icons', p4:'Motivation badges & reminders',
-               cta:'Unlock now' },
-
-        proY:{ h:'Pro (Yearly)', price:'€24.99 / year', m:'≈ €2.08 / month',
-               p1:'Everything from Pro (Monthly)', p2:'Better value than monthly', p3:'Priority support',
-               cta:'Unlock now' },
-
+        links:{home:'🏠 Home', privacy:'🔒 Privacy / Datenschutz', terms:'📜 Terms / Nutzungsbedingungen', imprint:'ℹ️ Imprint / Impressum'},
+        free:{h:'Free', p:'€0', m:'with ads', f1:'Step counter & daily goal', f2:'Basic stats', f3:'Standard themes', cta:'Already active'},
+        pm:{h:'Pro (Monthly)', p:'€2.99 / month', m:'cancel anytime', b1:'No ads', b2:'Advanced insights', b3:'Premium themes & icons', b4:'Motivation badges & reminders', cta:'Unlock now'},
+        py:{h:'Pro (Yearly)', p:'€24.99 / year', m:'≈ €2.08 / month', b1:'Everything from Pro (Monthly)', b2:'Better value than monthly', b3:'Priority support', cta:'Unlock now'},
         legal:'Purchases are processed by the app store. Store terms apply.',
-
-        foot:{ priv:'Privacy', terms:'Terms', imp:'Imprint' },
+        foot:{privacy:'Privacy', terms:'Terms', imprint:'Imprint'}
       }
     };
 
-    const el = {
-      sub: document.getElementById('sub'),
-      tag: document.getElementById('tag-note'),
-
-      // nav / footer
-      lnkPriv: document.getElementById('lnk-priv'),
-      lnkTerms: document.getElementById('lnk-terms'),
-      lnkImp: document.getElementById('lnk-imp'),
-      fPriv: document.getElementById('f-priv'),
-      fTerms: document.getElementById('f-terms'),
-      fImp: document.getElementById('f-imp'),
-
+    const els = {
+      subtitle: document.getElementById('subtitle'),
+      note: document.getElementById('note'),
+      // nav
+      lHome: document.getElementById('link-home'),
+      lPriv: document.getElementById('link-privacy'),
+      lTerms: document.getElementById('link-terms'),
+      lImp: document.getElementById('link-imprint'),
       // free
-      hFree: document.getElementById('h-free'),
-      pFree: document.getElementById('p-free'),
-      mFree: document.getElementById('m-free'),
-      f1: document.getElementById('f1'),
-      f2: document.getElementById('f2'),
-      f3: document.getElementById('f3'),
+      fH: document.getElementById('free-h'),
+      fP: document.getElementById('free-p'),
+      fM: document.getElementById('free-m'),
+      f1: document.getElementById('free-f1'),
+      f2: document.getElementById('free-f2'),
+      f3: document.getElementById('free-f3'),
       ctaFree: document.getElementById('cta-free'),
-
       // pro monthly
-      hPM: document.getElementById('h-pro-m'),
-      pPM: document.getElementById('p-pro-m'),
-      mPM: document.getElementById('m-pro-m'),
-      pm1: document.getElementById('pm1'),
-      pm2: document.getElementById('pm2'),
-      pm3: document.getElementById('pm3'),
-      pm4: document.getElementById('pm4'),
-      ctaPM: document.getElementById('cta-pro-m'),
-
+      pmH: document.getElementById('pm-h'),
+      pmP: document.getElementById('pm-p'),
+      pmM: document.getElementById('pm-m'),
+      pm1: document.getElementById('pm-1'),
+      pm2: document.getElementById('pm-2'),
+      pm3: document.getElementById('pm-3'),
+      pm4: document.getElementById('pm-4'),
+      ctaPM: document.getElementById('cta-pm'),
       // pro yearly
-      hPY: document.getElementById('h-pro-y'),
-      pPY: document.getElementById('p-pro-y'),
-      mPY: document.getElementById('m-pro-y'),
-      py1: document.getElementById('py1'),
-      py2: document.getElementById('py2'),
-      py3: document.getElementById('py3'),
-      ctaPY: document.getElementById('cta-pro-y'),
-
-      legal: document.getElementById('legal-line'),
+      pyH: document.getElementById('py-h'),
+      pyP: document.getElementById('py-p'),
+      pyM: document.getElementById('py-m'),
+      py1: document.getElementById('py-1'),
+      py2: document.getElementById('py-2'),
+      py3: document.getElementById('py-3'),
+      ctaPY: document.getElementById('cta-py'),
+      // legal + footer
+      legal: document.getElementById('legal'),
+      fPriv: document.getElementById('f-privacy'),
+      fTerms: document.getElementById('f-terms'),
+      fImp: document.getElementById('f-imprint'),
+      // pills
+      pillDe: document.getElementById('pill-de'),
+      pillEn: document.getElementById('pill-en')
     };
 
-    const btnDe = document.getElementById('btn-de');
-    const btnEn = document.getElementById('btn-en');
-
     function setLang(l){
-      const d = t[l];
+      const d = dict[l] || dict.de;
+      document.documentElement.lang = (l==='en'?'en':'de');
+      els.pillDe.setAttribute('aria-current', l==='de');
+      els.pillEn.setAttribute('aria-current', l==='en');
 
-      document.documentElement.lang = l === 'de' ? 'de' : 'en';
-      btnDe.setAttribute('aria-pressed', l === 'de');
-      btnEn.setAttribute('aria-pressed', l === 'en');
+      els.subtitle.textContent = d.sub;
+      els.note.textContent = d.note;
 
-      el.sub.textContent = d.sub;
-      el.tag.textContent = d.note;
+      els.lHome.textContent  = d.links.home;
+      els.lPriv.textContent  = d.links.privacy;
+      els.lTerms.textContent = d.links.terms;
+      els.lImp.textContent   = d.links.imprint;
 
-      el.lnkPriv.textContent = d.nav.priv;
-      el.lnkTerms.textContent = d.nav.terms;
-      el.lnkImp.textContent = d.nav.imp;
-      el.fPriv.textContent = d.foot.priv;
-      el.fTerms.textContent = d.foot.terms;
-      el.fImp.textContent = d.foot.imp;
+      els.fH.textContent = d.free.h;  els.fP.textContent = d.free.p; els.fM.textContent = d.free.m;
+      els.f1.textContent = d.free.f1; els.f2.textContent = d.free.f2; els.f3.textContent = d.free.f3;
+      els.ctaFree.textContent = d.free.cta;
 
-      el.hFree.textContent = d.free.h;
-      el.pFree.textContent = d.free.price;
-      el.mFree.textContent = d.free.m;
-      el.f1.textContent = d.free.f1; el.f2.textContent = d.free.f2; el.f3.textContent = d.free.f3;
-      el.ctaFree.textContent = d.free.cta;
+      els.pmH.textContent = d.pm.h; els.pmP.textContent = d.pm.p; els.pmM.textContent = d.pm.m;
+      els.pm1.textContent = d.pm.b1; els.pm2.textContent = d.pm.b2; els.pm3.textContent = d.pm.b3; els.pm4.textContent = d.pm.b4;
+      els.ctaPM.textContent = d.pm.cta;
 
-      el.hPM.textContent = d.proM.h;
-      el.pPM.textContent = d.proM.price;
-      el.mPM.textContent = d.proM.m;
-      el.pm1.textContent = d.proM.p1; el.pm2.textContent = d.proM.p2; el.pm3.textContent = d.proM.p3; el.pm4.textContent = d.proM.p4;
-      el.ctaPM.textContent = d.proM.cta;
+      els.pyH.textContent = d.py.h; els.pyP.textContent = d.py.p; els.pyM.textContent = d.py.m;
+      els.py1.textContent = d.py.b1; els.py2.textContent = d.py.b2; els.py3.textContent = d.py.b3;
+      els.ctaPY.textContent = d.py.cta;
 
-      el.hPY.textContent = d.proY.h;
-      el.pPY.textContent = d.proY.price;
-      el.mPY.textContent = d.proY.m;
-      el.py1.textContent = d.proY.p1; el.py2.textContent = d.proY.p2; el.py3.textContent = d.proY.p3;
-      el.ctaPY.textContent = d.proY.cta;
+      els.legal.textContent = d.legal;
+      els.fPriv.textContent = d.foot.privacy;
+      els.fTerms.textContent = d.foot.terms;
+      els.fImp.textContent = d.foot.imprint;
 
-      el.legal.textContent = d.legal;
+      // carry ?lang in links (keep relative)
+      const ids = ['link-home','link-privacy','link-terms','link-imprint','f-privacy','f-terms','f-imprint'];
+      ids.forEach(id=>{
+        const a = document.getElementById(id); if(!a) return;
+        const u = new URL(a.getAttribute('href'), location.href);
+        u.searchParams.set('lang', l);
+        a.setAttribute('href', u.pathname.replace(location.origin,'') + u.search);
+      });
 
+      // persist
       const url = new URL(location.href);
       url.searchParams.set('lang', l);
       history.replaceState({}, '', url.toString());
       localStorage.setItem('sa_lang', l);
     }
 
-    const fromQS = (new URLSearchParams(location.search).get('lang') || '').toLowerCase();
-    const saved  = localStorage.getItem('sa_lang');
-    const browserIsDe = (navigator.language || 'en').toLowerCase().startsWith('de');
-    const startLang = (fromQS === 'de' || fromQS === 'en') ? fromQS
-                     : (saved === 'de' || saved === 'en') ? saved
-                     : (browserIsDe ? 'de' : 'en');
+    const qs = new URLSearchParams(location.search).get('lang');
+    const saved = localStorage.getItem('sa_lang');
+    const browser = (navigator.language||'en').toLowerCase().startsWith('de') ? 'de' : 'en';
+    setLang(qs || saved || browser);
 
-    btnDe.addEventListener('click', ()=>setLang('de'));
-    btnEn.addEventListener('click', ()=>setLang('en'));
-    setLang(startLang);
+    els.pillDe.addEventListener('click', e=>{e.preventDefault(); setLang('de');});
+    els.pillEn.addEventListener('click', e=>{e.preventDefault(); setLang('en');});
 
-    // Optional: Wire your deep links here
-    document.getElementById('cta-pro-m').href = '#';  // replace with store/deeplink
-    document.getElementById('cta-pro-y').href = '#';  // replace with store/deeplink
+    // Wire your store links here (replace '#' with real deep links)
+    document.getElementById('cta-pm').href = '#';
+    document.getElementById('cta-py').href = '#';
   </script>
 </body>
 </html>
