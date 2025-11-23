@@ -2,28 +2,28 @@
 <html lang="de">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Stay Active • Legal & Info Hub</title>
-  <meta name="description" content="Stay Active – Privacy, Terms, Upgrade und Impressum. Deutsch & Englisch." />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="dark" />
+  <meta name="description" content="Stay Active – Privacy, Terms, Upgrade und Impressum. Deutsch & Englisch." />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%9A%B6%3C/text%3E%3C/svg%3E">
 
   <style>
     :root{
       --brand:#00e5ff;        /* Cyan Neon */
-      --accent:#9b4dff;       /* Lila Neon */
+      --accent:#9b4dff;       /* Violet Neon */
       --ok:#22c55e;
 
-      --bg:#05060b;
-      --bg-soft:#090b12;
-      --card:#0e121b;
-      --border:#141a24;
+      --bg:#081018;           /* fester, einheitlicher Grundton */
+      --bg-soft:#0b121b;
+      --card:#0f1621;
+      --border:#15202b;
       --text:#e6e9ef;
       --muted:#9aa3af;
 
-      --radius:16px;
+      --radius:18px;
       --blur:44px;
-      --emoji-alpha:.12;
+      --emoji-alpha:.13;
     }
 
     *{box-sizing:border-box}
@@ -31,114 +31,117 @@
     body{
       margin:0; color:var(--text); background:var(--bg);
       font-family:system-ui,-apple-system,"Segoe UI",Roboto,Inter,Arial,sans-serif;
-      line-height:1.65; overflow-x:hidden;
-      background:
-        radial-gradient(1200px 600px at 85% -10%, color-mix(in oklab, var(--brand) 18%, transparent) 0%, transparent 60%),
-        radial-gradient(900px 520px at 10% -20%, color-mix(in oklab, var(--accent) 20%, transparent) 0%, transparent 58%),
-        linear-gradient(to bottom, var(--bg), var(--bg-soft));
+      line-height:1.7; overflow-x:hidden; position:relative; isolation:isolate;
     }
 
+    /* Persistenter Hintergrund (ohne Farbbanding) */
+    .glow{
+      position:fixed; inset:-10vmax; z-index:-2; pointer-events:none; filter:blur(var(--blur)); opacity:.9;
+      background:
+        radial-gradient(60vmax 60vmax at 15% -10%, color-mix(in oklab, var(--brand) 26%, transparent) 0%, transparent 60%),
+        radial-gradient(54vmax 54vmax at 100% -6%, color-mix(in oklab, var(--accent) 32%, transparent) 0%, transparent 60%);
+    }
+    .vignette{
+      position:fixed; inset:0; z-index:-1; pointer-events:none;
+      background: radial-gradient(120vw 120vh at 50% 60%, rgba(0,0,0,.0) 35%, rgba(0,0,0,.45) 95%);
+    }
+    .emoji-canvas{position:fixed; inset:0; z-index:-3; pointer-events:none; overflow:hidden; filter:blur(.6px)}
+    .emoji{position:absolute; font-size:clamp(18px,2.6vw,30px); opacity:var(--emoji-alpha); transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(var(--sc,1)); user-select:none}
+
     a{color:inherit; text-decoration:none}
-    a:focus-visible,button:focus-visible{outline:2px solid var(--brand); outline-offset:2px; border-radius:12px}
+    a:focus-visible,button:focus-visible{outline:2px solid var(--brand); outline-offset:3px; border-radius:12px}
 
     .wrap{max-width:1000px; margin:0 auto; padding:22px}
 
-    /* Hero */
-    header.hero{position:relative; border-bottom:1px solid var(--border); overflow:hidden}
-    .glow{position:absolute; inset:0; pointer-events:none; filter:blur(var(--blur)); opacity:.9}
-    .glow::before,.glow::after{
-      content:""; position:absolute; width:55vmax; height:55vmax; border-radius:50%;
-      background:radial-gradient(circle at 30% 30%, color-mix(in oklab, var(--brand) 34%, transparent), transparent 60%);
-    }
-    .glow::before{top:-36vmax; left:-20vmax}
-    .glow::after{
-      top:-30vmax; right:-26vmax;
-      background:radial-gradient(circle at 70% 40%, color-mix(in oklab, var(--accent) 38%, transparent), transparent 60%);
-    }
-
-    .emoji-cloud{position:absolute; inset:0; pointer-events:none; filter:blur(1px); opacity:var(--emoji-alpha)}
-    .bg-emoji{position:absolute; font-size:clamp(22px,3.2vw,34px); transform:translate(-50%,-50%)}
-    .e1{left:12%; top:26%} .e2{left:27%; top:14%} .e3{left:44%; top:22%}
-    .e4{left:66%; top:16%} .e5{left:82%; top:30%} .e6{left:18%; top:48%}
-    .e7{left:36%; top:54%} .e8{left:72%; top:50%}
-
-    @media (prefers-reduced-motion:reduce){ .glow,.emoji-cloud{display:none} }
-
+    /* Header */
+    header.hero{border-bottom:1px solid var(--border)}
     .title{
-      margin:.2rem 0; font-weight:900; letter-spacing:.4px;
-      font-size:clamp(1.9rem,3.4vw,2.6rem);
+      margin:.3rem 0 .2rem; font-weight:900; letter-spacing:.4px;
+      font-size:clamp(2rem,3.6vw,2.8rem);
       background:linear-gradient(90deg,var(--brand),var(--accent));
       -webkit-background-clip:text; background-clip:text; color:transparent;
-      text-shadow:0 6px 28px rgba(0,229,255,.18);
-      position:relative; z-index:1;
+      text-shadow:0 8px 30px rgba(0,229,255,.22); text-align:center;
     }
-    .sub{color:var(--muted); font-weight:700; letter-spacing:.3px; margin:.2rem 0 .8rem; position:relative; z-index:1}
+    .sub{color:var(--muted); font-weight:700; letter-spacing:.3px; margin:.1rem 0 1rem; text-align:center}
 
-    /* Lang pills + nav */
-    .bar{display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin:10px 0 18px; position:relative; z-index:1}
+    .bar{display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin:10px 0 18px}
     .pills{display:flex; gap:10px; flex-wrap:wrap}
     .pill{
-      border:1px solid var(--border); border-radius:999px; padding:8px 14px; background:var(--card);
-      font-weight:800; letter-spacing:.2px; color:var(--text);
+      border:1px solid var(--border); border-radius:999px; padding:10px 14px; background:rgba(255,255,255,.04);
+      font-weight:800; letter-spacing:.2px; color:var(--text); box-shadow:0 4px 12px rgba(0,0,0,.25)
     }
     .pill[aria-current="true"]{background:linear-gradient(90deg,var(--brand),var(--accent)); color:#081018; border-color:transparent}
 
-    nav.tabs{display:flex; gap:12px; flex-wrap:wrap}
+    nav.tabs{display:flex; gap:10px; flex-wrap:wrap}
     .tab{
-      background:var(--card); border:1px solid var(--border); border-radius:12px;
-      padding:10px 14px; font-weight:800; letter-spacing:.2px;
-      transition:border-color .2s ease, transform .2s ease;
+      display:inline-flex; align-items:center; gap:.5rem;
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border:1px solid var(--border); border-radius:12px; padding:10px 14px;
+      font-weight:800; letter-spacing:.2px; color:var(--text);
+      transition:transform .18s ease, border-color .18s ease, filter .18s ease;
+      box-shadow:0 10px 24px rgba(0,0,0,.22);
     }
-    .tab:hover{transform:translateY(-2px); border-color:color-mix(in oklab, var(--brand) 50%, var(--border))}
-    .tab small{opacity:.65; font-weight:700}
+    .tab:hover{transform:translateY(-2px); border-color:color-mix(in oklab, var(--brand) 55%, var(--border)); filter:brightness(1.06)}
 
     /* Cards */
     .grid{display:grid; gap:18px}
     @media (min-width:880px){ .grid-2{grid-template-columns:1.2fr .8fr} }
 
     .card{
-      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
       border:1px solid var(--border); border-radius:var(--radius);
-      padding:18px; box-shadow:0 10px 24px rgba(0,0,0,.22);
+      padding:20px; box-shadow:0 12px 28px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.04);
     }
-    h2{font-size:clamp(1.2rem,2.2vw,1.5rem); margin:.2rem 0 .6rem; font-weight:900;
-       background:linear-gradient(90deg,var(--brand),var(--accent)); -webkit-background-clip:text; background-clip:text; color:transparent;}
+    h2{
+      margin:.1rem 0 .6rem; font-size:clamp(1.06rem,2.1vw,1.28rem); font-weight:900;
+      background:linear-gradient(90deg,var(--brand),var(--accent)); -webkit-background-clip:text; background-clip:text; color:transparent;
+      letter-spacing:.2px;
+    }
     p{margin:.45rem 0}
+
+    /* Feature Tiles */
+    .tiles{display:grid; gap:14px; grid-template-columns:repeat(1,1fr)}
+    @media (min-width:660px){ .tiles{grid-template-columns:repeat(2,1fr)} }
+    @media (min-width:900px){ .tiles{grid-template-columns:repeat(4,1fr)} }
+
+    .tile{
+      display:flex; flex-direction:column; gap:10px; padding:16px; border-radius:14px;
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border:1px solid var(--border); box-shadow:0 10px 24px rgba(0,0,0,.22);
+      transition:transform .18s ease, border-color .18s ease, filter .18s ease;
+    }
+    .tile:hover{transform:translateY(-2px); border-color:color-mix(in oklab, var(--brand) 55%, var(--border)); filter:brightness(1.05)}
+    .tile .t-head{display:flex; align-items:center; justify-content:space-between}
+    .tile .t-emoji{font-size:20px}
+    .tile .t-title{font-weight:900; letter-spacing:.2px}
+    .tile .t-link{display:inline-flex; align-items:center; gap:.45rem; font-weight:800; text-decoration:underline; color:var(--brand)}
 
     /* CTA buttons */
     .cta-row{display:flex; gap:12px; flex-wrap:wrap; margin-top:12px}
     .btn{
       display:inline-flex; align-items:center; gap:.6rem; padding:12px 16px; border-radius:12px;
-      font-weight:900; letter-spacing:.2px; text-decoration:none;
+      font-weight:900; letter-spacing:.2px;
       background:linear-gradient(90deg, var(--brand), var(--accent)); color:#07131a; border:1px solid transparent;
       box-shadow:0 6px 22px rgba(0,229,255,.22);
     }
-    .btn.outline{background:transparent; color:var(--text); border-color:color-mix(in oklab, var(--brand) 50%, var(--border))}
+    .btn.outline{background:transparent; color:var(--text); border-color:color-mix(in oklab, var(--brand) 55%, var(--border))}
     .btn:hover{filter:brightness(1.05)}
 
     /* Footer */
-    footer{border-top:1px solid var(--border); margin-top:26px; padding:20px; color:var(--muted); text-align:center; background:var(--bg-soft)}
+    footer{border-top:1px solid var(--border); margin-top:28px; padding:22px; color:var(--muted); text-align:center; background:rgba(255,255,255,.02)}
     .links{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:8px}
   </style>
 </head>
 <body>
-  <!-- Fancy glow & emoji fog -->
-  <header class="hero">
-    <div class="glow" aria-hidden="true"></div>
-    <div class="emoji-cloud" aria-hidden="true">
-      <span class="bg-emoji e1">🏃‍♂️</span>
-      <span class="bg-emoji e2">📊</span>
-      <span class="bg-emoji e3">⏱️</span>
-      <span class="bg-emoji e4">💪</span>
-      <span class="bg-emoji e5">⚡</span>
-      <span class="bg-emoji e6">🧭</span>
-      <span class="bg-emoji e7">✨</span>
-      <span class="bg-emoji e8">🧠</span>
-    </div>
+  <!-- Persistente Hintergrund-Layer -->
+  <div class="glow" aria-hidden="true"></div>
+  <div class="emoji-canvas" id="emojiCanvas" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
 
-    <div class="wrap" style="position:relative; z-index:1">
+  <header class="hero">
+    <div class="wrap">
       <h1 class="title">Stay Active • Legal & Info Hub</h1>
-      <p class="sub" id="subtitle">Choose a document. / Wähle ein Dokument.</p>
+      <p class="sub" id="subtitle">Wähle ein Dokument. / Choose a document.</p>
 
       <div class="bar">
         <!-- Language pills -->
@@ -147,7 +150,7 @@
           <a id="pill-en" href="#" class="pill" aria-current="false">English</a>
         </div>
 
-        <!-- Quick tabs -->
+        <!-- Quick tabs (tragen ?lang mit) -->
         <nav class="tabs" aria-label="Quick links">
           <a class="tab needs-lang" id="link-privacy"  href="privacy.html">🔒 Privacy / Datenschutz</a>
           <a class="tab needs-lang" id="link-terms"    href="terms.html">📜 Terms / Nutzungsbedingungen</a>
@@ -161,10 +164,10 @@
   <main class="wrap">
     <div class="grid grid-2">
       <section class="card">
-        <h2 id="whyTitle">Why these pages?</h2>
+        <h2 id="whyTitle">Wozu dieser Hub?</h2>
         <p id="whyText">
-          This hub gives you quick access to Privacy, Terms, Upgrade info and the Imprint for the Stay Active app.
-          / Dieser Hub bietet dir schnellen Zugriff auf Datenschutz, Nutzungsbedingungen, Upgrade-Infos und das Impressum der App.
+          Dieser Hub bietet dir schnellen Zugriff auf Datenschutz, Nutzungsbedingungen, Upgrade-Infos und das Impressum der App
+          / This hub gives you quick access to Privacy, Terms, Upgrade info and the Imprint for the Stay Active app.
         </p>
         <div class="cta-row">
           <a class="btn needs-lang" id="cta-privacy" href="privacy.html">🔒 Privacy / Datenschutz</a>
@@ -173,14 +176,54 @@
       </section>
 
       <aside class="card">
-        <h2 id="factsTitle">At a glance</h2>
+        <h2 id="factsTitle">Kurz & knapp</h2>
         <ul style="margin:.2rem 0 0 1.1rem">
-          <li>Neon dark theme</li>
-          <li>Fast links with language param</li>
-          <li>No trackers on these pages</li>
+          <li>Einheitlicher Dark-Neon-Hintergrund</li>
+          <li>Emoji-Muster bleibt immer sichtbar</li>
+          <li>Links übernehmen automatisch die Sprache</li>
+          <li>Keine Tracker auf diesen Seiten</li>
         </ul>
         <p class="muted" style="margin-top:.4rem">© 2025 Stay Active</p>
       </aside>
+    </div>
+
+    <!-- Kachel-Übersicht -->
+    <div class="tiles" style="margin-top:18px">
+      <div class="tile">
+        <div class="t-head">
+          <span class="t-title">Datenschutz</span>
+          <span class="t-emoji">🔒</span>
+        </div>
+        <p>Wie wir Daten verarbeiten und welche Rechte du hast.</p>
+        <a class="t-link needs-lang" href="privacy.html">Zur Seite →</a>
+      </div>
+
+      <div class="tile">
+        <div class="t-head">
+          <span class="t-title">Nutzungsbedingungen</span>
+          <span class="t-emoji">📜</span>
+        </div>
+        <p>Was die App macht, was nicht – und wofür du zustimmst.</p>
+        <a class="t-link needs-lang" href="terms.html">Zur Seite →</a>
+      </div>
+
+      <div class="tile">
+        <div class="t-head">
+          <span class="t-title">Upgrade</span>
+          <span class="t-emoji">⭐</span>
+        </div>
+        <p>Werbefrei, mehr Motivation, klarere Insights: Pro monatlich oder jährlich.</p>
+        <a class="t-link needs-lang" href="upgrade.html">Zur Seite →</a>
+      </div>
+
+      <div class="tile">
+        <div class="t-head">
+          <span class="t-title">Impressum</span>
+          <span class="t-emoji">ℹ️</span>
+        </div>
+        <p>Gesetzliche Anbieterkennzeichnung für Aurevoir (Kleingewerbe).</p>
+        <a class="t-link needs-lang" href="impressum.html">Zur Seite →</a>
+      </div>
     </div>
   </main>
 
@@ -191,14 +234,42 @@
       <a class="tab needs-lang" id="f-upgrade" href="upgrade.html">Upgrade</a>
       <a class="tab needs-lang" id="f-imprint" href="impressum.html">Imprint / Impressum</a>
     </div>
-    <div>© <span id="y"></span> Stay Active</div>
+    © <span id="y"></span> Stay Active
   </footer>
 
   <script>
-    // Year
+    // Jahr im Footer
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Texts
+    // Emoji-Hintergrund (gleichmäßig verteilt, persistent)
+    const EMOJIS = ['🏃‍♂️','📊','⏱️','💪','⚡','🧭','✨','🧠'];
+    const canvas = document.getElementById('emojiCanvas');
+    function seedRand(n){let x=Math.sin(n)*10000;return x-Math.floor(x)}
+    function paintEmojis(){
+      canvas.innerHTML='';
+      const cols = Math.max(6, Math.round(innerWidth/200));
+      const rows = Math.max(4, Math.round(innerHeight/220));
+      const cw = innerWidth/cols, ch = innerHeight/rows;
+      for(let r=0;r<rows;r++){
+        for(let c=0;c<cols;c++){
+          const n=r*cols+c;
+          if(seedRand(n)<0.7){
+            const e=document.createElement('span');
+            e.className='emoji';
+            e.textContent=EMOJIS[Math.floor(seedRand(n+13)*EMOJIS.length)];
+            const jx=(seedRand(n+23)-0.5)*0.6, jy=(seedRand(n+37)-0.5)*0.6;
+            e.style.left=((c+0.5+jx)*cw)+'px';
+            e.style.top=((r+0.5+jy)*ch)+'px';
+            e.style.setProperty('--rot',(seedRand(n+7)*40-20)+'deg');
+            e.style.setProperty('--sc',(0.9+seedRand(n+5)*0.4).toFixed(2));
+            canvas.appendChild(e);
+          }
+        }
+      }
+    }
+    paintEmojis(); addEventListener('resize', paintEmojis);
+
+    // i18n
     const dict = {
       de: {
         sub: "Wähle ein Dokument.",
@@ -214,15 +285,26 @@
       }
     };
 
-    // Append ?lang to relative links WITHOUT breaking paths (works on GitHub Pages)
+    function applyLangTexts(lang){
+      const d = dict[lang];
+      document.getElementById('subtitle').textContent =
+        (lang==='de' ? `${d.sub} / Choose a document.` : `${d.sub} / Wähle ein Dokument.`);
+      document.getElementById('whyTitle').textContent = d.whyTitle;
+      document.getElementById('whyText').textContent  =
+        (lang==='de' ? d.whyText + " / This hub gives you quick access to Privacy, Terms, Upgrade info and the Imprint for the Stay Active app."
+                      : d.whyText + " / Dieser Hub bietet dir schnellen Zugriff auf Datenschutz, Nutzungsbedingungen, Upgrade-Infos und das Impressum der App.");
+      document.getElementById('factsTitle').textContent = d.factsTitle;
+
+      document.getElementById('pill-de').setAttribute('aria-current', lang==='de');
+      document.getElementById('pill-en').setAttribute('aria-current', lang==='en');
+    }
+
+    // ?lang an alle relevanten Links anhängen
     function setLangOnLinks(lang){
       document.querySelectorAll('a.needs-lang').forEach(a=>{
-        const base = a.getAttribute('href') || '';
-        const clean = base.split('#')[0].split('?')[0];     // keep just the filename
-        const query = `?lang=${encodeURIComponent(lang)}`;
-        a.setAttribute('href', clean + query);              // e.g. privacy.html?lang=de
+        const base = (a.getAttribute('href')||'').split('#')[0].split('?')[0];
+        a.setAttribute('href', base + `?lang=${encodeURIComponent(lang)}`);
       });
-      // keep in address bar too
       const url = new URL(location.href);
       url.searchParams.set('lang', lang);
       history.replaceState({}, '', url.toString());
@@ -230,28 +312,16 @@
       document.documentElement.lang = lang;
     }
 
-    function setLang(lang){
-      const d = dict[lang] || dict.de;
-      document.getElementById('subtitle').textContent = `${d.sub} / ${lang === 'de' ? 'Choose a document.' : 'Wähle ein Dokument.'}`;
-      document.getElementById('whyTitle').textContent = d.whyTitle;
-      document.getElementById('whyText').textContent  = d.whyText + (lang==='de' ? "" : " / Dieser Hub bietet dir schnellen Zugriff auf Datenschutz, Nutzungsbedingungen, Upgrade-Infos und das Impressum der App.");
-      document.getElementById('factsTitle').textContent = d.factsTitle;
+    function setLang(lang){ applyLangTexts(lang); setLangOnLinks(lang); }
 
-      // pills state
-      document.getElementById('pill-de').setAttribute('aria-current', lang==='de');
-      document.getElementById('pill-en').setAttribute('aria-current', lang==='en');
-
-      setLangOnLinks(lang);
-    }
-
-    // Init language
+    // Initiale Sprache bestimmen
     const qsLang = (new URLSearchParams(location.search).get('lang') || '').toLowerCase();
     const stored = localStorage.getItem('sa_lang');
     const browser = (navigator.language || 'en').toLowerCase().startsWith('de') ? 'de' : 'en';
     const start = (qsLang==='de'||qsLang==='en') ? qsLang : (stored||browser);
     setLang(start);
 
-    // Switchers
+    // Umschalter
     document.getElementById('pill-de').addEventListener('click', e => { e.preventDefault(); setLang('de'); });
     document.getElementById('pill-en').addEventListener('click', e => { e.preventDefault(); setLang('en'); });
   </script>
