@@ -10,7 +10,7 @@
 
   <style>
     :root{
-      /* Brand / Neon – identisch zu index.html */
+      /* Brand / Neon – identisch zu index/terms */
       --brand:#00e5ff;        /* Cyan Neon */
       --accent:#9b4dff;       /* Lila Neon */
       --ok:#22c55e;
@@ -34,6 +34,7 @@
       margin:0; color:var(--text); background:var(--bg);
       font-family:system-ui,-apple-system,"Segoe UI",Roboto,Inter,Arial,sans-serif;
       line-height:1.65; overflow-x:hidden;
+      /* gleichbleibender Farbverlauf */
       background:
         radial-gradient(1200px 600px at 85% -10%, color-mix(in oklab, var(--brand) 18%, transparent) 0%, transparent 60%),
         radial-gradient(900px 520px at 10% -20%, color-mix(in oklab, var(--accent) 20%, transparent) 0%, transparent 58%),
@@ -45,9 +46,26 @@
 
     .wrap{max-width:1000px; margin:0 auto; padding:22px}
 
-    /* Hero */
-    header.hero{position:relative; border-bottom:1px solid var(--border); overflow:hidden}
-    .glow{position:absolute; inset:0; pointer-events:none; filter:blur(var(--blur)); opacity:.9}
+    /* ===== Fullpage Emoji Background (fixiert, überall sichtbar) ===== */
+    .emoji-field{
+      position:fixed; inset:0; z-index:-1; pointer-events:none;
+      display:grid;
+      grid-template-columns:repeat(auto-fill, minmax(48px,1fr));
+      align-content:stretch; justify-content:stretch;
+      filter:blur(1px); opacity:var(--emoji-alpha);
+      padding:6vh 6vw;
+    }
+    .emoji-field .e{
+      display:flex; align-items:center; justify-content:center;
+      font-size:clamp(18px, 2.2vw, 28px);
+      transform:translateY(0);
+      will-change:transform, opacity;
+      opacity:.9;
+    }
+
+    /* ===== Hero (oben) ===== */
+    header.hero{position:relative; border-bottom:1px solid var(--border); overflow:visible}
+    .glow{position:absolute; inset:-4px -4px 0 -4px; pointer-events:none; filter:blur(var(--blur)); opacity:.9; z-index:0}
     .glow::before,.glow::after{
       content:""; position:absolute; width:55vmax; height:55vmax; border-radius:50%;
       background:radial-gradient(circle at 30% 30%, color-mix(in oklab, var(--brand) 34%, transparent), transparent 60%);
@@ -57,14 +75,7 @@
       top:-30vmax; right:-26vmax;
       background:radial-gradient(circle at 70% 40%, color-mix(in oklab, var(--accent) 38%, transparent), transparent 60%);
     }
-
-    .emoji-cloud{position:absolute; inset:0; pointer-events:none; filter:blur(1px); opacity:var(--emoji-alpha)}
-    .bg-emoji{position:absolute; font-size:clamp(22px,3.2vw,34px); transform:translate(-50%,-50%)}
-    .e1{left:12%; top:26%} .e2{left:27%; top:14%} .e3{left:44%; top:22%}
-    .e4{left:66%; top:16%} .e5{left:82%; top:30%} .e6{left:18%; top:48%}
-    .e7{left:36%; top:54%} .e8{left:72%; top:50%}
-
-    @media (prefers-reduced-motion:reduce){ .glow,.emoji-cloud{display:none} }
+    @media (prefers-reduced-motion:reduce){ .glow{display:none} }
 
     .title{
       margin:.2rem 0; font-weight:900; letter-spacing:.4px;
@@ -76,7 +87,7 @@
     }
     .sub{color:var(--muted); font-weight:700; letter-spacing:.3px; margin:.2rem 0 .8rem; position:relative; z-index:1; text-align:center}
 
-    /* Lang pills + nav */
+    /* Pills + Nav */
     .bar{display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin:10px 0 18px; position:relative; z-index:1}
     .pills{display:flex; gap:10px; flex-wrap:wrap}
     .pill{
@@ -117,19 +128,12 @@
   </style>
 </head>
 <body>
-  <!-- Glow & emoji fog -->
+  <!-- Fixierter Emoji-Hintergrund über die ganze Seite -->
+  <div class="emoji-field" id="emojiField" aria-hidden="true"></div>
+
   <header class="hero">
+    <!-- sanfte Neon-Glows -->
     <div class="glow" aria-hidden="true"></div>
-    <div class="emoji-cloud" aria-hidden="true">
-      <span class="bg-emoji e1">🏃‍♂️</span>
-      <span class="bg-emoji e2">📊</span>
-      <span class="bg-emoji e3">⏱️</span>
-      <span class="bg-emoji e4">💪</span>
-      <span class="bg-emoji e5">⚡</span>
-      <span class="bg-emoji e6">🧭</span>
-      <span class="bg-emoji e7">✨</span>
-      <span class="bg-emoji e8">🧠</span>
-    </div>
 
     <div class="wrap" style="position:relative; z-index:1">
       <h1 class="title" id="pageTitle">Stay Active • Privacy / Datenschutz</h1>
@@ -224,10 +228,34 @@
   </footer>
 
   <script>
-    // Year
+    // ==== Year ====
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // i18n + carry ?lang in every link
+    // ==== Emoji field fill (gleich wie Terms) ====
+    (function fillEmojiField(){
+      const holder = document.getElementById('emojiField');
+      const EMOJIS = ['🏃‍♂️','📊','⏱️','💪','⚡','🧭','✨','🧠'];
+      // Zellenanzahl grob an Viewport anpassen
+      const cols = Math.ceil(window.innerWidth / 64);
+      const rows = Math.ceil(window.innerHeight / 64);
+      const total = cols * rows;
+      holder.innerHTML = '';
+      for(let i=0;i<total;i++){
+        const s = document.createElement('span');
+        s.className = 'e';
+        s.textContent = EMOJIS[i % EMOJIS.length];
+        // leichte Variation
+        const r = (Math.random()*6 - 3);      // -3..+3 deg
+        const sc = 0.9 + Math.random()*0.3;   // 0.9..1.2
+        s.style.transform = `rotate(${r}deg) scale(${sc})`;
+        s.style.opacity = 0.75 + Math.random()*0.2;
+        holder.appendChild(s);
+      }
+      // Grid neu setzen (auto-fill bleibt, aber wir geben padding vor)
+      holder.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    })();
+
+    // ==== i18n + carry ?lang in every link ====
     const dict = {
       de: {
         title:"Stay Active • Datenschutz",
@@ -248,14 +276,14 @@
       document.getElementById('sec-en').classList.toggle('hidden', de);
 
       // pills state
-      document.getElementById('pill-de').setAttribute('aria-current', de);
-      document.getElementById('pill-en').setAttribute('aria-current', !de);
+      document.getElementById('pill-de').setAttribute('aria-current', String(de));
+      document.getElementById('pill-en').setAttribute('aria-current', String(!de));
 
       // titles
       document.getElementById('pageTitle').textContent = dict[l].title + " / " + (de ? "Privacy" : "Datenschutz");
       document.getElementById('subtitle').textContent  = dict[l].sub + " / " + (de ? "Read in your language." : "In deiner Sprache lesen.");
 
-      // append ?lang to nav/footer links
+      // append ?lang to nav/footer links (RELATIVE halten!)
       const linkIds = ['link-home','link-terms','link-upgrade','link-imprint','f-home','f-terms','f-upgrade','f-imprint'];
       linkIds.forEach(id=>{
         const a = document.getElementById(id);
@@ -263,7 +291,7 @@
         const href = a.getAttribute('href');
         const u = new URL(href, location.href); // relative -> absolute
         u.searchParams.set('lang', l);
-        a.setAttribute('href', u.pathname.replace(location.origin,'') + u.search);
+        a.setAttribute('href', u.pathname.replace(location.origin,'') + u.search + u.hash);
       });
 
       // keep in URL + remember
