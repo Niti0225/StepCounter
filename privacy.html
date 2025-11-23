@@ -10,56 +10,56 @@
 
   <style>
     :root{
-      /* Brand / Neon */
-      --brand:#00e5ff;
-      --accent:#9b4dff;
+      /* Brand / Neon – konsistent */
+      --brand:#00e5ff;        /* Cyan Neon */
+      --accent:#9b4dff;       /* Lila Neon */
       --ok:#22c55e;
 
       /* Surfaces */
-      --bg:#05060b;
-      --bg2:#0a0f1a;
-      --card:#0f1420;
-      --border:#1a2331;
+      --bg:#081018;           /* fester, gleichmäßiger Grundton */
+      --bg-soft:#0b121b;
+      --card:#0f1621;
+      --border:#15202b;
       --text:#e6e9ef;
       --muted:#9aa3af;
 
       --radius:16px;
       --blur:44px;
-      --emoji-alpha:.12;
-      --vignette: radial-gradient(120vw 120vh at 50% 60%, transparent 40%, rgba(0,0,0,.45) 80%);
+      --emoji-alpha:.13;
     }
 
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
-      margin:0; color:var(--text); font-family:system-ui,-apple-system,"Segoe UI",Roboto,Inter,Arial,sans-serif;
+      margin:0; color:var(--text);
+      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Inter,Arial,sans-serif;
       line-height:1.7; overflow-x:hidden;
-      background:
-        radial-gradient(1100px 560px at 80% -10%, color-mix(in oklab, var(--brand) 20%, transparent) 0%, transparent 60%),
-        radial-gradient(900px 520px at 10% -20%, color-mix(in oklab, var(--accent) 22%, transparent) 0%, transparent 58%),
-        linear-gradient(to bottom, var(--bg), var(--bg2));
-      position:relative;
-      isolation:isolate;
+      /* EINHEITLICHER Hintergrund ohne harte Übergänge */
+      background: var(--bg);
+      position: relative; isolation: isolate;
     }
 
-    /* ==== BACKGROUND LAYERS ==== */
-    .emoji-canvas{
-      position:fixed; inset:0; z-index:-2; pointer-events:none;
-      overflow:hidden;
-      filter:blur(0.7px);
+    /* --- dauerhafte Deko-Layer --- */
+    /* weiche Neon-Flares oben links / rechts */
+    .glow{
+      position:fixed; inset:-10vmax; z-index:-2; pointer-events:none; filter:blur(var(--blur)); opacity:.9;
+      background:
+        radial-gradient(60vmax 60vmax at 15% -10%, color-mix(in oklab, var(--brand) 26%, transparent) 0%, transparent 60%),
+        radial-gradient(54vmax 54vmax at 100% -6%, color-mix(in oklab, var(--accent) 32%, transparent) 0%, transparent 60%);
     }
-    .emoji-canvas .e{
-      position:absolute;
-      font-size:clamp(18px, 2.4vw, 30px);
-      opacity:var(--emoji-alpha);
-      transform:translate(-50%,-50%) rotate(var(--rot, 0deg)) scale(var(--sc,1));
-      will-change:transform, opacity;
-      user-select:none;
-    }
-    /* vignette to improve readability */
+    /* leichte Vignette für Lesbarkeit, bleibt überall gleich */
     .vignette{
       position:fixed; inset:0; z-index:-1; pointer-events:none;
-      background:var(--vignette);
+      background: radial-gradient(120vw 120vh at 50% 60%, rgba(0,0,0,.0) 35%, rgba(0,0,0,.45) 95%);
+    }
+    /* Emoji-Canvas: gleichmäßig verteilt */
+    .emoji-canvas{
+      position:fixed; inset:0; z-index:-3; pointer-events:none; overflow:hidden; filter:blur(0.6px);
+    }
+    .emoji{
+      position:absolute; font-size:clamp(18px,2.6vw,30px);
+      opacity:var(--emoji-alpha); transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(var(--sc,1));
+      user-select:none;
     }
 
     a{color:inherit; text-decoration:none}
@@ -67,109 +67,80 @@
 
     .wrap{max-width:1000px; margin:0 auto; padding:22px}
 
-    /* ==== HERO ==== */
-    header.hero{position:relative; border-bottom:1px solid var(--border)}
-    .glow{position:absolute; inset:-4px -4px 0 -4px; pointer-events:none; filter:blur(var(--blur)); opacity:.85; z-index:0}
-    .glow::before,.glow::after{
-      content:""; position:absolute; width:55vmax; height:55vmax; border-radius:50%;
-      background:radial-gradient(circle at 30% 30%, color-mix(in oklab, var(--brand) 34%, transparent), transparent 60%);
-    }
-    .glow::before{top:-36vmax; left:-20vmax}
-    .glow::after{
-      top:-30vmax; right:-26vmax;
-      background:radial-gradient(circle at 70% 40%, color-mix(in oklab, var(--accent) 38%, transparent), transparent 60%);
-    }
-    @media (prefers-reduced-motion:reduce){ .glow{display:none} }
-
+    /* Header / Hero */
+    header.hero{border-bottom:1px solid var(--border)}
     .title{
       margin:.3rem 0 .2rem; font-weight:900; letter-spacing:.4px;
       font-size:clamp(2rem,3.6vw,2.8rem);
       background:linear-gradient(90deg,var(--brand),var(--accent));
       -webkit-background-clip:text; background-clip:text; color:transparent;
-      text-shadow:0 8px 30px rgba(0,229,255,.22);
-      text-align:center;
+      text-shadow:0 8px 30px rgba(0,229,255,.22); text-align:center;
     }
-    .sub{
-      color:var(--muted); font-weight:700; letter-spacing:.3px;
-      margin:.1rem 0 1rem; text-align:center;
-    }
+    .sub{color:var(--muted); font-weight:700; letter-spacing:.3px; margin:.1rem 0 1rem; text-align:center}
 
     .bar{display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin:10px 0 18px}
     .pills{display:flex; gap:10px; flex-wrap:wrap}
     .pill{
       border:1px solid var(--border); border-radius:999px; padding:10px 14px; background:rgba(255,255,255,.04);
-      font-weight:800; letter-spacing:.2px; color:var(--text);
-      box-shadow:0 4px 12px rgba(0,0,0,.25);
+      font-weight:800; letter-spacing:.2px; color:var(--text); box-shadow:0 4px 12px rgba(0,0,0,.25)
     }
-    .pill[aria-current="true"]{
-      background:linear-gradient(90deg,var(--brand),var(--accent)); color:#071018; border-color:transparent
-    }
+    .pill[aria-current="true"]{background:linear-gradient(90deg,var(--brand),var(--accent)); color:#081018; border-color:transparent}
 
     nav.tabs{display:flex; gap:10px; flex-wrap:wrap}
     .tab{
       display:inline-flex; align-items:center; gap:.5rem;
       background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
-      border:1px solid var(--border); border-radius:12px;
-      padding:10px 14px; font-weight:800; letter-spacing:.2px; color:var(--text);
+      border:1px solid var(--border); border-radius:12px; padding:10px 14px;
+      font-weight:800; letter-spacing:.2px; color:var(--text);
       transition:transform .18s ease, border-color .18s ease, filter .18s ease;
       box-shadow:0 10px 24px rgba(0,0,0,.22);
     }
     .tab:hover{transform:translateY(-2px); border-color:color-mix(in oklab, var(--brand) 55%, var(--border)); filter:brightness(1.06)}
 
-    /* ==== CONTENT ==== */
+    /* Content */
     main{padding:8px 0 40px}
     .grid{display:grid; gap:18px}
     @media (min-width:880px){ .grid-2{grid-template-columns:1fr 1fr} }
 
     .card{
       background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      padding:20px;
-      box-shadow:
-        0 12px 28px rgba(0,0,0,.28),
-        inset 0 1px 0 rgba(255,255,255,.04);
+      border:1px solid var(--border); border-radius:var(--radius);
+      padding:20px; box-shadow:0 12px 28px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.04);
     }
     h2{
-      margin:.1rem 0 .6rem;
-      font-size:clamp(1.06rem,2.1vw,1.28rem);
-      font-weight:900;
-      background:linear-gradient(90deg,var(--brand),var(--accent));
-      -webkit-background-clip:text; background-clip:text; color:transparent;
+      margin:.1rem 0 .6rem; font-size:clamp(1.06rem,2.1vw,1.28rem); font-weight:900;
+      background:linear-gradient(90deg,var(--brand),var(--accent)); -webkit-background-clip:text; background-clip:text; color:transparent;
       letter-spacing:.2px;
     }
     p{margin:.45rem 0}
     .muted{color:var(--muted); font-weight:600}
     .link{color:var(--brand); text-decoration:underline}
-
     .hidden{display:none}
 
-    /* ==== FOOTER ==== */
-    footer{
-      border-top:1px solid var(--border); margin-top:28px; padding:22px;
-      color:var(--muted); text-align:center; background:rgba(255,255,255,.02)
-    }
+    /* Footer */
+    footer{border-top:1px solid var(--border); margin-top:28px; padding:22px; color:var(--muted); text-align:center; background:rgba(255,255,255,.02)}
     .links{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:8px}
   </style>
 </head>
 <body>
-  <!-- scattered emoji background + vignette for readability -->
+  <!-- dauerhafte, gleichmäßige Deko-Layer -->
+  <div class="glow" aria-hidden="true"></div>
   <div class="emoji-canvas" id="emojiCanvas" aria-hidden="true"></div>
   <div class="vignette" aria-hidden="true"></div>
 
   <header class="hero">
-    <div class="glow" aria-hidden="true"></div>
-
     <div class="wrap" style="position:relative; z-index:1">
       <h1 class="title" id="pageTitle">Stay Active • Privacy / Datenschutz</h1>
       <p class="sub" id="subtitle">Read in your language. / In deiner Sprache lesen.</p>
 
       <div class="bar">
+        <!-- Language pills -->
         <div class="pills" role="group" aria-label="Choose language">
           <a id="pill-de" href="#" class="pill" aria-current="false">Deutsch</a>
           <a id="pill-en" href="#" class="pill" aria-current="true">English</a>
         </div>
 
+        <!-- Quick tabs -->
         <nav class="tabs" aria-label="Quick links">
           <a class="tab" id="link-home"    href="index.html">🏠 Home</a>
           <a class="tab" id="link-terms"   href="terms.html">📜 Terms / Nutzungsbedingungen</a>
@@ -251,92 +222,97 @@
   </footer>
 
   <script>
-    // Year
+    // Jahr
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // ==== Scatter emoji background (random, responsive, debounced) ====
-    (function() {
-      const EMOJIS = ['🏃‍♂️','📊','⏱️','💪','⚡','🧭','✨','🧠'];
-      const holder = document.getElementById('emojiCanvas');
+    /* ========== Emoji-Grid gleichmäßig & responsiv ==========
+       Wir belegen ein fixes Raster (z.B. 8 x 5) über die Viewportfläche
+       und setzen je Zelle 0–1 Emojis, damit alles verteilt wirkt.        */
+    const EMOJIS = ['🏃‍♂️','📊','⏱️','💪','⚡','🧭','✨','🧠'];
+    const canvas = document.getElementById('emojiCanvas');
 
-      function fill() {
-        const w = window.innerWidth, h = window.innerHeight;
-        // density ~ 1 per 70x70 px
-        const count = Math.min(220, Math.max(60, Math.round((w*h) / (70*70))));
-        holder.innerHTML = '';
-        for (let i = 0; i < count; i++) {
-          const s = document.createElement('span');
-          s.className = 'e';
-          s.textContent = EMOJIS[i % EMOJIS.length];
+    function seedRand(n){ // deterministischer Zufall pro Zelle
+      let x = Math.sin(n) * 10000; return x - Math.floor(x);
+    }
 
-          const x = Math.random()*100;  // vw
-          const y = Math.random()*100;  // vh
-          const rot = (Math.random()*10 - 5).toFixed(2);
-          const sc  = (0.85 + Math.random()*0.4).toFixed(2);
-          const op  = (0.08 + Math.random()*0.18).toFixed(2); // softer overall
+    function paintEmojis(){
+      canvas.innerHTML = '';
+      const cols = Math.max(6, Math.round(window.innerWidth  / 200)); // ~200px pro Zelle
+      const rows = Math.max(4, Math.round(window.innerHeight / 220));
+      const cellW = window.innerWidth / cols;
+      const cellH = window.innerHeight / rows;
 
-          s.style.left = x + 'vw';
-          s.style.top  = y + 'vh';
-          s.style.setProperty('--rot', rot + 'deg');
-          s.style.setProperty('--sc', sc);
-          s.style.opacity = op;
-
-          holder.appendChild(s);
+      let idx = 0;
+      for (let r = 0; r < rows; r++){
+        for (let c = 0; c < cols; c++){
+          const n = r*cols + c;
+          // 70% Wahrscheinlichkeit für ein Emoji pro Zelle
+          if (seedRand(n) < 0.7){
+            const e = document.createElement('span');
+            e.className = 'emoji';
+            e.textContent = EMOJIS[Math.floor(seedRand(n+13) * EMOJIS.length)];
+            const jitterX = (seedRand(n+23) - 0.5) * 0.6; // leichte Streuung
+            const jitterY = (seedRand(n+37) - 0.5) * 0.6;
+            const x = (c + 0.5 + jitterX) * cellW;
+            const y = (r + 0.5 + jitterY) * cellH;
+            e.style.left = x + 'px';
+            e.style.top  = y + 'px';
+            e.style.setProperty('--rot', (seedRand(n+7)*40-20) + 'deg');
+            e.style.setProperty('--sc',  (0.9 + seedRand(n+5)*0.4).toFixed(2));
+            canvas.appendChild(e);
+            idx++;
+          }
         }
       }
+    }
+    paintEmojis();
+    addEventListener('resize', paintEmojis);
 
-      let t; const onResize = () => { clearTimeout(t); t = setTimeout(fill, 120); };
-      window.addEventListener('resize', onResize, { passive:true });
-      fill();
-    })();
-
-    // ==== i18n + carry ?lang in every link ====
+    /* ========== i18n & ?lang Mitnahme in Links ========== */
     const dict = {
       de: { title:"Stay Active • Datenschutz", sub:"In deiner Sprache lesen." },
-      en: { title:"Stay Active • Privacy",    sub:"Read in your language." }
+      en: { title:"Stay Active • Privacy",     sub:"Read in your language." }
     };
 
     function setLang(l){
       const de = l === 'de';
       document.documentElement.lang = l;
 
-      // toggle sections
+      // Sections togglen
       document.getElementById('sec-de').classList.toggle('hidden', !de);
       document.getElementById('sec-en').classList.toggle('hidden', de);
 
-      // pills state
-      document.getElementById('pill-de').setAttribute('aria-current', String(de));
-      document.getElementById('pill-en').setAttribute('aria-current', String(!de));
+      // Pills-Status
+      document.getElementById('pill-de').setAttribute('aria-current', de);
+      document.getElementById('pill-en').setAttribute('aria-current', !de);
 
-      // titles
+      // Texte
       document.getElementById('pageTitle').textContent = dict[l].title + " / " + (de ? "Privacy" : "Datenschutz");
-      document.getElementById('subtitle').textContent  = dict[l].sub + " / " + (de ? "Read in your language." : "In deiner Sprache lesen.");
+      document.getElementById('subtitle').textContent  = dict[l].sub   + " / " + (de ? "Read in your language." : "In deiner Sprache lesen.");
 
-      // append ?lang to nav/footer links (keep relative)
-      const linkIds = ['link-home','link-terms','link-upgrade','link-imprint','f-home','f-terms','f-upgrade','f-imprint'];
-      linkIds.forEach(id=>{
-        const a = document.getElementById(id);
-        if(!a) return;
-        const href = a.getAttribute('href');
-        const u = new URL(href, location.href);
+      // Links mit ?lang versehen (relativ lassen, damit GH Pages funktioniert)
+      const ids = ['link-home','link-terms','link-upgrade','link-imprint','f-home','f-terms','f-upgrade','f-imprint'];
+      ids.forEach(id=>{
+        const a = document.getElementById(id); if(!a) return;
+        const u = new URL(a.getAttribute('href'), location.href);
         u.searchParams.set('lang', l);
-        a.setAttribute('href', u.pathname.replace(location.origin,'') + u.search + u.hash);
+        a.setAttribute('href', u.pathname.replace(location.origin,'') + u.search);
       });
 
-      // keep in URL + remember
+      // URL & Memory
       const url = new URL(location.href);
       url.searchParams.set('lang', l);
       history.replaceState({}, '', url.toString());
       localStorage.setItem('sa_privacy_lang', l);
     }
 
-    const qs = new URLSearchParams(location.search).get('lang');
+    const qsLang = new URLSearchParams(location.search).get('lang');
     const stored = localStorage.getItem('sa_privacy_lang');
     const browser = (navigator.language || 'en').toLowerCase().startsWith('de') ? 'de' : 'en';
-    setLang(qs || stored || browser);
+    setLang(qsLang || stored || browser);
 
-    document.getElementById('pill-de').addEventListener('click', e => { e.preventDefault(); setLang('de'); });
-    document.getElementById('pill-en').addEventListener('click', e => { e.preventDefault(); setLang('en'); });
+    document.getElementById('pill-de').addEventListener('click', e=>{e.preventDefault(); setLang('de');});
+    document.getElementById('pill-en').addEventListener('click', e=>{e.preventDefault(); setLang('en');});
   </script>
 </body>
 </html>
