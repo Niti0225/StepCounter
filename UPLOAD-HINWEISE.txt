@@ -1,0 +1,24 @@
+Stridevo Steps Website Upload
+Stand: 30. Juni 2026
+
+Diese Dateien gehoeren gemeinsam auf den Webserver:
+- index.html
+- datenschutz.html
+- nutzungsbedingungen.html
+- faq.html
+- impressum.html
+- robots.txt
+- .nojekyll
+- assets/styles.css
+- assets/app.js
+- assets/icon.png
+- assets/favicon.png
+
+Vor Veroeffentlichung bitte ersetzen/pruefen:
+- Impressum: Anbietername, Anschrift, ggf. Telefon, Umsatzsteuer-ID.
+- App Store Link auf der Startseite: aktuell bewusst als Platzhalter markiert.
+- Echte Screenshots: aktuell nutzt die Startseite ein CSS-App-Mockup, das den aktuellen Homescreen nachbildet.
+- Echte Abo-/RevenueCat-Daten: aktuell als Pro-Vorschau beschrieben.
+- Echte AdMob-IDs und App-Store-Datenschutzangaben muessen zur finalen App-Version passen.
+
+Keine externen Tracking-Skripte oder CDN-Abhaengigkeiten enthalten.
